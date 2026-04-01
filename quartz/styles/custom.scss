@@ -1,3 +1,243 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+// ===== AAA Studio Archive - Clean Tech Design System =====
+
+// --- Noise texture overlay ---
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+// --- Radial gradient backgrounds ---
+body {
+  background-image:
+    radial-gradient(ellipse at top left, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(2, 132, 199, 0.05) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+[saved-theme="dark"] body {
+  background-image:
+    radial-gradient(ellipse at top left, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
+}
+
+// --- Global border radius ---
+article,
+.search,
+.darkmode,
+.callout,
+pre,
+blockquote,
+table {
+  border-radius: 12px !important;
+}
+
+.page-header,
+.popover,
+.graph {
+  border-radius: 16px !important;
+}
+
+// --- Cards & containers ---
+.callout {
+  border: 1px solid var(--lightgray);
+  background: var(--lightgray);
+  padding: 1rem 1.25rem;
+  border-radius: 16px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+// --- Navigation links with animated underline ---
+.page-title {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+header nav a,
+.breadcrumb-element a {
+  position: relative;
+  font-weight: 500;
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--secondary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+// --- Buttons ---
+button,
+.search-button,
+.darkmode {
+  border: 1px solid var(--lightgray) !important;
+  border-radius: 12px !important;
+  transition: all 0.2s ease;
+
+  &:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// --- Focus accessibility ---
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+// --- Tags as category pills ---
+a.internal.tag-link {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  border: 1px solid var(--lightgray);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background: var(--lightgray);
+    border-color: var(--secondary);
+  }
+}
+
+// --- Search input ---
+.search {
+  border: 1px solid var(--lightgray) !important;
+
+  & > input {
+    font-size: 0.9rem;
+  }
+}
+
+// --- Table styling ---
+table {
+  border: 1px solid var(--lightgray);
+  overflow: hidden;
+
+  th {
+    background: var(--lightgray);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  td {
+    border-top: 1px solid var(--lightgray);
+  }
+
+  tr:hover td {
+    background: var(--highlight);
+  }
+}
+
+// --- Code blocks ---
+pre {
+  border: 1px solid var(--lightgray);
+  padding: 1.25rem !important;
+}
+
+code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.875em;
+}
+
+// --- Headings ---
+h1, h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--lightgray);
+}
+
+// --- Links ---
+article a {
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--tertiary);
+  }
+}
+
+// --- Graph view ---
+.graph {
+  border: 1px solid var(--lightgray);
+  background: var(--lightgray);
+}
+
+// --- Explorer / sidebar ---
+.explorer {
+  border-radius: 12px;
+}
+
+// --- Blockquote ---
+blockquote {
+  border-left: 3px solid var(--secondary);
+  background: var(--highlight);
+  padding: 1rem 1.25rem;
+  font-style: normal;
+  color: var(--darkgray);
+}
+
+// --- Smooth scroll ---
+html {
+  scroll-behavior: smooth;
+}
+
+// --- Content width ---
+.center {
+  max-width: 800px;
+}
+
+// --- Footer ---
+footer {
+  border-top: 1px solid var(--lightgray);
+  padding-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--gray);
+}
