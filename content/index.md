@@ -141,6 +141,33 @@ title: AAA 스터디 아카이브
   <a href="./아카이브북/" class="dash-link">전체 보기 →</a>
 </div>
 
+<div class="dash-card dash-card-full">
+  <div class="dash-card-header">
+    <span class="dash-card-icon">🎨</span>
+    <h3>갤러리</h3>
+    <span class="dash-badge dash-badge-green">SHIPPED</span>
+  </div>
+  <p>멤버들이 만든 제품과 배포된 웹사이트</p>
+  <div class="dash-gallery-grid">
+    <a href="https://zap-arch.github.io/brand-showup/" class="dash-gallery-item" target="_blank">
+      <div class="dash-gallery-emoji">🏢</div>
+      <strong>BRAND SHOW UP</strong>
+      <span>잽 — 원페이지 웹 제안서</span>
+    </a>
+    <a href="https://content-marketing-team.vercel.app/" class="dash-gallery-item" target="_blank">
+      <div class="dash-gallery-emoji">📢</div>
+      <strong>콘텐츠 마케팅</strong>
+      <span>띵끄 — 원소스 멀티유즈</span>
+    </a>
+    <a href="https://instagram.com/aisellerguide" class="dash-gallery-item" target="_blank">
+      <div class="dash-gallery-emoji">📸</div>
+      <strong>AI셀러가이드</strong>
+      <span>오웬 — 카드뉴스 자동화</span>
+    </a>
+  </div>
+  <a href="./갤러리/" class="dash-link">전체 보기 →</a>
+</div>
+
 </section>
 
 <section class="dash-cta">
