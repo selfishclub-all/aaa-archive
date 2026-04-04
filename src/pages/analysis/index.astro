@@ -78,24 +78,28 @@ const weekTitles: Record<number, { title: string; desc: string }> = {
 
     </div>
 
-    <!-- AI 제안 Section (inline) -->
+    <!-- What's Next Section -->
     <section class="mt-24 md:mt-32 pt-16 border-t border-slate-100 dark:border-[#353437]">
-      <div class="mb-12">
-        <span class="text-[#d4a800] dark:text-[#FBE830] text-[10px] font-bold tracking-widest uppercase mb-4 block">AI Proposals</span>
-        <h2 class="text-3xl md:text-4xl font-headline font-extrabold text-black dark:text-white tracking-tight">AAA Bot의 제안</h2>
+      <div class="flex items-baseline gap-4 mb-12">
+        <span class="text-4xl font-headline font-black text-[#FBE830]">→</span>
+        <div>
+          <h2 class="text-2xl md:text-3xl font-headline font-extrabold text-black dark:text-white tracking-tight">다음에 만들어볼 것들</h2>
+          <p class="text-sm text-slate-500 dark:text-gray-400 mt-2">AAA Bot이 분석 데이터에서 도출한 아이디어</p>
+        </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {proposals.map((proposal) => (
-          <a href={`${base}proposals/${proposal.id}/`} class="p-8 bg-slate-50 dark:bg-[#1b1b1d] rounded-xl border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/30 transition-all group block">
-            <div class="flex items-center gap-3 mb-4">
-              <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830]">auto_awesome</span>
-              <span class="text-[10px] font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase">Proposal</span>
-            </div>
-            <h3 class="text-lg font-bold text-black dark:text-white mb-3 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors font-headline">{proposal.id.replace(/_/g, ' ')}</h3>
-            <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">AI가 분석 데이터를 기반으로 도출한 제안입니다.</p>
-          </a>
-        ))}
-      </div>
+      {proposals.map((proposal, i) => (
+        <a href={`${base}proposals/${proposal.id}/`} class="flex items-start gap-6 p-6 mb-4 rounded-xl hover:bg-slate-50 dark:hover:bg-[#1b1b1d] transition-all group block border-l-2 border-transparent hover:border-[#FBE830]">
+          <div class="w-10 h-10 bg-[#FBE830]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+            <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830] text-lg">
+              {i === 0 ? 'smart_toy' : 'build'}
+            </span>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-black dark:text-white mb-1 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{proposal.id.replace(/_/g, ' ')}</h3>
+            <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">클릭하여 상세 내용 보기 →</p>
+          </div>
+        </a>
+      ))}
     </section>
   </section>
 </Layout>
