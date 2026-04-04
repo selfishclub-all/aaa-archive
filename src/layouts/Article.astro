@@ -1,0 +1,115 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  category?: string;
+  date?: string;
+}
+const { title, category, date } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} - AAA 아카이브</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script is:inline>
+    const t = localStorage.getItem('theme') || 'light';
+    if (t === 'dark') document.documentElement.classList.add('dark');
+  </script>
+</head>
+<body class="bg-white dark:bg-[#131315] text-slate-900 dark:text-[#e5e1e4] font-body min-h-screen">
+  <!-- Nav -->
+  <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-[#131315]/80 backdrop-blur-xl border-b border-slate-100 dark:border-[#353437]">
+    <div class="flex justify-between items-center px-6 md:px-8 h-16 max-w-4xl mx-auto">
+      <a href={base} class="text-lg font-black tracking-tighter text-black dark:text-white font-headline">SELFISH <span class="bg-[#FBE830] text-black px-1">AAA</span> TEAM</a>
+      <div class="flex items-center gap-4">
+        <a href="javascript:history.back()" class="text-slate-400 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1 text-xs font-bold uppercase tracking-wider">
+          <span class="material-symbols-outlined text-base">arrow_back</span>
+          Back
+        </a>
+        <button id="theme-toggle" class="text-slate-400 hover:text-black dark:hover:text-white transition-colors">
+          <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-32 px-6 md:px-8 max-w-3xl mx-auto">
+    <!-- Header -->
+    <header class="mb-16 border-b border-slate-100 dark:border-[#353437] pb-12">
+      {category && (
+        <div class="flex items-center gap-2 text-[#d4a800] dark:text-[#FBE830] font-bold text-[10px] tracking-[0.2em] uppercase mb-4">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">article</span>
+          {category}
+        </div>
+      )}
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-headline font-extrabold tracking-tight leading-tight text-black dark:text-white mb-6">
+        {title}
+      </h1>
+      {date && (
+        <div class="text-sm text-slate-500 dark:text-gray-400">
+          <span class="font-bold text-black dark:text-white">Date:</span> {date}
+        </div>
+      )}
+    </header>
+
+    <!-- Content -->
+    <article class="
+      prose prose-slate dark:prose-invert max-w-none
+      prose-headings:font-headline prose-headings:tracking-tight prose-headings:font-bold
+      prose-h2:text-2xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:border-b prose-h2:border-slate-100 dark:prose-h2:border-[#353437] prose-h2:pb-3
+      prose-h3:text-xl prose-h3:mt-10 prose-h3:mb-4
+      prose-p:leading-relaxed prose-p:text-slate-600 dark:prose-p:text-gray-400 prose-p:text-base
+      prose-li:text-slate-600 dark:prose-li:text-gray-400
+      prose-strong:text-black dark:prose-strong:text-white prose-strong:font-bold
+      prose-a:text-[#d4a800] dark:prose-a:text-[#FBE830] prose-a:no-underline hover:prose-a:underline
+      prose-blockquote:border-l-[#FBE830] prose-blockquote:not-italic prose-blockquote:font-medium prose-blockquote:text-slate-700 dark:prose-blockquote:text-gray-300 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-[#1b1b1d] prose-blockquote:rounded-r-lg prose-blockquote:py-4 prose-blockquote:px-6
+      prose-code:bg-slate-100 dark:prose-code:bg-[#1b1b1d] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-['']
+      prose-pre:bg-[#1a1a1a] prose-pre:text-[#e5e7eb] prose-pre:rounded-xl prose-pre:border prose-pre:border-slate-200 dark:prose-pre:border-[#353437]
+      prose-table:border-collapse
+      prose-th:bg-slate-50 dark:prose-th:bg-[#1b1b1d] prose-th:border prose-th:border-slate-200 dark:prose-th:border-[#353437] prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:text-xs prose-th:uppercase prose-th:tracking-wider prose-th:font-bold
+      prose-td:border prose-td:border-slate-200 dark:prose-td:border-[#353437] prose-td:px-4 prose-td:py-2
+      prose-hr:border-slate-100 dark:prose-hr:border-[#353437] prose-hr:my-16
+      prose-img:rounded-xl
+    ">
+      <slot />
+    </article>
+
+    <!-- Footer actions -->
+    <div class="mt-16 pt-8 border-t border-slate-100 dark:border-[#353437] flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="text-xs text-slate-400 dark:text-gray-500 font-medium">
+        © 2026 SELFISH AAA TEAM
+      </div>
+      <div class="flex gap-4">
+        <a href={base} class="flex items-center gap-2 text-[10px] font-bold text-slate-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors uppercase tracking-widest">
+          <span class="material-symbols-outlined text-base">home</span>
+          Home
+        </a>
+        <button onclick="window.print()" class="flex items-center gap-2 text-[10px] font-bold text-slate-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors uppercase tracking-widest">
+          <span class="material-symbols-outlined text-base">download</span>
+          Export
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script is:inline>
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      const icon = document.getElementById('theme-icon');
+      if (icon) icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+      });
+    })();
+  </script>
+</body>
+</html>
