@@ -6,9 +6,30 @@ const gallery = await getCollection('gallery');
 const projects = gallery.filter(g => g.data.name);
 ---
 <Layout title="갤러리 - AAA 아카이브">
-  <section class="py-24 px-6 md:px-16 max-w-[1440px] mx-auto">
-    <span class="text-primary-fixed font-headline text-xs uppercase tracking-[0.3em] font-bold mb-4 block">Gallery</span>
-    <h1 class="font-headline text-4xl md:text-5xl font-bold mb-16">갤러리</h1>
+  <!-- Hero -->
+  <section class="relative pt-24 md:pt-32 pb-16 md:pb-24 px-6 md:px-12 max-w-screen-2xl mx-auto overflow-hidden">
+    <div class="flex flex-col md:flex-row items-end gap-12 border-l-2 border-slate-200 dark:border-[#353437] pl-8">
+      <div class="max-w-4xl">
+        <h1 class="font-headline text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter leading-[1.1] text-black dark:text-white mb-8">
+          What We <br/>
+          <span class="font-extrabold italic text-black bg-[#FBE830] px-2 inline-block mt-4">Shipped.</span>
+        </h1>
+        <p class="text-lg md:text-xl text-slate-500 dark:text-gray-400 font-light max-w-2xl leading-relaxed">
+          매주 만들고 배포한 실전 프로젝트들.<br/>아이디어가 제품이 되는 과정을 기록합니다.
+        </p>
+      </div>
+      <div class="hidden lg:block pb-4">
+        <div class="flex items-center gap-4 text-xs uppercase tracking-[0.4em] text-slate-400 dark:text-gray-500" style="writing-mode: vertical-rl;">
+          <span>Live Projects</span>
+          <div class="w-px h-24 bg-slate-200 dark:bg-[#353437]"></div>
+          <span>Deployed</span>
+        </div>
+      </div>
+    </div>
+    <div class="absolute -right-24 top-0 w-96 h-96 bg-[#FBE830]/10 rounded-full blur-[120px] pointer-events-none"></div>
+  </section>
+
+  <section class="pb-24 px-6 md:px-16 max-w-[1440px] mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {projects.map(project => (
         <a href={project.data.link || '#'} target="_blank" class="group bg-surface-low rounded-xl overflow-hidden hover:bg-surface-high transition-all duration-300 block">
