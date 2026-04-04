@@ -5,21 +5,12 @@ const str = z.string().nullish();
 const num = z.number().nullish();
 const tags = z.array(z.string()).nullish();
 
-const concepts = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/concepts" }),
-  schema: z.object({
-    member: str,
-    week: num,
-    tags,
-    keywords: z.array(z.string()).nullish(),
-  }).passthrough(),
-});
-
 const insights = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/insights" }),
   schema: z.object({
     member: str,
     tags,
+    keywords: z.array(z.string()).nullish(),
   }).passthrough(),
 });
 
@@ -63,4 +54,4 @@ const proposals = defineCollection({
   }).passthrough(),
 });
 
-export const collections = { concepts, insights, gallery, tools, analysis, proposals };
+export const collections = { insights, gallery, tools, analysis, proposals };

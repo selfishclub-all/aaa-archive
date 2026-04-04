@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Article from '../../layouts/Article.astro';
 import '../../styles/global.css';
 import { getCollection, render } from 'astro:content';
 
@@ -11,10 +11,6 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
-<Layout title={`${entry.data.name || entry.id} - AAA 아카이브`}>
-  <article class="py-24 px-6 md:px-16 max-w-[800px] mx-auto prose prose-invert prose-lg">
-    <h1 class="font-headline text-4xl font-bold mb-4">{entry.data.name || entry.id}</h1>
-    {entry.data.category && <span class="bg-primary-container/10 text-primary-fixed px-3 py-1 rounded-full text-xs font-bold uppercase">{entry.data.category}</span>}
-    <Content />
-  </article>
-</Layout>
+<Article title={entry.data.name || entry.id} category={entry.data.category || 'Tool'}>
+  <Content />
+</Article>

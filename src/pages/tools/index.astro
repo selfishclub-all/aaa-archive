@@ -5,33 +5,176 @@ import { getCollection } from 'astro:content';
 const tools = await getCollection('tools');
 const base = import.meta.env.BASE_URL;
 const categories = [...new Set(tools.map(t => t.data.category).filter(Boolean))];
+
+const catCounts: Record<string, number> = {};
+categories.forEach(cat => {
+  catCounts[cat] = tools.filter(t => t.data.category === cat).length;
+});
+
+const iconMap: Record<string, string> = {
+  '자동화': 'architecture',
+  '콘텐츠': 'filter_alt',
+  '분석': 'hub',
+  '생산성': 'analytics',
+  '디자인': 'palette',
+};
+
+const dotColors: Record<string, string> = {
+  '자동화': 'bg-[#FBE830]',
+  '콘텐츠': 'bg-black dark:bg-white',
+  '분석': 'bg-slate-400',
+  '생산성': 'bg-emerald-400',
+  '디자인': 'bg-violet-400',
+};
 ---
 <Layout title="도구 모음 - AAA 아카이브">
-  <section class="py-24 px-6 md:px-16 max-w-[1440px] mx-auto">
-    <span class="text-primary-fixed font-headline text-xs uppercase tracking-[0.3em] font-bold mb-4 block">Tools</span>
-    <h1 class="font-headline text-4xl md:text-5xl font-bold mb-16">도구 모음</h1>
-    {categories.length > 0 ? categories.map(cat => (
-      <div class="mb-16">
-        <h2 class="font-headline text-2xl font-bold mb-8 text-primary-fixed">{cat}</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {tools.filter(t => t.data.category === cat).map(tool => (
-            <a href={`${base}tools/${tool.id}/`} class="bg-surface-high p-8 rounded-xl hover:translate-y-[-4px] transition-transform duration-300 block">
-              <h4 class="font-headline text-lg font-bold mb-2">{tool.data.name || tool.id}</h4>
-              <p class="text-on-surface/40 text-sm mb-4">{tool.data.type || ''}</p>
-              {tool.data.difficulty && <span class="bg-primary-container/10 text-primary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase">{tool.data.difficulty}</span>}
-            </a>
+  <section class="min-h-screen bg-white dark:bg-[#131315]">
+    <div class="max-w-screen-2xl mx-auto flex">
+
+      <!-- Sidebar -->
+      <aside class="hidden lg:flex flex-col w-72 border-r border-slate-100 dark:border-[#353437] min-h-screen sticky top-20 p-8">
+        <div class="font-headline text-sm font-black tracking-tighter text-black dark:text-white uppercase mb-10">SELFISH AAA TEAM</div>
+
+        <div class="mb-8">
+          <button class="filter-btn active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold transition-all mb-1" data-category="all">
+            <span class="material-symbols-outlined text-lg">apps</span>
+            All Toolsets
+          </button>
+        </div>
+
+        <div class="mb-8">
+          <span class="text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase mb-4 block">Filter by Category</span>
+          {categories.map(cat => (
+            <button class="filter-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all mb-1" data-category={cat}>
+              <span class={`w-2.5 h-2.5 rounded-full ${dotColors[cat] || 'bg-slate-400'}`}></span>
+              <span class="flex-1 text-left">{cat}</span>
+              <span class="text-xs text-slate-400 dark:text-gray-500 font-medium">{String(catCounts[cat]).padStart(2, '0')}</span>
+            </button>
+          ))}
+        </div>
+
+        <div class="mt-auto">
+          <a href={`${base}proposals/`} class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-dashed border-slate-200 dark:border-[#353437] text-slate-500 dark:text-gray-400 hover:border-[#FBE830] hover:text-black dark:hover:text-white text-sm font-medium transition-all">
+            <span class="material-symbols-outlined text-base">add</span>
+            New Toolset 제안
+          </a>
+        </div>
+      </aside>
+
+      <!-- Mobile Filter (shown on small screens) -->
+      <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-[#131315]/90 backdrop-blur-xl border-t border-slate-100 dark:border-[#353437] px-4 py-3">
+        <div class="flex gap-2 overflow-x-auto">
+          <button class="filter-btn active whitespace-nowrap text-xs font-bold px-4 py-2 rounded-full transition-all" data-category="all">All</button>
+          {categories.map(cat => (
+            <button class="filter-btn whitespace-nowrap text-xs font-bold px-4 py-2 rounded-full transition-all flex items-center gap-1.5" data-category={cat}>
+              <span class={`w-2 h-2 rounded-full ${dotColors[cat] || 'bg-slate-400'}`}></span>
+              {cat}
+            </button>
           ))}
         </div>
       </div>
-    )) : (
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {tools.map(tool => (
-          <a href={`${base}tools/${tool.id}/`} class="bg-surface-high p-8 rounded-xl hover:translate-y-[-4px] transition-transform duration-300 block">
-            <h4 class="font-headline text-lg font-bold mb-2">{tool.data.name || tool.id}</h4>
-            <p class="text-on-surface/40 text-sm mb-4">{tool.data.type || ''}</p>
-          </a>
-        ))}
+
+      <!-- Main Content -->
+      <div class="flex-1 p-6 md:p-12 pb-24 lg:pb-12">
+        <div class="mb-10">
+          <h1 class="font-headline text-3xl md:text-4xl font-extrabold text-black dark:text-white tracking-tighter mb-3">Toolsets</h1>
+          <p class="text-slate-500 dark:text-gray-400 text-sm">멤버들이 실전에서 검증한 도구 <span id="tool-count" class="text-[#d4a800] dark:text-[#FBE830] font-bold">{tools.length}</span>개</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="tools-grid">
+          {tools.map(tool => (
+            <a href={`${base}tools/${tool.id}/`} class="tool-item p-8 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/50 transition-all rounded-xl block group" data-category={tool.data.category || '기타'}>
+              <div class="flex items-start justify-between mb-6">
+                <div class="w-12 h-12 bg-white dark:bg-[#2a2a2c] flex items-center justify-center rounded-lg shadow-sm">
+                  <span class="material-symbols-outlined text-black dark:text-white" style="font-variation-settings: 'FILL' 1;">{iconMap[tool.data.category || ''] || 'handyman'}</span>
+                </div>
+                {tool.data.difficulty && (
+                  <span class="text-[10px] font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase bg-[#FBE830]/10 px-2 py-1 rounded">{tool.data.difficulty}</span>
+                )}
+              </div>
+              <h4 class="font-headline text-lg font-bold text-black dark:text-white mb-2 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{tool.data.name || tool.id}</h4>
+              <p class="text-slate-500 dark:text-gray-400 text-xs leading-relaxed mb-4">{tool.data.type || ''}</p>
+              {tool.data.added_by && (
+                <div class="flex items-center gap-2 pt-4 border-t border-slate-100 dark:border-[#353437]">
+                  <div class="w-5 h-5 bg-slate-200 dark:bg-[#353437] rounded-full flex items-center justify-center">
+                    <span class="text-[8px] font-bold text-slate-500 dark:text-gray-400">{tool.data.added_by.charAt(0)}</span>
+                  </div>
+                  <span class="text-[10px] text-slate-400 dark:text-gray-500">by {tool.data.added_by}</span>
+                </div>
+              )}
+            </a>
+          ))}
+        </div>
+
+        <div id="empty-state" class="hidden text-center py-16">
+          <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-5xl block mb-4">search_off</span>
+          <p class="text-slate-400 dark:text-gray-500">해당 카테고리의 도구가 없습니다.</p>
+        </div>
       </div>
-    )}
+    </div>
   </section>
+
+  <style>
+    .filter-btn {
+      background: transparent;
+      color: #6b7280;
+    }
+    .filter-btn:hover {
+      background: #f8fafc;
+      color: #000;
+    }
+    .filter-btn.active {
+      background: #FBE830;
+      color: #000;
+      font-weight: 700;
+    }
+    :global(.dark) .filter-btn {
+      color: #9ca3af;
+    }
+    :global(.dark) .filter-btn:hover {
+      background: #1b1b1d;
+      color: #fff;
+    }
+    :global(.dark) .filter-btn.active {
+      background: #FBE830;
+      color: #000;
+    }
+    .tool-item.hidden-by-filter {
+      display: none;
+    }
+  </style>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('.filter-btn');
+      const items = document.querySelectorAll('.tool-item');
+      const emptyState = document.getElementById('empty-state');
+      const toolCount = document.getElementById('tool-count');
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const category = btn.getAttribute('data-category');
+          if (!category) return;
+
+          buttons.forEach(b => {
+            if (b.getAttribute('data-category')) b.classList.remove('active');
+          });
+          document.querySelectorAll(`.filter-btn[data-category="${category}"]`).forEach(b => b.classList.add('active'));
+
+          let visibleCount = 0;
+          items.forEach(item => {
+            if (category === 'all' || item.getAttribute('data-category') === category) {
+              item.classList.remove('hidden-by-filter');
+              visibleCount++;
+            } else {
+              item.classList.add('hidden-by-filter');
+            }
+          });
+
+          if (toolCount) toolCount.textContent = String(visibleCount);
+          if (emptyState) emptyState.classList.toggle('hidden', visibleCount > 0);
+        });
+      });
+    });
+  </script>
 </Layout>

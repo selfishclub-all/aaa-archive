@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+const base = import.meta.env.BASE_URL;
+
+const members = [
+  { name: '다다', role: 'Builder', icon: 'architecture', desc: '스터디 운영시스템 설계 및 Claude Code 자동화 파이프라인 구축. Obsidian vault + Git + Astro 웹사이트 아키텍처 설계.', github: 'tomost-dada' },
+  { name: '비비안', role: 'Builder', icon: 'engineering', desc: 'Webflow→Next.js 마이그레이션 설계. Supabase Auth, n8n 워크플로우, CLAUDE.md 기반 프로젝트 세팅.', github: '' },
+  { name: '띵끄', role: 'Builder', icon: 'code', desc: '원소스 멀티유즈 콘텐츠 마케팅 사이트 구축. OMC 활용, Vercel 자동배포, YouTube API 연동.', github: '' },
+  { name: '잽', role: 'Builder', icon: 'web', desc: 'BRAND SHOW UP 원페이지 웹 제안서 제작. 프레임워크 없이 순수 HTML/CSS/JS로 하루 만에 완성.', github: '' },
+  { name: '흐민', role: 'Builder', icon: 'psychology', desc: 'Sullivan 프로젝트 - 질문으로 생각을 확장하는 AI 어시스턴트. 5개 Agent + Obsidian 연동 + 자동 스케줄러.', github: '' },
+  { name: '에밀리', role: 'Builder', icon: 'campaign', desc: 'CRM 자동화 시스템 구축. URL 하나로 8채널 20개 콘텐츠 자동 생성. 6개 에이전트 팀 설계.', github: '' },
+  { name: '다니', role: 'Builder', icon: 'smart_toy', desc: '원소스 멀티유즈 시스템. URL로 인스타 캐러셀 + 스레드 + 링크드인 콘텐츠 자동 생성.', github: '' },
+  { name: '오웬', role: 'Builder', icon: 'photo_camera', desc: '인스타그램 카드뉴스 자동 제작 시스템. Claude API + Playwright + instagrapi로 완전 자동화.', github: '' },
+  { name: '젬마', role: 'Builder', icon: 'diamond', desc: '', github: '' },
+];
+---
+<Layout title="팀소개 - AAA 아카이브">
+  <!-- Hero -->
+  <section class="relative pt-24 md:pt-32 pb-16 md:pb-24 px-6 md:px-12 max-w-screen-2xl mx-auto overflow-hidden">
+    <div class="flex flex-col md:flex-row items-end gap-12 border-l-2 border-slate-200 dark:border-[#353437] pl-8">
+      <div class="max-w-4xl">
+        <h1 class="font-headline text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter leading-[1.1] text-black dark:text-white mb-8">
+          Builders Who <br/>
+          <span class="font-extrabold italic text-black bg-[#FBE830] px-2 inline-block mt-4">Ship Every Week</span>
+        </h1>
+        <p class="text-lg md:text-xl text-slate-500 dark:text-gray-400 font-light max-w-2xl leading-relaxed">
+          매주 AI 도구로 실전 프로젝트를 만들고,<br/>그 과정의 인사이트를 체계적으로 아카이브합니다.
+        </p>
+      </div>
+      <div class="hidden lg:block pb-4">
+        <div class="flex items-center gap-4 text-xs uppercase tracking-[0.4em] text-slate-400 dark:text-gray-500" style="writing-mode: vertical-rl;">
+          <span>Established 2026</span>
+          <div class="w-px h-24 bg-slate-200 dark:bg-[#353437]"></div>
+          <span>Seoul Based</span>
+        </div>
+      </div>
+    </div>
+    <div class="absolute -right-24 top-0 w-96 h-96 bg-[#FBE830]/10 rounded-full blur-[120px] pointer-events-none"></div>
+  </section>
+
+  <!-- Team Grid -->
+  <section class="px-6 md:px-12 py-16 md:py-24 max-w-screen-2xl mx-auto">
+    <div class="mb-16 md:mb-20 flex flex-col md:flex-row justify-between items-baseline gap-4">
+      <div>
+        <h2 class="text-xs font-bold uppercase tracking-widest text-black dark:text-white border-l-4 border-[#FBE830] pl-4 mb-2">Our Collective</h2>
+        <p class="text-slate-500 dark:text-gray-400 text-sm font-medium pl-5">Propelling the Digital Curator vision forward.</p>
+      </div>
+      <div class="hidden md:flex items-center gap-8 flex-1">
+        <div class="h-px flex-grow bg-slate-200 dark:bg-[#353437] mx-8"></div>
+        <div class="text-slate-400 dark:text-gray-500 text-xs font-mono whitespace-nowrap">{String(members.length).padStart(2, '0')} ARCHITECTS</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {members.map((member) => (
+        <div class="bg-white dark:bg-[#131315] group transition-all duration-500 hover:shadow-xl p-6 md:p-8 border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/50">
+          <div class="w-20 h-20 mx-auto mb-6 overflow-hidden bg-slate-100 dark:bg-[#1b1b1d] relative rounded-lg border border-slate-200 dark:border-[#353437] flex items-center justify-center">
+            <span class="material-symbols-outlined text-3xl text-slate-400 dark:text-gray-500 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors" style="font-variation-settings: 'FILL' 0, 'wght' 300;">{member.icon}</span>
+          </div>
+
+          <div class="text-center mb-6">
+            <h3 class="font-headline text-2xl font-bold tracking-tight text-black dark:text-white">{member.name}</h3>
+            <p class="text-slate-500 dark:text-gray-400 text-[10px] font-semibold uppercase tracking-widest mt-1">{member.role}</p>
+          </div>
+
+          <div class="pt-6 border-t border-slate-100 dark:border-[#353437]">
+            <h4 class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-gray-500 mb-3">Focus & Contributions</h4>
+            <p class="text-sm leading-relaxed text-slate-500 dark:text-gray-400 font-light">{member.desc}</p>
+          </div>
+
+          {member.github && (
+            <div class="mt-4 pt-4 border-t border-slate-100 dark:border-[#353437]">
+              <a href={`https://github.com/${member.github}`} target="_blank" class="text-[10px] font-medium text-slate-400 dark:text-gray-500 hover:text-[#d4a800] dark:hover:text-[#FBE830] transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">link</span>
+                @{member.github}
+              </a>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 md:py-32 bg-slate-50 dark:bg-[#0e0e10] relative overflow-hidden border-y border-slate-100 dark:border-[#353437]">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-8">
+      <div>
+        <h2 class="font-headline text-3xl md:text-4xl lg:text-5xl font-extralight tracking-tighter text-black dark:text-white leading-tight">
+          Intellectual rigor meets<br/>
+          <span class="font-extrabold border-b-8 border-[#FBE830]">visual breathing space.</span>
+        </h2>
+      </div>
+      <div class="flex gap-4">
+        <a href={`${base}insights/`} class="bg-white dark:bg-[#1b1b1d] border border-black dark:border-[#353437] text-black dark:text-white px-8 py-4 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-[#FBE830] dark:hover:text-black transition-all duration-300 inline-block">
+          Explore Insights
+        </a>
+        <a href={`${base}gallery/`} class="bg-[#FBE830] text-black px-8 py-4 text-xs font-bold uppercase tracking-widest transition-transform duration-150 active:scale-95 shadow-md inline-block">
+          View Gallery
+        </a>
+      </div>
+    </div>
+    <div class="absolute left-0 bottom-0 text-[14rem] md:text-[18rem] font-black text-black/5 dark:text-white/5 leading-none select-none -translate-x-20 translate-y-20 pointer-events-none">
+      AAA
+    </div>
+  </section>
+</Layout>
