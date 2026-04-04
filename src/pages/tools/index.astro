@@ -5,33 +5,68 @@ import { getCollection } from 'astro:content';
 const tools = await getCollection('tools');
 const base = import.meta.env.BASE_URL;
 const categories = [...new Set(tools.map(t => t.data.category).filter(Boolean))];
+
+const iconMap: Record<string, string> = {
+  '자동화': 'architecture',
+  '콘텐츠': 'filter_alt',
+  '분석': 'hub',
+  '생산성': 'analytics',
+  '디자인': 'palette',
+};
 ---
 <Layout title="도구 모음 - AAA 아카이브">
-  <section class="py-24 px-6 md:px-16 max-w-[1440px] mx-auto">
-    <span class="text-primary-fixed font-headline text-xs uppercase tracking-[0.3em] font-bold mb-4 block">Tools</span>
-    <h1 class="font-headline text-4xl md:text-5xl font-bold mb-16">도구 모음</h1>
-    {categories.length > 0 ? categories.map(cat => (
-      <div class="mb-16">
-        <h2 class="font-headline text-2xl font-bold mb-8 text-primary-fixed">{cat}</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {tools.filter(t => t.data.category === cat).map(tool => (
-            <a href={`${base}tools/${tool.id}/`} class="bg-surface-high p-8 rounded-xl hover:translate-y-[-4px] transition-transform duration-300 block">
-              <h4 class="font-headline text-lg font-bold mb-2">{tool.data.name || tool.id}</h4>
-              <p class="text-on-surface/40 text-sm mb-4">{tool.data.type || ''}</p>
-              {tool.data.difficulty && <span class="bg-primary-container/10 text-primary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase">{tool.data.difficulty}</span>}
-            </a>
-          ))}
+  <!-- Hero -->
+  <section class="py-24 md:py-32 px-6 md:px-12 bg-white dark:bg-[#131315]">
+    <div class="max-w-screen-2xl mx-auto">
+      <div class="max-w-2xl mb-16">
+        <span class="text-[10px] font-bold tracking-[0.3em] text-slate-400 uppercase mb-4 block">Toolsets</span>
+        <h1 class="font-headline text-4xl md:text-5xl font-extrabold text-black dark:text-white tracking-tighter mb-6">Popular Toolsets</h1>
+        <div class="h-1 w-20 bg-[#FBE830] mb-6"></div>
+        <p class="text-slate-500 dark:text-gray-400 leading-relaxed">멤버들이 실전에서 검증한 도구 모음입니다. 각 도구를 클릭하면 상세 사용법을 확인할 수 있습니다.</p>
+      </div>
+
+      {categories.map(cat => (
+        <div class="mb-20">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 bg-[#FBE830]/10 flex items-center justify-center rounded-lg">
+              <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830] text-xl" style="font-variation-settings: 'FILL' 1;">{iconMap[cat] || 'handyman'}</span>
+            </div>
+            <h2 class="font-headline text-2xl font-bold text-black dark:text-white tracking-tighter">{cat}</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {tools.filter(t => t.data.category === cat).map(tool => (
+              <a href={`${base}tools/${tool.id}/`} class="p-8 bg-slate-50 dark:bg-[#1b1b1d] border border-transparent hover:border-[#FBE830]/30 transition-all rounded-xl block group">
+                <div class="w-12 h-12 bg-white dark:bg-[#2a2a2c] flex items-center justify-center rounded-lg shadow-sm mb-6">
+                  <span class="material-symbols-outlined text-black dark:text-white" style="font-variation-settings: 'FILL' 1;">{iconMap[tool.data.category || ''] || 'handyman'}</span>
+                </div>
+                <h4 class="font-headline text-lg font-bold text-black dark:text-white mb-3 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{tool.data.name || tool.id}</h4>
+                <p class="text-slate-500 dark:text-gray-400 text-xs leading-relaxed mb-4">{tool.data.type || ''}</p>
+                {tool.data.difficulty && (
+                  <span class="text-[10px] font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase">{tool.data.difficulty}</span>
+                )}
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
-    )) : (
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {tools.map(tool => (
-          <a href={`${base}tools/${tool.id}/`} class="bg-surface-high p-8 rounded-xl hover:translate-y-[-4px] transition-transform duration-300 block">
-            <h4 class="font-headline text-lg font-bold mb-2">{tool.data.name || tool.id}</h4>
-            <p class="text-on-surface/40 text-sm mb-4">{tool.data.type || ''}</p>
-          </a>
-        ))}
-      </div>
-    )}
+      ))}
+
+      {/* 카테고리 없는 도구 */}
+      {tools.filter(t => !t.data.category).length > 0 && (
+        <div class="mb-20">
+          <h2 class="font-headline text-2xl font-bold text-black dark:text-white tracking-tighter mb-8">기타</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {tools.filter(t => !t.data.category).map(tool => (
+              <a href={`${base}tools/${tool.id}/`} class="p-8 bg-slate-50 dark:bg-[#1b1b1d] border border-transparent hover:border-[#FBE830]/30 transition-all rounded-xl block group">
+                <div class="w-12 h-12 bg-white dark:bg-[#2a2a2c] flex items-center justify-center rounded-lg shadow-sm mb-6">
+                  <span class="material-symbols-outlined text-black dark:text-white" style="font-variation-settings: 'FILL' 1;">handyman</span>
+                </div>
+                <h4 class="font-headline text-lg font-bold text-black dark:text-white mb-3 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{tool.data.name || tool.id}</h4>
+                <p class="text-slate-500 dark:text-gray-400 text-xs leading-relaxed">{tool.data.type || ''}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   </section>
 </Layout>
