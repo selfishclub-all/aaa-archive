@@ -41,7 +41,14 @@ const iconMap: Record<string, string> = {
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
         {insights.map((insight) => (
           <a href={`${base}insights/${insight.id}/`} class="group cursor-pointer pt-8 border-t border-slate-100 dark:border-[#353437] block">
-            <span class="text-[10px] font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase mb-2 block">Insight</span>
+            <div class="flex flex-wrap gap-2 mb-2">
+              {insight.data.keywords?.map((kw: string) => (
+                <span class="text-[10px] font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase">{kw}</span>
+              ))}
+              {(!insight.data.keywords || insight.data.keywords.length === 0) && (
+                <span class="text-[10px] font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase">Insight</span>
+              )}
+            </div>
             <h3 class="font-headline text-2xl md:text-3xl font-bold text-black dark:text-white mb-3 leading-snug group-hover:text-slate-700 dark:group-hover:text-gray-300 transition-colors">{insight.id.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
             <p class="text-slate-500 dark:text-gray-400 text-sm md:text-base leading-relaxed mb-6">스터디에서 발견한 인사이트</p>
           </a>

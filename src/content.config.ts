@@ -10,6 +10,7 @@ const insights = defineCollection({
   schema: z.object({
     member: str,
     tags,
+    keywords: z.array(z.string()).nullish(),
   }).passthrough(),
 });
 
