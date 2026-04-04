@@ -4,7 +4,7 @@ import '../../styles/global.css';
 const base = import.meta.env.BASE_URL;
 
 const members = [
-  { name: '다다', role: '운영자 · Lead Architect', icon: 'architecture', desc: '스터디 운영시스템 설계 및 Claude Code 자동화 파이프라인 구축. Obsidian vault + Git + Astro 웹사이트 아키텍처 설계.', github: 'tomost-dada' },
+  { name: '다다', role: 'Builder', icon: 'architecture', desc: '스터디 운영시스템 설계 및 Claude Code 자동화 파이프라인 구축. Obsidian vault + Git + Astro 웹사이트 아키텍처 설계.', github: 'tomost-dada' },
   { name: '비비안', role: 'Builder', icon: 'engineering', desc: 'Webflow→Next.js 마이그레이션 설계. Supabase Auth, n8n 워크플로우, CLAUDE.md 기반 프로젝트 세팅.', github: '' },
   { name: '띵끄', role: 'Builder', icon: 'code', desc: '원소스 멀티유즈 콘텐츠 마케팅 사이트 구축. OMC 활용, Vercel 자동배포, YouTube API 연동.', github: '' },
   { name: '잽', role: 'Builder', icon: 'web', desc: 'BRAND SHOW UP 원페이지 웹 제안서 제작. 프레임워크 없이 순수 HTML/CSS/JS로 하루 만에 완성.', github: '' },
@@ -56,9 +56,6 @@ const members = [
         <div class="bg-white dark:bg-[#131315] group transition-all duration-500 hover:shadow-xl p-6 md:p-8 border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/50">
           <div class="w-20 h-20 mx-auto mb-6 overflow-hidden bg-slate-100 dark:bg-[#1b1b1d] relative rounded-lg border border-slate-200 dark:border-[#353437] flex items-center justify-center">
             <span class="material-symbols-outlined text-3xl text-slate-400 dark:text-gray-500 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors" style="font-variation-settings: 'FILL' 0, 'wght' 300;">{member.icon}</span>
-            {member.role === '운영자 · Lead Architect' && (
-              <div class="absolute bottom-0 left-0 right-0 bg-[#FBE830] text-black py-0.5 text-[7px] font-bold tracking-widest uppercase text-center">Principal</div>
-            )}
           </div>
 
           <div class="text-center mb-6">
