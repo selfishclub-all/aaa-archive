@@ -1,13 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/global.css';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 const analysis = await getCollection('analysis');
+const proposals = await getCollection('proposals');
 const base = import.meta.env.BASE_URL;
 
-// Sort by week descending
 const sorted = analysis.sort((a, b) => (b.data.week || 0) - (a.data.week || 0));
 const latest = sorted[0];
+
+// Insight-driven titles for each week
+const weekTitles: Record<number, { title: string; desc: string }> = {
+  2: { title: '원소스 멀티유즈의 시대', desc: 'URL 하나로 8개 채널 콘텐츠를 자동 생성하는 시대가 왔다' },
+  1: { title: 'Agent Loop에서 시작된 여정', desc: 'Claude Code의 기본 구조를 이해하고 첫 프로젝트를 만들다' },
+};
 ---
 <Layout title="AI 분석 - AAA 아카이브">
   <section class="pt-24 md:pt-32 pb-16 md:pb-24 px-6 md:px-12 max-w-7xl mx-auto">
@@ -16,7 +22,7 @@ const latest = sorted[0];
       <div class="lg:col-span-8">
         <div class="flex items-center gap-3 mb-6">
           <span class="bg-[#FBE830] text-black px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-sm">Research Report</span>
-          <span class="text-sm font-medium text-slate-400 dark:text-gray-500 tracking-tight">AI AUTOMATION • WEEKLY ANALYSIS</span>
+          <span class="text-sm font-medium text-slate-400 dark:text-gray-500 tracking-tight">AI AUTOMATION · WEEKLY ANALYSIS</span>
         </div>
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-headline font-extrabold tracking-tighter leading-[1.05] text-black dark:text-white mb-8">
           AAA Bot이 분석한<br/>스터디 인사이트
@@ -34,7 +40,7 @@ const latest = sorted[0];
           <div class="text-4xl font-black font-headline mb-1">Week {latest?.data.week || '?'}</div>
           <div class="text-xs opacity-70 mb-4 font-medium">제출 {latest?.data.total_submissions || 0}명 참여</div>
           <div class="h-1 bg-white/10 rounded-full overflow-hidden">
-            <div class="h-full bg-[#FBE830] rounded-full" style={`width:${((latest?.data.total_submissions || 0) / 8) * 100}%`}></div>
+            <div class="h-full bg-[#FBE830] rounded-full" style={`width:${((latest?.data.total_submissions || 0) / 9) * 100}%`}></div>
           </div>
         </div>
       </div>
@@ -44,77 +50,41 @@ const latest = sorted[0];
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16">
       <!-- Left: Report List -->
       <div class="lg:col-span-7 space-y-16">
-        {sorted.map((report, i) => (
-          <a href={`${base}analysis/${report.id}/`} class="block group">
-            <section>
-              <div class="flex items-baseline gap-4 mb-6">
-                <span class="text-4xl font-headline font-black text-[#FBE830]">{String(i + 1).padStart(2, '0')}</span>
-                <h2 class="text-xl md:text-2xl font-bold tracking-tight uppercase text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">
-                  Week {report.data.week || '?'} 분석 리포트
-                </h2>
-              </div>
-              <div class="pl-14 border-l-2 border-[#FBE830]/20">
-                <p class="text-base leading-relaxed mb-4 text-slate-600 dark:text-gray-400">
-                  {report.id.replace(/_/g, ' ')}
-                </p>
-                {report.data.total_submissions && (
-                  <div class="flex flex-wrap gap-3 mt-4">
-                    <span class="text-[10px] font-bold tracking-wider text-[#d4a800] dark:text-[#FBE830] uppercase bg-[#FBE830]/10 px-3 py-1 rounded">
-                      제출 {report.data.total_submissions}명
+        {sorted.map((report, i) => {
+          const week = report.data.week || 0;
+          const info = weekTitles[week] || { title: `Week ${week} 분석`, desc: report.id.replace(/_/g, ' ') };
+          return (
+            <a href={`${base}analysis/${report.id}/`} class="block group">
+              <section>
+                <div class="flex items-baseline gap-4 mb-4">
+                  <span class="text-4xl font-headline font-black text-[#FBE830]">{String(i + 1).padStart(2, '0')}</span>
+                  <h2 class="text-xl md:text-2xl font-bold tracking-tight text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">
+                    {info.title}
+                  </h2>
+                </div>
+                <div class="pl-14 border-l-2 border-[#FBE830]/20">
+                  <p class="text-base leading-relaxed mb-4 text-slate-600 dark:text-gray-400">
+                    {info.desc}
+                  </p>
+                  <div class="flex flex-wrap gap-3">
+                    <span class="text-[10px] font-bold tracking-wider text-slate-400 dark:text-gray-500 uppercase">
+                      Week {week}
                     </span>
-                    {report.data.date && (
-                      <span class="text-[10px] font-medium tracking-wider text-slate-400 uppercase px-3 py-1">
-                        {report.data.date}
+                    {report.data.total_submissions && (
+                      <span class="text-[10px] font-bold tracking-wider text-[#d4a800] dark:text-[#FBE830] uppercase bg-[#FBE830]/10 px-3 py-1 rounded">
+                        {report.data.total_submissions}명 참여
                       </span>
                     )}
                   </div>
-                )}
-              </div>
-            </section>
-          </a>
-        ))}
-
-        {sorted.length === 0 && (
-          <div class="text-center py-16">
-            <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-5xl block mb-4">analytics</span>
-            <p class="text-slate-400 dark:text-gray-500">아직 분석 리포트가 없습니다.</p>
-          </div>
-        )}
+                </div>
+              </section>
+            </a>
+          );
+        })}
       </div>
 
-      <!-- Right: Sidebar -->
+      <!-- Right: AAA Bot Note only -->
       <aside class="lg:col-span-5 space-y-8">
-        <!-- Efficiency Widget -->
-        <div class="bg-slate-50 dark:bg-[#1b1b1d] p-8 rounded-2xl">
-          <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-gray-500 mb-8">분석 프로세스</h3>
-          <div class="space-y-6">
-            <div class="flex items-end gap-2">
-              <div class="w-full bg-slate-200 dark:bg-[#2a2a2c] h-28 rounded-lg relative overflow-hidden">
-                <div class="absolute bottom-0 w-full bg-[#FBE830] h-[35%] rounded-b-lg"></div>
-                <div class="absolute bottom-1 left-1/2 -translate-x-1/2 text-[8px] font-bold text-black">AI</div>
-              </div>
-              <div class="w-full bg-slate-200 dark:bg-[#2a2a2c] h-28 rounded-lg relative overflow-hidden">
-                <div class="absolute bottom-0 w-full bg-[#FBE830] h-[20%] rounded-b-lg"></div>
-              </div>
-              <div class="w-full bg-slate-200 dark:bg-[#2a2a2c] h-28 rounded-lg relative overflow-hidden">
-                <div class="absolute bottom-0 w-full bg-[#FBE830] h-[15%] rounded-b-lg"></div>
-              </div>
-            </div>
-            <div class="flex justify-between text-[10px] font-black tracking-widest text-slate-400 dark:text-gray-500">
-              <span>COLLECT</span>
-              <span>ANALYZE</span>
-              <span>ARCHIVE</span>
-            </div>
-            <div class="pt-4 border-t border-slate-200 dark:border-[#353437] flex items-center gap-3">
-              <div class="w-3 h-3 bg-[#FBE830] rounded-sm"></div>
-              <span class="text-xs font-bold text-slate-500 dark:text-gray-400">AI Managed</span>
-              <div class="w-3 h-3 bg-slate-200 dark:bg-[#2a2a2c] rounded-sm ml-auto"></div>
-              <span class="text-xs font-bold text-slate-500 dark:text-gray-400">Total</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- AAA Bot Curator Note -->
         <div class="p-8 bg-[#131315] text-[#e5e1e4] rounded-2xl">
           <p class="text-sm font-headline font-bold text-[#FBE830] mb-4 uppercase tracking-[0.2em]">AAA Bot's Note</p>
           <p class="text-sm leading-relaxed italic opacity-70">
@@ -130,24 +100,27 @@ const latest = sorted[0];
             </div>
           </div>
         </div>
-
-        <!-- Quick Links -->
-        <div class="p-6 bg-slate-50 dark:bg-[#1b1b1d] rounded-2xl space-y-3">
-          <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-gray-500 mb-4">Related</h3>
-          <a href={`${base}proposals/`} class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2c] transition-colors group">
-            <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830] text-lg">lightbulb</span>
-            <span class="text-sm font-medium text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">AI 제안 보기</span>
-          </a>
-          <a href={`${base}tools/`} class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2c] transition-colors group">
-            <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830] text-lg">handyman</span>
-            <span class="text-sm font-medium text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">도구 모음</span>
-          </a>
-          <a href={`${base}insights/`} class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2c] transition-colors group">
-            <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830] text-lg">article</span>
-            <span class="text-sm font-medium text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">인사이트</span>
-          </a>
-        </div>
       </aside>
     </div>
+
+    <!-- AI 제안 Section (inline) -->
+    <section class="mt-24 md:mt-32 pt-16 border-t border-slate-100 dark:border-[#353437]">
+      <div class="mb-12">
+        <span class="text-[#d4a800] dark:text-[#FBE830] text-[10px] font-bold tracking-widest uppercase mb-4 block">AI Proposals</span>
+        <h2 class="text-3xl md:text-4xl font-headline font-extrabold text-black dark:text-white tracking-tight">AAA Bot의 제안</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {proposals.map((proposal) => (
+          <a href={`${base}proposals/${proposal.id}/`} class="p-8 bg-slate-50 dark:bg-[#1b1b1d] rounded-xl border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/30 transition-all group block">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830]">auto_awesome</span>
+              <span class="text-[10px] font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase">Proposal</span>
+            </div>
+            <h3 class="text-lg font-bold text-black dark:text-white mb-3 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors font-headline">{proposal.id.replace(/_/g, ' ')}</h3>
+            <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">AI가 분석 데이터를 기반으로 도출한 제안입니다.</p>
+          </a>
+        ))}
+      </div>
+    </section>
   </section>
 </Layout>
