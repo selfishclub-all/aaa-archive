@@ -2,17 +2,17 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-surface: #131315;
-  --color-surface-dim: #0e0e10;
-  --color-surface-low: #1b1b1d;
-  --color-surface-container: #201f21;
-  --color-surface-high: #2a2a2c;
-  --color-surface-highest: #353437;
-  --color-on-surface: #e5e1e4;
-  --color-primary-fixed: #F8E52D;
+  --color-surface: #ffffff;
+  --color-surface-dim: #f8fafc;
+  --color-surface-low: #f1f5f9;
+  --color-surface-container: #e2e8f0;
+  --color-surface-high: #cbd5e1;
+  --color-surface-highest: #94a3b8;
+  --color-on-surface: #0f172a;
+  --color-primary-fixed: #d4a800;
   --color-primary-container: #FBE830;
   --color-on-primary: #1f1c00;
-  --color-outline: #969179;
+  --color-outline: #e2e8f0;
 
   --font-headline: 'Manrope', sans-serif;
   --font-body: 'Pretendard', 'Inter', sans-serif;
