@@ -1,5 +1,6 @@
 ---
 import Article from '../../layouts/Article.astro';
+import Layout from '../../layouts/Layout.astro';
 import '../../styles/global.css';
 import { getCollection, render } from 'astro:content';
 
@@ -11,7 +12,56 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const title = entry.id.replace(/_/g, ' ');
+const isSkillProposal = entry.id.includes('스킬');
+
+const skills = [
+  { name: '/multiuse', title: '원소스 멀티유즈 스킬', type: 'Claude Code 스킬', difficulty: '중급', icon: 'sync_alt', members: '에밀리, 다니, 띵끄', desc: 'URL 하나를 입력하면 인스타 캐러셀 + 스레드 + 링크드인 포스트를 한 번에 생성' },
+  { name: '/cardnews', title: '인스타 카드뉴스 생성', type: 'Claude Code 스킬', difficulty: '중급', icon: 'photo_library', members: '오웬, 다니', desc: '주제를 입력하면 5장 카드뉴스 HTML 생성 + Playwright로 PNG 변환' },
+  { name: '/crm', title: 'CRM 알림톡 자동 생성', type: 'Claude Code 스킬', difficulty: '고급', icon: 'campaign', members: '에밀리, 비비안', desc: '공유회 URL 입력하면 알림톡 9종 + 카플친 배너 + 오픈채팅 카피 자동 생성' },
+  { name: '/bootstrap', title: 'CLAUDE.md 자동생성', type: 'Claude Code 스킬', difficulty: '초급', icon: 'description', members: '비비안, 에밀리, 잽', desc: '프로젝트 URL이나 설명을 입력하면 CLAUDE.md 프로젝트 맥락 파일 자동 생성' },
+  { name: '/proposal', title: '웹 제안서 원클릭 생성', type: 'Claude Code 스킬', difficulty: '중급', icon: 'web', members: '잽, 띵끄', desc: '프로젝트 정보 입력하면 프리미엄 원페이지 웹 제안서 HTML 생성 + GitHub Pages 배포' },
+  { name: 'Plugin', title: 'Obsidian 호기심 트래커', type: 'Obsidian 플러그인', difficulty: '고급', icon: 'psychology', members: '흐민, 다다', desc: '메모를 입력하면 AI가 답 대신 관련 질문을 던져서 생각을 확장하는 플러그인' },
+];
+
+const diffColor: Record<string, string> = {
+  '초급': 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
+  '중급': 'bg-[#FBE830]/15 text-[#d4a800] dark:text-[#FBE830]',
+  '고급': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+};
 ---
+
+{isSkillProposal ? (
+<Layout title="스킬 제안 - AAA 아카이브">
+  <section class="pt-24 md:pt-32 pb-16 md:pb-24 px-6 md:px-12 max-w-7xl mx-auto">
+    <div class="mb-16">
+      <span class="text-[#d4a800] dark:text-[#FBE830] text-[10px] font-bold tracking-widest uppercase mb-4 block">Skill Proposals</span>
+      <h1 class="text-4xl md:text-5xl font-headline font-extrabold tracking-tighter text-black dark:text-white mb-4">만들어볼 수 있는 스킬</h1>
+      <p class="text-slate-500 dark:text-gray-400 text-lg max-w-2xl">학습 내용을 바탕으로 AI가 제안한 Claude Code 스킬, Obsidian 플러그인 아이디어</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {skills.map((skill) => (
+        <div class="p-6 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/40 hover:shadow-lg transition-all group">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 bg-white dark:bg-[#2a2a2c] rounded-lg flex items-center justify-center shadow-sm">
+              <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830]" style="font-variation-settings: 'FILL' 1;">{skill.icon}</span>
+            </div>
+            <span class={`text-[10px] font-bold px-2 py-1 rounded ${diffColor[skill.difficulty] || ''}`}>{skill.difficulty}</span>
+          </div>
+          <div class="font-mono text-xs text-[#d4a800] dark:text-[#FBE830] font-bold mb-2">{skill.name}</div>
+          <h3 class="font-headline text-lg font-bold text-black dark:text-white mb-2">{skill.title}</h3>
+          <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed mb-4">{skill.desc}</p>
+          <div class="pt-4 border-t border-slate-100 dark:border-[#353437] flex items-center justify-between">
+            <span class="text-[10px] text-slate-400 dark:text-gray-500 font-medium">{skill.type}</span>
+            <span class="text-[10px] text-slate-400 dark:text-gray-500">추천: {skill.members}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>
+) : (
 <Article title={title} category="Proposal">
   <Content />
 </Article>
+)}
