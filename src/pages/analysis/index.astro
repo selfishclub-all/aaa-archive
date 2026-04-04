@@ -4,25 +4,150 @@ import '../../styles/global.css';
 import { getCollection } from 'astro:content';
 const analysis = await getCollection('analysis');
 const base = import.meta.env.BASE_URL;
+
+// Sort by week descending
+const sorted = analysis.sort((a, b) => (b.data.week || 0) - (a.data.week || 0));
+const latest = sorted[0];
 ---
 <Layout title="AI 분석 - AAA 아카이브">
-  <section class="py-24 px-6 md:px-16 max-w-[1440px] mx-auto">
-    <div class="flex items-center gap-3 mb-4">
-      <span class="relative flex h-3 w-3">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-fixed opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-3 w-3 bg-primary-fixed"></span>
-      </span>
-      <span class="text-primary-fixed font-headline text-xs uppercase tracking-[0.3em] font-bold">AI Analysis</span>
-    </div>
-    <h1 class="font-headline text-4xl md:text-5xl font-bold mb-16">AI 분석</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {analysis.map(report => (
-        <a href={`${base}analysis/${report.id}/`} class="bg-surface-high rounded-xl p-8 hover:translate-y-[-4px] transition-transform duration-300 border border-outline/5 block">
-          <span class="text-primary-fixed font-headline text-xs uppercase tracking-widest font-bold">Week {report.data.week || '?'}</span>
-          <h3 class="font-headline text-xl font-bold mt-4 mb-4">{report.id.replace(/_/g, ' ')}</h3>
-          {report.data.total_submissions && <span class="text-on-surface/40 text-sm">제출 {report.data.total_submissions}명</span>}
-        </a>
-      ))}
+  <section class="pt-24 md:pt-32 pb-16 md:pb-24 px-6 md:px-12 max-w-7xl mx-auto">
+    <!-- Hero Header -->
+    <header class="mb-16 md:mb-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+      <div class="lg:col-span-8">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="bg-[#FBE830] text-black px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-sm">Research Report</span>
+          <span class="text-sm font-medium text-slate-400 dark:text-gray-500 tracking-tight">AI AUTOMATION • WEEKLY ANALYSIS</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-headline font-extrabold tracking-tighter leading-[1.05] text-black dark:text-white mb-8">
+          AAA Bot이 분석한<br/>스터디 인사이트
+        </h1>
+        <p class="text-lg md:text-xl font-light leading-relaxed max-w-2xl text-slate-500 dark:text-gray-400">
+          매주 멤버들의 미션과 인사이트를 AI가 분석하여 핵심 트렌드, 키워드, 프로젝트 제안을 도출합니다.
+        </p>
+      </div>
+      <div class="lg:col-span-4 flex justify-end">
+        <div class="p-6 bg-[#131315] text-white rounded-xl w-full max-w-xs shadow-2xl rotate-1">
+          <div class="flex justify-between items-start mb-4">
+            <span class="material-symbols-outlined text-[#FBE830]">monitoring</span>
+            <span class="text-[10px] font-bold opacity-60 uppercase tracking-widest">Latest Report</span>
+          </div>
+          <div class="text-4xl font-black font-headline mb-1">Week {latest?.data.week || '?'}</div>
+          <div class="text-xs opacity-70 mb-4 font-medium">제출 {latest?.data.total_submissions || 0}명 참여</div>
+          <div class="h-1 bg-white/10 rounded-full overflow-hidden">
+            <div class="h-full bg-[#FBE830] rounded-full" style={`width:${((latest?.data.total_submissions || 0) / 8) * 100}%`}></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16">
+      <!-- Left: Report List -->
+      <div class="lg:col-span-7 space-y-16">
+        {sorted.map((report, i) => (
+          <a href={`${base}analysis/${report.id}/`} class="block group">
+            <section>
+              <div class="flex items-baseline gap-4 mb-6">
+                <span class="text-4xl font-headline font-black text-[#FBE830]">{String(i + 1).padStart(2, '0')}</span>
+                <h2 class="text-xl md:text-2xl font-bold tracking-tight uppercase text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">
+                  Week {report.data.week || '?'} 분석 리포트
+                </h2>
+              </div>
+              <div class="pl-14 border-l-2 border-[#FBE830]/20">
+                <p class="text-base leading-relaxed mb-4 text-slate-600 dark:text-gray-400">
+                  {report.id.replace(/_/g, ' ')}
+                </p>
+                {report.data.total_submissions && (
+                  <div class="flex flex-wrap gap-3 mt-4">
+                    <span class="text-[10px] font-bold tracking-wider text-[#d4a800] dark:text-[#FBE830] uppercase bg-[#FBE830]/10 px-3 py-1 rounded">
+                      제출 {report.data.total_submissions}명
+                    </span>
+                    {report.data.date && (
+                      <span class="text-[10px] font-medium tracking-wider text-slate-400 uppercase px-3 py-1">
+                        {report.data.date}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </section>
+          </a>
+        ))}
+
+        {sorted.length === 0 && (
+          <div class="text-center py-16">
+            <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-5xl block mb-4">analytics</span>
+            <p class="text-slate-400 dark:text-gray-500">아직 분석 리포트가 없습니다.</p>
+          </div>
+        )}
+      </div>
+
+      <!-- Right: Sidebar -->
+      <aside class="lg:col-span-5 space-y-8">
+        <!-- Efficiency Widget -->
+        <div class="bg-slate-50 dark:bg-[#1b1b1d] p-8 rounded-2xl">
+          <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-gray-500 mb-8">분석 프로세스</h3>
+          <div class="space-y-6">
+            <div class="flex items-end gap-2">
+              <div class="w-full bg-slate-200 dark:bg-[#2a2a2c] h-28 rounded-lg relative overflow-hidden">
+                <div class="absolute bottom-0 w-full bg-[#FBE830] h-[35%] rounded-b-lg"></div>
+                <div class="absolute bottom-1 left-1/2 -translate-x-1/2 text-[8px] font-bold text-black">AI</div>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-[#2a2a2c] h-28 rounded-lg relative overflow-hidden">
+                <div class="absolute bottom-0 w-full bg-[#FBE830] h-[20%] rounded-b-lg"></div>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-[#2a2a2c] h-28 rounded-lg relative overflow-hidden">
+                <div class="absolute bottom-0 w-full bg-[#FBE830] h-[15%] rounded-b-lg"></div>
+              </div>
+            </div>
+            <div class="flex justify-between text-[10px] font-black tracking-widest text-slate-400 dark:text-gray-500">
+              <span>COLLECT</span>
+              <span>ANALYZE</span>
+              <span>ARCHIVE</span>
+            </div>
+            <div class="pt-4 border-t border-slate-200 dark:border-[#353437] flex items-center gap-3">
+              <div class="w-3 h-3 bg-[#FBE830] rounded-sm"></div>
+              <span class="text-xs font-bold text-slate-500 dark:text-gray-400">AI Managed</span>
+              <div class="w-3 h-3 bg-slate-200 dark:bg-[#2a2a2c] rounded-sm ml-auto"></div>
+              <span class="text-xs font-bold text-slate-500 dark:text-gray-400">Total</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AAA Bot Curator Note -->
+        <div class="p-8 bg-[#131315] text-[#e5e1e4] rounded-2xl">
+          <p class="text-sm font-headline font-bold text-[#FBE830] mb-4 uppercase tracking-[0.2em]">AAA Bot's Note</p>
+          <p class="text-sm leading-relaxed italic opacity-70">
+            "멤버들의 미션과 인사이트를 분석하여 핵심 트렌드를 추출합니다. 반복적인 운영 작업을 AI에게 맡기면 운영자는 콘텐츠 품질에만 집중할 수 있습니다."
+          </p>
+          <div class="mt-8 flex items-center gap-4">
+            <div class="w-10 h-10 bg-[#2a2a2c] rounded-full flex items-center justify-center">
+              <span class="material-symbols-outlined text-[#FBE830] text-sm">smart_toy</span>
+            </div>
+            <div>
+              <p class="text-xs font-bold">AAA Bot</p>
+              <p class="text-[10px] opacity-50 uppercase tracking-widest">Analysis Engine</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="p-6 bg-slate-50 dark:bg-[#1b1b1d] rounded-2xl space-y-3">
+          <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-gray-500 mb-4">Related</h3>
+          <a href={`${base}proposals/`} class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2c] transition-colors group">
+            <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830] text-lg">lightbulb</span>
+            <span class="text-sm font-medium text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">AI 제안 보기</span>
+          </a>
+          <a href={`${base}tools/`} class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2c] transition-colors group">
+            <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830] text-lg">handyman</span>
+            <span class="text-sm font-medium text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">도구 모음</span>
+          </a>
+          <a href={`${base}insights/`} class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2c] transition-colors group">
+            <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830] text-lg">article</span>
+            <span class="text-sm font-medium text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">인사이트</span>
+          </a>
+        </div>
+      </aside>
     </div>
   </section>
 </Layout>
