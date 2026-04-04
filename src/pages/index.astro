@@ -6,6 +6,14 @@ const insights = await getCollection('insights');
 const tools = await getCollection('tools');
 const analysis = await getCollection('analysis');
 const base = import.meta.env.BASE_URL;
+
+const iconMap: Record<string, string> = {
+  '자동화': 'architecture',
+  '콘텐츠': 'filter_alt',
+  '분석': 'hub',
+  '생산성': 'analytics',
+  '디자인': 'palette',
+};
 ---
 
 <Layout title="AAA 스터디 아카이브">
@@ -22,32 +30,27 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
-  <!-- Latest Insights -->
+  <!-- Latest Insights (Text Only) -->
   <section class="py-24 md:py-32 px-6 md:px-12 bg-white dark:bg-[#131315]">
     <div class="max-w-screen-2xl mx-auto">
-      <div class="flex justify-between items-end mb-16">
-        <div>
-          <h2 class="font-headline text-3xl md:text-4xl font-bold text-black dark:text-white tracking-tight mb-4">Latest Insights</h2>
-          <div class="h-1 w-20 bg-[#FBE830]"></div>
-        </div>
-        <a class="text-sm font-bold text-black dark:text-white border-b border-black dark:border-[#e5e1e4] pb-1 hover:text-slate-600 dark:hover:text-gray-400 transition-colors" href={`${base}insights/`}>Archive View</a>
+      <div class="flex flex-col items-center mb-16 text-center">
+        <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-black dark:text-white tracking-tight mb-4 uppercase">Latest Insights</h2>
+        <div class="h-1.5 w-24 bg-[#FBE830] mb-6"></div>
+        <a class="text-sm font-bold text-black dark:text-white border-b border-black dark:border-white pb-1 hover:text-slate-600 dark:hover:text-gray-400 transition-colors" href={`${base}insights/`}>Archive View</a>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
         {insights.map((insight) => (
-          <a href={`${base}insights/${insight.id}/`} class="group cursor-pointer block">
-            <div class="overflow-hidden rounded-lg mb-6 aspect-video bg-slate-100 dark:bg-[#1b1b1d] flex items-center justify-center">
-              <span class="text-6xl opacity-10 group-hover:opacity-20 transition-opacity group-hover:scale-110 duration-500">💡</span>
-            </div>
-            <span class="text-[10px] font-bold tracking-widest text-[#d4a800] uppercase mb-2 block">Insight</span>
-            <h3 class="font-headline text-xl md:text-2xl font-bold text-black dark:text-white mb-3 leading-snug group-hover:text-slate-700 dark:group-hover:text-gray-300 transition-colors">{insight.id.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
-            <p class="text-slate-500 dark:text-gray-400 text-sm leading-relaxed">스터디에서 발견한 인사이트</p>
+          <a href={`${base}insights/${insight.id}/`} class="group cursor-pointer pt-8 border-t border-slate-100 dark:border-[#353437] block">
+            <span class="text-[10px] font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase mb-2 block">Insight</span>
+            <h3 class="font-headline text-2xl md:text-3xl font-bold text-black dark:text-white mb-3 leading-snug group-hover:text-slate-700 dark:group-hover:text-gray-300 transition-colors">{insight.id.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
+            <p class="text-slate-500 dark:text-gray-400 text-sm md:text-base leading-relaxed mb-6">스터디에서 발견한 인사이트</p>
           </a>
         ))}
         {insights.length < 3 && (
-          <div class="rounded-lg border-2 border-dashed border-slate-200 dark:border-[#353437] flex items-center justify-center min-h-[300px]">
-            <div class="text-center">
-              <span class="text-4xl block mb-4 opacity-20">+</span>
-              <p class="text-slate-300 dark:text-gray-600 text-sm">더 많은 인사이트가 추가될 예정입니다</p>
+          <div class="pt-8 border-t border-dashed border-slate-200 dark:border-[#353437] flex items-start">
+            <div>
+              <span class="text-[10px] font-bold tracking-widest text-slate-300 dark:text-gray-600 uppercase mb-2 block">Coming Soon</span>
+              <h3 class="font-headline text-2xl font-bold text-slate-300 dark:text-gray-600 mb-3 leading-snug">더 많은 인사이트가 추가될 예정입니다</h3>
             </div>
           </div>
         )}
@@ -55,12 +58,39 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
-  <!-- Gallery Bento Grid -->
+  <!-- Popular Toolsets -->
+  <section class="py-24 md:py-32 px-6 md:px-12 bg-white dark:bg-[#131315]">
+    <div class="max-w-screen-2xl mx-auto">
+      <div class="flex flex-col items-center mb-16 md:mb-20 text-center">
+        <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-black dark:text-white tracking-tight mb-4 uppercase">Popular Toolsets</h2>
+        <div class="h-1.5 w-24 bg-[#FBE830] mb-6"></div>
+        <p class="text-slate-500 dark:text-gray-400 max-w-2xl leading-relaxed mb-8">멤버들이 실전에서 검증한 도구 모음입니다.</p>
+        <a href={`${base}tools/`} class="flex items-center gap-2 text-black dark:text-white font-bold text-sm group">
+          Explore All Tools
+          <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {tools.slice(0, 4).map((tool) => (
+          <a href={`${base}tools/${tool.id}/`} class="p-8 bg-slate-50 dark:bg-[#1b1b1d] border border-transparent hover:border-[#FBE830]/30 transition-all rounded-xl block group">
+            <div class="w-12 h-12 bg-white dark:bg-[#2a2a2c] flex items-center justify-center rounded-lg shadow-sm mb-6">
+              <span class="material-symbols-outlined text-black dark:text-white" style="font-variation-settings: 'FILL' 1;">{iconMap[tool.data.category || ''] || 'handyman'}</span>
+            </div>
+            <h4 class="font-headline text-lg font-bold text-black dark:text-white mb-3 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{tool.data.name || tool.id}</h4>
+            <p class="text-slate-500 dark:text-gray-400 text-xs leading-relaxed">{tool.data.type || tool.data.category || ''}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Highlights (Bento Grid) -->
   <section class="py-24 md:py-32 px-6 md:px-12 bg-slate-50 dark:bg-[#0e0e10]">
     <div class="max-w-screen-2xl mx-auto">
-      <div class="mb-16 text-center">
-        <span class="text-[10px] font-bold tracking-[0.3em] text-slate-400 dark:text-gray-400 uppercase">Visual Repository</span>
-        <h2 class="font-headline text-3xl md:text-4xl font-extrabold text-black dark:text-white mt-2">Gallery Highlights</h2>
+      <div class="mb-16 md:mb-20 text-center flex flex-col items-center">
+        <span class="text-[10px] font-bold tracking-[0.3em] text-slate-400 uppercase mb-2">Visual Repository</span>
+        <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-black dark:text-white tracking-tight uppercase mb-4">Gallery Highlights</h2>
+        <div class="h-1.5 w-24 bg-[#FBE830]"></div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 md:h-[800px]">
         <a href="https://zap-arch.github.io/brand-showup/" target="_blank" class="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-xl bg-slate-200 dark:bg-[#1b1b1d] min-h-[300px] block">
@@ -89,35 +119,10 @@ const base = import.meta.env.BASE_URL;
         </a>
         <a href={`${base}gallery/`} class="relative group overflow-hidden rounded-xl bg-slate-100 dark:bg-[#1b1b1d] border-2 border-dashed border-slate-200 dark:border-[#353437] min-h-[150px] flex items-center justify-center block">
           <div class="text-center">
-            <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-3xl block mb-2">add</span>
-            <span class="text-slate-400 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">View All</span>
+            <span class="material-symbols-outlined text-slate-300 dark:text-gray-500 text-3xl block mb-2">add</span>
+            <span class="text-slate-400 dark:text-gray-500 text-xs font-bold uppercase tracking-wider">View All</span>
           </div>
         </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Toolsets -->
-  <section class="py-24 md:py-32 px-6 md:px-12 bg-white dark:bg-[#131315]">
-    <div class="max-w-screen-2xl mx-auto">
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <div class="lg:col-span-1">
-          <h2 class="font-headline text-3xl md:text-4xl font-bold text-black dark:text-white tracking-tighter mb-6 leading-none">Popular Toolsets</h2>
-          <p class="text-slate-500 dark:text-gray-400 mb-8 leading-relaxed text-sm">멤버들이 실전에서 검증한 도구 모음입니다.</p>
-          <a href={`${base}tools/`} class="flex items-center gap-2 text-black dark:text-white font-bold text-sm group">
-            Explore All Tools
-            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-          </a>
-        </div>
-        {tools.slice(0, 3).map((tool) => (
-          <a href={`${base}tools/${tool.id}/`} class="p-8 bg-slate-50 dark:bg-[#1b1b1d] border border-transparent dark:border-[#353437] hover:border-[#FBE830]/30 transition-all rounded-xl block">
-            <div class="w-12 h-12 bg-white dark:bg-[#2a2a2c] flex items-center justify-center rounded-lg shadow-sm mb-6">
-              <span class="material-symbols-outlined text-black dark:text-white" style="font-variation-settings: 'FILL' 1;">architecture</span>
-            </div>
-            <h4 class="font-headline text-lg font-bold text-black dark:text-white mb-3">{tool.data.name || tool.id}</h4>
-            <p class="text-slate-500 dark:text-gray-400 text-xs leading-relaxed">{tool.data.category || ''} · {tool.data.difficulty || ''}</p>
-          </a>
-        ))}
       </div>
     </div>
   </section>
@@ -127,23 +132,23 @@ const base = import.meta.env.BASE_URL;
     <div class="max-w-screen-2xl mx-auto">
       <div class="bg-white dark:bg-[#1b1b1d] p-8 md:p-12 rounded-2xl shadow-sm border border-slate-100 dark:border-[#353437] flex flex-col md:flex-row gap-12 md:gap-16 items-center">
         <div class="flex-1">
-          <span class="text-[#d4a800] text-[10px] font-bold tracking-widest uppercase mb-4 block">Engine Performance</span>
+          <span class="text-[#d4a800] dark:text-[#FBE830] text-[10px] font-bold tracking-widest uppercase mb-4 block">Engine Performance</span>
           <h2 class="font-headline text-3xl md:text-4xl font-bold text-black dark:text-white mb-6">AI Analysis Summary</h2>
           <p class="text-slate-500 dark:text-gray-400 mb-10 leading-relaxed">주차별 학습 데이터를 AI가 분석하여 핵심 트렌드와 키워드를 추출합니다.</p>
           <div class="grid grid-cols-2 gap-8">
             <div>
               <span class="text-black dark:text-white text-3xl md:text-4xl font-black font-headline">88%</span>
-              <p class="text-slate-400 dark:text-gray-400 text-[10px] uppercase font-bold tracking-wider mt-2">제출율</p>
+              <p class="text-slate-400 dark:text-gray-500 text-[10px] uppercase font-bold tracking-wider mt-2">제출율</p>
             </div>
             <div>
               <span class="text-black dark:text-white text-3xl md:text-4xl font-black font-headline">11</span>
-              <p class="text-slate-400 dark:text-gray-400 text-[10px] uppercase font-bold tracking-wider mt-2">핵심 키워드</p>
+              <p class="text-slate-400 dark:text-gray-500 text-[10px] uppercase font-bold tracking-wider mt-2">핵심 키워드</p>
             </div>
           </div>
         </div>
         <div class="flex-1 w-full space-y-6">
           <div class="space-y-2">
-            <div class="flex justify-between text-[10px] font-bold uppercase text-slate-400 dark:text-gray-400">
+            <div class="flex justify-between text-[10px] font-bold uppercase text-slate-400 dark:text-gray-500">
               <span>제출율</span>
               <span class="text-black dark:text-white">88%</span>
             </div>
@@ -152,7 +157,7 @@ const base = import.meta.env.BASE_URL;
             </div>
           </div>
           <div class="space-y-2">
-            <div class="flex justify-between text-[10px] font-bold uppercase text-slate-400 dark:text-gray-400">
+            <div class="flex justify-between text-[10px] font-bold uppercase text-slate-400 dark:text-gray-500">
               <span>키워드 다양성</span>
               <span class="text-black dark:text-white">73%</span>
             </div>
@@ -161,7 +166,7 @@ const base = import.meta.env.BASE_URL;
             </div>
           </div>
           <div class="space-y-2">
-            <div class="flex justify-between text-[10px] font-bold uppercase text-slate-400 dark:text-gray-400">
+            <div class="flex justify-between text-[10px] font-bold uppercase text-slate-400 dark:text-gray-500">
               <span>스킬 제안</span>
               <span class="text-black dark:text-white">60%</span>
             </div>
@@ -170,7 +175,7 @@ const base = import.meta.env.BASE_URL;
             </div>
           </div>
           <div class="mt-8 p-4 bg-slate-50 dark:bg-[#131315] rounded-lg flex items-center gap-4">
-            <span class="material-symbols-outlined text-[#d4a800]">verified</span>
+            <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830]">verified</span>
             <span class="text-xs text-slate-500 dark:text-gray-400 leading-tight">Week 02 분석 완료. 원소스 멀티유즈가 핵심 트렌드.</span>
           </div>
         </div>
@@ -182,18 +187,18 @@ const base = import.meta.env.BASE_URL;
   <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-40">
     <div class="bg-white/70 dark:bg-[#1b1b1d]/70 backdrop-blur-xl border border-slate-200/50 dark:border-[#353437]/50 px-6 py-3 rounded-full shadow-2xl flex items-center gap-6 md:gap-8">
       <a href={`${base}gallery/`} class="flex items-center gap-2 group">
-        <span class="material-symbols-outlined text-slate-400 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors text-[20px]">collections</span>
-        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors hidden md:inline">Gallery</span>
+        <span class="material-symbols-outlined text-slate-400 group-hover:text-black dark:group-hover:text-white transition-colors text-[20px]">collections</span>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-black dark:group-hover:text-white transition-colors hidden md:inline">Gallery</span>
       </a>
       <div class="h-4 w-[1px] bg-slate-200 dark:bg-[#353437]"></div>
       <a href={`${base}tools/`} class="flex items-center gap-2 group">
-        <span class="material-symbols-outlined text-slate-400 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors text-[20px]">handyman</span>
-        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors hidden md:inline">Tools</span>
+        <span class="material-symbols-outlined text-slate-400 group-hover:text-black dark:group-hover:text-white transition-colors text-[20px]">handyman</span>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-black dark:group-hover:text-white transition-colors hidden md:inline">Tools</span>
       </a>
       <div class="h-4 w-[1px] bg-slate-200 dark:bg-[#353437]"></div>
       <a href={`${base}analysis/`} class="flex items-center gap-2 group">
-        <span class="material-symbols-outlined text-slate-400 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors text-[20px]">analytics</span>
-        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors hidden md:inline">Analysis</span>
+        <span class="material-symbols-outlined text-slate-400 group-hover:text-black dark:group-hover:text-white transition-colors text-[20px]">analytics</span>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-black dark:group-hover:text-white transition-colors hidden md:inline">Analysis</span>
       </a>
     </div>
   </div>
