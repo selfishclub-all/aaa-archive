@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-surface: #131315;
+  --color-surface-dim: #0e0e10;
+  --color-surface-low: #1b1b1d;
+  --color-surface-container: #201f21;
+  --color-surface-high: #2a2a2c;
+  --color-surface-highest: #353437;
+  --color-on-surface: #e5e1e4;
+  --color-primary-fixed: #F8E52D;
+  --color-primary-container: #FBE830;
+  --color-on-primary: #1f1c00;
+  --color-outline: #969179;
+
+  --font-headline: 'Manrope', sans-serif;
+  --font-body: 'Pretendard', 'Inter', sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}

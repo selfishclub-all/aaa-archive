@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+import { getCollection } from 'astro:content';
+const insights = await getCollection('insights');
+const base = import.meta.env.BASE_URL;
+---
+<Layout title="인사이트 - AAA 아카이브">
+  <section class="py-24 px-6 md:px-16 max-w-[1440px] mx-auto">
+    <span class="text-primary-fixed font-headline text-xs uppercase tracking-[0.3em] font-bold mb-4 block">Editorial</span>
+    <h1 class="font-headline text-4xl md:text-5xl font-bold mb-16">인사이트</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {insights.map((insight) => (
+        <a href={`${base}insights/${insight.id}/`} class="group bg-surface-low rounded-xl p-8 hover:bg-surface-high transition-all duration-300 block">
+          <div class="flex gap-3 mb-4">
+            <span class="bg-primary-container/10 text-primary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Insight</span>
+          </div>
+          <h3 class="font-headline text-xl font-semibold mb-3 group-hover:text-primary-fixed transition-colors">{insight.id.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

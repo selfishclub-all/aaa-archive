@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+import { getCollection } from 'astro:content';
+const proposals = await getCollection('proposals');
+const base = import.meta.env.BASE_URL;
+---
+<Layout title="제안 - AAA 아카이브">
+  <section class="py-24 px-6 md:px-16 max-w-[1440px] mx-auto">
+    <span class="text-primary-fixed font-headline text-xs uppercase tracking-[0.3em] font-bold mb-4 block">Proposals</span>
+    <h1 class="font-headline text-4xl md:text-5xl font-bold mb-16">AI 제안</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {proposals.map(proposal => (
+        <a href={`${base}proposals/${proposal.id}/`} class="bg-surface-high rounded-xl p-8 hover:translate-y-[-4px] transition-transform duration-300 border border-outline/5 block">
+          <h3 class="font-headline text-xl font-bold">{proposal.id.replace(/_/g, ' ')}</h3>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

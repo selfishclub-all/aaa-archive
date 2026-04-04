@@ -1,0 +1,181 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+import { getCollection } from 'astro:content';
+
+const insights = await getCollection('insights');
+const tools = await getCollection('tools');
+const analysis = await getCollection('analysis');
+const gallery = await getCollection('gallery');
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="AAA 스터디 아카이브">
+  <!-- Hero -->
+  <section class="relative w-full min-h-[700px] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <div class="absolute inset-0 bg-gradient-to-b from-surface via-surface/80 to-surface z-10"></div>
+      <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(251,232,48,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(251,232,48,0.03) 1px, transparent 1px); background-size: 40px 40px;"></div>
+    </div>
+    <div class="relative z-20 max-w-[1440px] px-6 md:px-16 w-full text-center md:text-left">
+      <h1 class="font-headline text-4xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[1.1] mb-8">
+        Architecting the Future of<br/>
+        <span class="text-primary-fixed">Intellectual Curation.</span>
+      </h1>
+      <p class="text-xl text-on-surface/70 max-w-2xl mb-12 font-light leading-relaxed">
+        매주 AI 도구로 실전 프로젝트를 만들고<br/>그 과정의 인사이트를 아카이브합니다
+      </p>
+      <div class="flex flex-wrap gap-6 justify-center md:justify-start">
+        <a href={`${base}gallery/`} class="bg-primary-container text-on-primary px-10 py-5 rounded-lg font-bold text-lg hover:opacity-90 active:scale-95 transition-all inline-flex items-center gap-2">
+          Explore Gallery
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+        <a href={`${base}tools/`} class="bg-surface-highest text-on-surface px-10 py-5 rounded-lg font-bold text-lg hover:bg-surface-high active:scale-95 transition-all border border-outline/10">
+          View Framework
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Insights -->
+  <section class="py-24 md:py-32 px-6 md:px-16 max-w-[1440px] mx-auto">
+    <div class="flex justify-between items-end mb-16">
+      <div>
+        <span class="text-primary-fixed font-headline text-xs uppercase tracking-[0.3em] font-bold mb-4 block">Editorial</span>
+        <h2 class="font-headline text-3xl md:text-4xl font-bold">최신 인사이트</h2>
+      </div>
+      <a class="text-on-surface/60 hover:text-primary-fixed transition-colors text-sm flex items-center gap-2" href={`${base}insights/`}>
+        View all <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {insights.slice(0, 3).map((insight) => (
+        <a href={`${base}insights/${insight.id}/`} class="group bg-surface-low rounded-xl overflow-hidden hover:bg-surface-high transition-all duration-500 block">
+          <div class="h-48 bg-gradient-to-br from-surface-high to-surface-low flex items-center justify-center">
+            <span class="text-6xl opacity-20 group-hover:opacity-40 transition-opacity">&#x1F4A1;</span>
+          </div>
+          <div class="p-8">
+            <div class="flex gap-3 mb-4">
+              <span class="bg-primary-container/10 text-primary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Insight</span>
+            </div>
+            <h3 class="font-headline text-xl font-semibold mb-3 group-hover:text-primary-fixed transition-colors">{insight.id.replace(/-/g, ' ')}</h3>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="py-24 md:py-32 bg-surface-dim">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-16">
+      <div class="mb-16 text-center">
+        <h2 class="font-headline text-3xl md:text-4xl font-bold mb-4">갤러리 하이라이트</h2>
+        <p class="text-on-surface/40 font-light">우리가 만든 프로젝트들</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:h-[500px]">
+        <a href="https://zap-arch.github.io/brand-showup/" target="_blank" class="md:col-span-8 h-64 md:h-full relative group overflow-hidden rounded-xl bg-gradient-to-br from-surface-high to-surface block">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-8xl opacity-10 group-hover:opacity-20 transition-opacity">&#x1F3E2;</span>
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-t from-surface/90 to-transparent flex flex-col justify-end p-8 md:p-12 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <h4 class="text-2xl font-headline font-bold mb-2">BRAND SHOW UP</h4>
+            <p class="text-on-surface/60">잽 -- 원페이지 웹 제안서를 하루 만에 완성</p>
+          </div>
+        </a>
+        <div class="md:col-span-4 grid grid-rows-2 gap-6 h-64 md:h-full">
+          <a href="https://content-marketing-team.vercel.app/" target="_blank" class="relative group overflow-hidden rounded-xl bg-gradient-to-br from-primary-container/10 to-surface-high block">
+            <div class="absolute inset-0 flex items-center justify-center"><span class="text-5xl opacity-20">&#x1F4E2;</span></div>
+            <div class="absolute bottom-4 left-4 text-sm font-medium">콘텐츠 마케팅 &middot; 띵끄</div>
+          </a>
+          <a href="https://instagram.com/aisellerguide" target="_blank" class="relative group overflow-hidden rounded-xl bg-gradient-to-br from-surface-high to-surface-container block">
+            <div class="absolute inset-0 flex items-center justify-center"><span class="text-5xl opacity-20">&#x1F4F8;</span></div>
+            <div class="absolute bottom-4 left-4 text-sm font-medium">AI셀러가이드 &middot; 오웬</div>
+          </a>
+        </div>
+      </div>
+      <div class="text-center mt-8">
+        <a href={`${base}gallery/`} class="text-on-surface/60 hover:text-primary-fixed transition-colors text-sm">전체 보기 &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tools -->
+  <section class="py-24 md:py-32 px-6 md:px-16 max-w-[1440px] mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
+      <div>
+        <h2 class="font-headline text-3xl md:text-5xl font-bold mb-8 leading-tight">지적 성장을 위한<br/><span class="text-primary-fixed">전문적 도구 모음</span></h2>
+        <p class="text-on-surface/60 text-lg leading-relaxed mb-12">복잡한 생각을 구조화하고, 데이터 간의 숨겨진 연결고리를 발견하세요.</p>
+        <a href={`${base}tools/`} class="bg-surface-highest text-primary-fixed px-8 py-4 rounded font-bold hover:bg-surface-high transition-all border border-primary-fixed/20 inline-block">모든 도구 보기</a>
+      </div>
+      <div class="grid grid-cols-2 gap-6">
+        {tools.slice(0, 4).map((tool, i) => (
+          <a href={`${base}tools/${tool.id}/`} class={`bg-surface-high p-8 md:p-10 rounded-xl hover:translate-y-[-8px] transition-transform duration-300 block ${i % 2 === 1 ? 'mt-8' : ''}`}>
+            <span class="material-symbols-outlined text-4xl text-primary-fixed mb-6 block">
+              {['architecture', 'timeline', 'hub', 'insights'][i]}
+            </span>
+            <h4 class="font-headline text-lg md:text-xl font-bold mb-3">{tool.data.name || tool.id}</h4>
+            <p class="text-on-surface/40 text-sm leading-snug">{tool.data.category || ''}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Analysis -->
+  <section class="py-24 md:py-32 bg-surface-low">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-16">
+      <div class="bg-surface-highest rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-outline/5">
+        <div class="md:w-1/2 p-8 md:p-16">
+          <div class="flex items-center gap-3 mb-8">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-fixed opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-primary-fixed"></span>
+            </span>
+            <span class="text-primary-fixed font-headline text-sm font-bold uppercase tracking-widest">Live AI Analysis</span>
+          </div>
+          <h2 class="font-headline text-3xl md:text-4xl font-bold mb-6">Week 02 분석 결과</h2>
+          <p class="text-on-surface/60 text-lg mb-12">원소스 멀티유즈가 핵심 트렌드로 떠올랐습니다.</p>
+          <div class="space-y-8">
+            <div>
+              <div class="flex justify-between mb-2">
+                <span class="text-sm font-medium">제출율</span>
+                <span class="text-primary-fixed font-bold">88%</span>
+              </div>
+              <div class="w-full bg-surface-high h-2 rounded-full overflow-hidden">
+                <div class="bg-primary-fixed h-full w-[88%] rounded-full shadow-[0_0_10px_#FBE830]"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-2">
+                <span class="text-sm font-medium">키워드 다양성</span>
+                <span class="text-primary-fixed font-bold">11개</span>
+              </div>
+              <div class="w-full bg-surface-high h-2 rounded-full overflow-hidden">
+                <div class="bg-primary-fixed h-full w-[73%] rounded-full shadow-[0_0_10px_#FBE830]"></div>
+              </div>
+            </div>
+          </div>
+          <a href={`${base}analysis/`} class="mt-8 inline-block bg-surface-high text-primary-fixed px-6 py-3 rounded font-bold hover:bg-surface-container transition-all border border-primary-fixed/20">상세 분석 보기</a>
+        </div>
+        <div class="md:w-1/2 bg-surface-high/50 p-8 md:p-16 flex items-center justify-center relative min-h-[300px]">
+          <div class="relative w-full aspect-square max-w-[300px]">
+            <div class="absolute inset-0 rounded-full border border-primary-fixed/20 animate-pulse"></div>
+            <div class="absolute inset-10 rounded-full border border-primary-fixed/10"></div>
+            <div class="absolute inset-20 rounded-full border border-primary-fixed/5"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+              <span class="text-5xl md:text-6xl font-black text-primary-fixed font-headline">A+</span>
+              <p class="text-[10px] uppercase tracking-[0.4em] font-bold text-on-surface/40 mt-4">Structural Grade</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 md:py-32 px-6 md:px-16 text-center max-w-[1440px] mx-auto">
+    <h2 class="font-headline text-4xl md:text-6xl font-black mb-12">Start Building Your Knowledge.</h2>
+    <a href={`${base}proposals/`} class="bg-primary-container text-on-primary px-12 py-6 rounded font-bold text-xl hover:scale-105 transition-transform inline-block">프로젝트 인사이트 보기</a>
+  </section>
+</Layout>

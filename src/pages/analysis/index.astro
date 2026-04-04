@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+import { getCollection } from 'astro:content';
+const analysis = await getCollection('analysis');
+const base = import.meta.env.BASE_URL;
+---
+<Layout title="AI 분석 - AAA 아카이브">
+  <section class="py-24 px-6 md:px-16 max-w-[1440px] mx-auto">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-fixed opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-primary-fixed"></span>
+      </span>
+      <span class="text-primary-fixed font-headline text-xs uppercase tracking-[0.3em] font-bold">AI Analysis</span>
+    </div>
+    <h1 class="font-headline text-4xl md:text-5xl font-bold mb-16">AI 분석</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {analysis.map(report => (
+        <a href={`${base}analysis/${report.id}/`} class="bg-surface-high rounded-xl p-8 hover:translate-y-[-4px] transition-transform duration-300 border border-outline/5 block">
+          <span class="text-primary-fixed font-headline text-xs uppercase tracking-widest font-bold">Week {report.data.week || '?'}</span>
+          <h3 class="font-headline text-xl font-bold mt-4 mb-4">{report.id.replace(/_/g, ' ')}</h3>
+          {report.data.total_submissions && <span class="text-on-surface/40 text-sm">제출 {report.data.total_submissions}명</span>}
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
