@@ -33,23 +33,26 @@ const weekTitles: Record<number, { title: string; desc: string }> = {
       </div>
       <div class="lg:col-span-4 flex justify-end">
         <div class="p-6 bg-[#131315] text-white rounded-xl w-full max-w-xs shadow-2xl rotate-1">
-          <div class="flex justify-between items-start mb-4">
-            <span class="material-symbols-outlined text-[#FBE830]">monitoring</span>
-            <span class="text-[10px] font-bold opacity-60 uppercase tracking-widest">Latest Report</span>
-          </div>
-          <div class="text-4xl font-black font-headline mb-1">Week {latest?.data.week || '?'}</div>
-          <div class="text-xs opacity-70 mb-4 font-medium">제출 {latest?.data.total_submissions || 0}명 참여</div>
-          <div class="h-1 bg-white/10 rounded-full overflow-hidden">
-            <div class="h-full bg-[#FBE830] rounded-full" style={`width:${((latest?.data.total_submissions || 0) / 9) * 100}%`}></div>
+          <p class="text-sm font-headline font-bold text-[#FBE830] mb-4 uppercase tracking-[0.2em]">AAA Bot's Note</p>
+          <p class="text-sm leading-relaxed italic opacity-70">
+            "멤버들의 미션과 인사이트를 분석하여 핵심 트렌드를 추출합니다. 반복적인 운영 작업을 AI에게 맡기면 운영자는 콘텐츠 품질에만 집중할 수 있습니다."
+          </p>
+          <div class="mt-6 flex items-center gap-4">
+            <div class="w-10 h-10 bg-[#2a2a2c] rounded-full flex items-center justify-center">
+              <span class="material-symbols-outlined text-[#FBE830] text-sm">smart_toy</span>
+            </div>
+            <div>
+              <p class="text-xs font-bold">AAA Bot</p>
+              <p class="text-[10px] opacity-50 uppercase tracking-widest">Analysis Engine</p>
+            </div>
           </div>
         </div>
       </div>
     </header>
 
     <!-- Content -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16">
-      <!-- Left: Report List -->
-      <div class="lg:col-span-7 space-y-16">
+    <div>
+      <div class="space-y-16 max-w-3xl">
         {sorted.map((report, i) => {
           const week = report.data.week || 0;
           const info = weekTitles[week] || { title: `Week ${week} 분석`, desc: report.id.replace(/_/g, ' ') };
@@ -73,24 +76,6 @@ const weekTitles: Record<number, { title: string; desc: string }> = {
         })}
       </div>
 
-      <!-- Right: AAA Bot Note only -->
-      <aside class="lg:col-span-5 space-y-8">
-        <div class="p-8 bg-[#131315] text-[#e5e1e4] rounded-2xl">
-          <p class="text-sm font-headline font-bold text-[#FBE830] mb-4 uppercase tracking-[0.2em]">AAA Bot's Note</p>
-          <p class="text-sm leading-relaxed italic opacity-70">
-            "멤버들의 미션과 인사이트를 분석하여 핵심 트렌드를 추출합니다. 반복적인 운영 작업을 AI에게 맡기면 운영자는 콘텐츠 품질에만 집중할 수 있습니다."
-          </p>
-          <div class="mt-8 flex items-center gap-4">
-            <div class="w-10 h-10 bg-[#2a2a2c] rounded-full flex items-center justify-center">
-              <span class="material-symbols-outlined text-[#FBE830] text-sm">smart_toy</span>
-            </div>
-            <div>
-              <p class="text-xs font-bold">AAA Bot</p>
-              <p class="text-[10px] opacity-50 uppercase tracking-widest">Analysis Engine</p>
-            </div>
-          </div>
-        </div>
-      </aside>
     </div>
 
     <!-- AI 제안 Section (inline) -->
