@@ -50,19 +50,27 @@ const base = import.meta.env.BASE_URL;
       </a>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {insights.slice(0, 3).map((insight) => (
+      {insights.map((insight) => (
         <a href={`${base}insights/${insight.id}/`} class="group bg-surface-low rounded-xl overflow-hidden hover:bg-surface-high transition-all duration-500 block">
           <div class="h-48 bg-gradient-to-br from-surface-high to-surface-low flex items-center justify-center">
-            <span class="text-6xl opacity-20 group-hover:opacity-40 transition-opacity">&#x1F4A1;</span>
+            <span class="text-6xl opacity-20 group-hover:opacity-40 transition-opacity">💡</span>
           </div>
           <div class="p-8">
             <div class="flex gap-3 mb-4">
               <span class="bg-primary-container/10 text-primary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Insight</span>
             </div>
-            <h3 class="font-headline text-xl font-semibold mb-3 group-hover:text-primary-fixed transition-colors">{insight.id.replace(/-/g, ' ')}</h3>
+            <h3 class="font-headline text-xl font-semibold mb-3 group-hover:text-primary-fixed transition-colors">{insight.id.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
           </div>
         </a>
       ))}
+      {insights.length < 3 && (
+        <a href={`${base}insights/`} class="group bg-surface-low/50 rounded-xl overflow-hidden border-2 border-dashed border-surface-highest flex items-center justify-center min-h-[300px] block">
+          <div class="text-center p-8">
+            <span class="text-4xl block mb-4 opacity-30">+</span>
+            <p class="text-on-surface/30 text-sm">더 많은 인사이트가 추가될 예정입니다</p>
+          </div>
+        </a>
+      )}
     </div>
   </section>
 
