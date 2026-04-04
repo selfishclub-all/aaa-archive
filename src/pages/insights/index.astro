@@ -4,6 +4,9 @@ import '../../styles/global.css';
 import { getCollection } from 'astro:content';
 const insights = await getCollection('insights');
 const base = import.meta.env.BASE_URL;
+
+// 모든 키워드 수집
+const allKeywords = [...new Set(insights.flatMap(i => i.data.keywords || []))];
 ---
 <Layout title="인사이트 - AAA 아카이브">
   <!-- Hero -->
@@ -30,9 +33,18 @@ const base = import.meta.env.BASE_URL;
   </section>
 
   <section class="pb-24 px-6 md:px-16 max-w-[1440px] mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Keyword Filter -->
+    <div class="flex flex-wrap gap-2 mb-10">
+      <button class="kw-filter active text-xs font-bold px-4 py-2 rounded-full transition-all" data-keyword="all">All</button>
+      {allKeywords.map((kw) => (
+        <button class="kw-filter text-xs font-bold px-4 py-2 rounded-full transition-all" data-keyword={kw}>{kw}</button>
+      ))}
+    </div>
+
+    <!-- Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="insight-grid">
       {insights.map((insight) => (
-        <a href={`${base}insights/${insight.id}/`} class="group bg-slate-50 dark:bg-[#1b1b1d] rounded-xl p-8 hover:shadow-lg transition-all duration-300 block border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/30">
+        <a href={`${base}insights/${insight.id}/`} class="insight-item group bg-slate-50 dark:bg-[#1b1b1d] rounded-xl p-8 hover:shadow-lg transition-all duration-300 block border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/30" data-keywords={(insight.data.keywords || []).join(',')}>
           <div class="flex flex-wrap gap-2 mb-4">
             {insight.data.keywords?.map((kw: string) => (
               <span class="bg-[#FBE830]/10 text-[#d4a800] dark:text-[#FBE830] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">{kw}</span>
@@ -49,4 +61,62 @@ const base = import.meta.env.BASE_URL;
       ))}
     </div>
   </section>
+
+  <style>
+    .kw-filter {
+      background: transparent;
+      color: #6b7280;
+      border: 1px solid #e2e8f0;
+    }
+    .kw-filter:hover {
+      border-color: #FBE830;
+      color: #000;
+    }
+    .kw-filter.active {
+      background: #FBE830;
+      color: #000;
+      border-color: #FBE830;
+    }
+    :global(.dark) .kw-filter {
+      border-color: #353437;
+      color: #9ca3af;
+    }
+    :global(.dark) .kw-filter:hover {
+      border-color: #FBE830;
+      color: #fff;
+    }
+    :global(.dark) .kw-filter.active {
+      background: #FBE830;
+      color: #000;
+      border-color: #FBE830;
+    }
+    .insight-item.hidden-by-filter {
+      display: none;
+    }
+  </style>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('.kw-filter');
+      const items = document.querySelectorAll('.insight-item');
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const keyword = btn.getAttribute('data-keyword');
+
+          items.forEach(item => {
+            const keywords = item.getAttribute('data-keywords') || '';
+            if (keyword === 'all' || keywords.includes(keyword)) {
+              item.classList.remove('hidden-by-filter');
+            } else {
+              item.classList.add('hidden-by-filter');
+            }
+          });
+        });
+      });
+    });
+  </script>
 </Layout>
