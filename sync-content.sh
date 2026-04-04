@@ -2,13 +2,13 @@
 VAULT="/Users/dada/PJ/AAA/selfish-aaa"
 CONTENT="/Users/dada/PJ/AAA/selfish-aaa-site-astro/src/content"
 
-mkdir -p "$CONTENT/concepts" "$CONTENT/insights" "$CONTENT/gallery" "$CONTENT/tools" "$CONTENT/analysis" "$CONTENT/proposals"
+mkdir -p "$CONTENT/gallery" "$CONTENT/insights" "$CONTENT/tools" "$CONTENT/analysis" "$CONTENT/proposals"
 
-# Use find + cp to handle subdirectories
-find "$VAULT/02_개념/" -name "*.md" -exec cp {} "$CONTENT/concepts/" \; 2>/dev/null
-find "$VAULT/03_인사이트/" -name "*.md" -exec cp {} "$CONTENT/insights/" \; 2>/dev/null
-find "$VAULT/04_갤러리/" -name "*.md" -exec cp {} "$CONTENT/gallery/" \; 2>/dev/null
-find "$VAULT/05_플러그인_스킬/" -name "*.md" -exec cp {} "$CONTENT/tools/" \; 2>/dev/null
+# 미션 파일은 이미지 참조가 많아 직접 sync하지 않음
+# 대신 /analyze로 생성된 _분석/ 데이터가 AI 분석 탭에 표시됨
+find "$VAULT/01_결과물갤러리/" -name "*.md" -exec cp {} "$CONTENT/gallery/" \; 2>/dev/null
+find "$VAULT/02_인사이트/" -name "*.md" -exec cp {} "$CONTENT/insights/" \; 2>/dev/null
+find "$VAULT/03_스킬_플러그인/" -name "*.md" -exec cp {} "$CONTENT/tools/" \; 2>/dev/null
 find "$VAULT/_분석/주차별분석/" -name "*.md" -exec cp {} "$CONTENT/analysis/" \; 2>/dev/null
 find "$VAULT/_제안/" -name "*.md" -exec cp {} "$CONTENT/proposals/" \; 2>/dev/null
 
