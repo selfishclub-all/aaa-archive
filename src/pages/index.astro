@@ -10,31 +10,15 @@ const base = import.meta.env.BASE_URL;
 
 <Layout title="AAA 스터디 아카이브">
   <!-- Hero -->
-  <section class="relative min-h-[700px] flex items-center px-6 md:px-12 overflow-hidden bg-white dark:bg-[#131315]" style="background: radial-gradient(circle at top right, rgba(251,232,48,0.05), transparent)">
-    <div class="max-w-screen-2xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-      <div class="z-10">
-        <span class="inline-block py-1 px-3 bg-slate-50 dark:bg-[#1b1b1d] text-slate-500 dark:text-gray-400 text-[10px] font-bold tracking-[0.2em] uppercase mb-6 rounded">Curating Digital Excellence</span>
-        <h1 class="font-headline text-5xl md:text-7xl font-extrabold text-black dark:text-white leading-[1.05] tracking-tighter mb-8">
-          Architecting the Future of Intellectual Curation
-        </h1>
-        <p class="font-body text-lg md:text-xl text-slate-600 dark:text-gray-400 max-w-xl leading-relaxed mb-10">
-          매주 AI 도구로 실전 프로젝트를 만들고, 그 과정의 인사이트를 체계적으로 아카이브합니다.
-        </p>
-        <div class="flex flex-wrap gap-4">
-          <a href={`${base}gallery/`} class="bg-[#FBE830] text-black font-bold py-4 px-10 rounded-lg text-base shadow-sm hover:shadow-md transition-all active:scale-95 inline-block">
-            Get Started
-          </a>
-          <a href={`${base}tools/`} class="bg-white dark:bg-[#1b1b1d] border border-slate-200 dark:border-[#353437] text-black dark:text-white font-bold py-4 px-10 rounded-lg text-base hover:bg-slate-50 dark:hover:bg-[#2a2a2c] transition-all inline-block">
-            View Methodology
-          </a>
-        </div>
-      </div>
-      <div class="relative group hidden lg:block">
-        <div class="absolute -inset-4 bg-[#FBE830]/10 rounded-xl blur-3xl group-hover:bg-[#FBE830]/20 transition-all duration-700"></div>
-        <div class="relative rounded-xl w-full aspect-[4/3] bg-gradient-to-br from-slate-100 dark:from-[#1b1b1d] to-slate-200 dark:to-[#2a2a2c] shadow-2xl flex items-center justify-center overflow-hidden">
-          <span class="text-[120px] opacity-10">🏗️</span>
-        </div>
-      </div>
+  <section class="relative min-h-[700px] flex items-center px-6 md:px-12 overflow-hidden bg-white dark:bg-[#131315]" style="background: radial-gradient(circle at center, rgba(251,232,48,0.05), transparent)">
+    <div class="max-w-4xl mx-auto w-full text-center z-10">
+      <span class="inline-block py-1 px-3 bg-slate-50 dark:bg-[#1b1b1d] text-slate-500 dark:text-gray-400 text-[10px] font-bold tracking-[0.2em] uppercase mb-8 rounded">Curating Digital Excellence</span>
+      <h1 class="font-headline text-5xl md:text-7xl font-extrabold text-black dark:text-white leading-[1.05] tracking-tighter mb-8 mx-auto">
+        Architecting the Future of Intellectual Curation
+      </h1>
+      <p class="font-body text-lg md:text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed mb-0">
+        매주 AI 도구로 실전 프로젝트를 만들고, 그 과정의 인사이트를 체계적으로 아카이브합니다.
+      </p>
     </div>
   </section>
 
@@ -78,9 +62,9 @@ const base = import.meta.env.BASE_URL;
         <span class="text-[10px] font-bold tracking-[0.3em] text-slate-400 dark:text-gray-400 uppercase">Visual Repository</span>
         <h2 class="font-headline text-3xl md:text-4xl font-extrabold text-black dark:text-white mt-2">Gallery Highlights</h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 md:h-[600px]">
+      <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 md:h-[800px]">
         <a href="https://zap-arch.github.io/brand-showup/" target="_blank" class="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-xl bg-slate-200 dark:bg-[#1b1b1d] min-h-[300px] block">
-          <div class="absolute inset-0 bg-gradient-to-br from-slate-100 dark:from-[#1b1b1d] to-slate-300 dark:to-[#2a2a2c] flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-br from-slate-100 dark:from-[#2a2a2c] to-slate-300 dark:to-[#1b1b1d] flex items-center justify-center">
             <span class="text-[100px] opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-700">🏢</span>
           </div>
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
@@ -90,7 +74,7 @@ const base = import.meta.env.BASE_URL;
           </div>
         </a>
         <a href="https://content-marketing-team.vercel.app/" target="_blank" class="md:col-span-2 relative group overflow-hidden rounded-xl bg-slate-200 dark:bg-[#1b1b1d] min-h-[150px] block">
-          <div class="absolute inset-0 bg-gradient-to-br from-slate-100 dark:from-[#1b1b1d] to-slate-200 dark:to-[#2a2a2c] flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-br from-slate-100 dark:from-[#2a2a2c] to-slate-200 dark:to-[#1b1b1d] flex items-center justify-center">
             <span class="text-6xl opacity-10 group-hover:opacity-20 transition-all">📢</span>
           </div>
           <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -98,7 +82,7 @@ const base = import.meta.env.BASE_URL;
           </div>
         </a>
         <a href="https://instagram.com/aisellerguide" target="_blank" class="relative group overflow-hidden rounded-xl bg-slate-200 dark:bg-[#1b1b1d] min-h-[150px] block">
-          <div class="absolute inset-0 bg-gradient-to-br from-slate-100 dark:from-[#1b1b1d] to-slate-200 dark:to-[#2a2a2c] flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-br from-slate-100 dark:from-[#2a2a2c] to-slate-200 dark:to-[#1b1b1d] flex items-center justify-center">
             <span class="text-5xl opacity-10 group-hover:opacity-20 transition-all">📸</span>
           </div>
           <div class="absolute bottom-3 left-3 text-xs font-medium text-slate-500 dark:text-gray-400">AI셀러가이드 · 오웬</div>
