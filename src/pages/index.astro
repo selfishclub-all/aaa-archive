@@ -39,7 +39,7 @@ const iconMap: Record<string, string> = {
         <a class="text-sm font-bold text-black dark:text-white border-b border-black dark:border-white pb-1 hover:text-slate-600 dark:hover:text-gray-400 transition-colors" href={`${base}insights/`}>Archive View</a>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-        {insights.map((insight) => {
+        {insights.slice(0, 3).map((insight) => {
           // 본문에서 첫 의미있는 문장 추출
           const body = insight.body || '';
           const lines = body.split('\n').filter((l: string) => l.trim() && !l.startsWith('#') && !l.startsWith('-') && !l.startsWith('>') && !l.startsWith('http') && !l.startsWith('---') && !l.startsWith('[') && !l.startsWith('```') && !l.startsWith('*'));

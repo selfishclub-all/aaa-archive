@@ -47,10 +47,10 @@ const allKeywords = [...new Set(insights.flatMap(i => i.data.keywords || []))];
         <a href={`${base}insights/${insight.id}/`} class="insight-item group bg-slate-50 dark:bg-[#1b1b1d] rounded-xl p-8 hover:shadow-lg transition-all duration-300 block border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/30" data-keywords={(insight.data.keywords || []).join(',')}>
           <div class="flex flex-wrap gap-2 mb-4">
             {insight.data.keywords?.map((kw: string) => (
-              <span class="bg-[#FBE830]/10 text-[#d4a800] dark:text-[#FBE830] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">{kw}</span>
+              <span class="bg-[#FBE830]/15 text-[#d4a800] dark:text-[#FBE830] px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider border border-[#FBE830]/20">{kw}</span>
             ))}
             {(!insight.data.keywords || insight.data.keywords.length === 0) && (
-              <span class="bg-[#FBE830]/10 text-[#d4a800] dark:text-[#FBE830] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Insight</span>
+              <span class="bg-[#FBE830]/15 text-[#d4a800] dark:text-[#FBE830] px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider border border-[#FBE830]/20">Insight</span>
             )}
           </div>
           <h3 class="font-headline text-xl font-semibold text-black dark:text-white mb-3 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{insight.id.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
