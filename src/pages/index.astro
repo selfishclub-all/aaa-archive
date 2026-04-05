@@ -52,14 +52,14 @@ const iconMap: Record<string, string> = {
           <a href={`${base}insights/${insight.id}/`} class="group cursor-pointer pt-8 border-t border-slate-100 dark:border-[#353437] block flex flex-col">
             <div class="flex flex-wrap gap-1.5 mb-3 min-h-[24px]">
               {insight.data.keywords?.map((kw: string) => (
-                <span class="bg-[#FBE830]/15 text-[#b8960a] dark:text-[#FBE830] px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider border border-[#FBE830]/20">{kw}</span>
+                <span class="bg-[#FBE830]/15 text-[#b8960a] dark:text-[#FBE830] px-3 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider border border-[#FBE830]/20">{kw}</span>
               ))}
               {(!insight.data.keywords || insight.data.keywords.length === 0) && (
-                <span class="bg-[#FBE830]/15 text-[#b8960a] dark:text-[#FBE830] px-2.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider border border-[#FBE830]/20">Insight</span>
+                <span class="bg-[#FBE830]/15 text-[#b8960a] dark:text-[#FBE830] px-3 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider border border-[#FBE830]/20">Insight</span>
               )}
             </div>
             <h3 class="font-headline text-xl md:text-2xl font-bold text-black dark:text-white leading-snug group-hover:text-slate-700 dark:group-hover:text-gray-300 transition-colors h-[3.5rem] md:h-[4rem] line-clamp-2 mb-3">{insight.id.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
-            <p class="text-slate-500 dark:text-gray-400 text-sm leading-relaxed line-clamp-1 mt-auto">{summary}</p>
+            <p class="text-slate-500 dark:text-gray-400 text-sm leading-relaxed line-clamp-2 mt-auto">{summary}</p>
           </a>
           );
         })}
