@@ -11,6 +11,7 @@ const insights = defineCollection({
     member: str,
     tags,
     keywords: z.array(z.string()).nullish(),
+    summary: str,
   }).passthrough(),
 });
 
