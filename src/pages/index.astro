@@ -14,6 +14,18 @@ const iconMap: Record<string, string> = {
   '생산성': 'analytics',
   '디자인': 'palette',
 };
+
+const toolSummary: Record<string, string> = {
+  'AI Marketing Skills': '마케팅 에이전시가 실전에서 쓰는 11개 자동화 스킬셋',
+  'instagrapi': 'Python으로 인스타그램 캐러셀을 자동 업로드',
+  'n8n': '노코드로 워크플로우 자동화하는 오픈소스 도구',
+  'Obsidian Git': 'Obsidian 안에서 Git push/pull을 바로 실행',
+  'oh-my-claudecode (OMC)': 'Claude Code 멀티에이전트 오케스트레이션',
+  'Playwright': 'HTML을 브라우저에서 열고 PNG로 변환',
+  'Quartz': 'Obsidian vault를 정적 웹사이트로 변환',
+  'SOLAPI': '알림톡/문자를 API로 자동 발송',
+  'Sullivan': '답 대신 질문을 던져서 생각을 확장하는 AI',
+};
 ---
 
 <Layout title="AAA 스터디 아카이브">
@@ -52,10 +64,10 @@ const iconMap: Record<string, string> = {
           <a href={`${base}insights/${insight.id}/`} class="group cursor-pointer pt-8 border-t border-slate-100 dark:border-[#353437] block flex flex-col">
             <div class="flex flex-wrap gap-1.5 mb-3 min-h-[24px]">
               {insight.data.keywords?.map((kw: string) => (
-                <span class="bg-[#FBE830]/15 text-[#b8960a] dark:text-[#FBE830] px-3 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider border border-[#FBE830]/20">{kw}</span>
+                <span class="bg-[#FBE830]/15 text-[#b8960a] dark:text-[#FBE830] px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider border border-[#FBE830]/20">{kw}</span>
               ))}
               {(!insight.data.keywords || insight.data.keywords.length === 0) && (
-                <span class="bg-[#FBE830]/15 text-[#b8960a] dark:text-[#FBE830] px-3 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider border border-[#FBE830]/20">Insight</span>
+                <span class="bg-[#FBE830]/15 text-[#b8960a] dark:text-[#FBE830] px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider border border-[#FBE830]/20">Insight</span>
               )}
             </div>
             <h3 class="font-headline text-xl md:text-2xl font-bold text-black dark:text-white leading-snug group-hover:text-slate-700 dark:group-hover:text-gray-300 transition-colors h-[3.5rem] md:h-[4rem] line-clamp-2 mb-3">{insight.id.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
@@ -93,8 +105,8 @@ const iconMap: Record<string, string> = {
             <div class="w-12 h-12 bg-white dark:bg-[#2a2a2c] flex items-center justify-center rounded-lg shadow-sm mb-6">
               <span class="material-symbols-outlined text-black dark:text-white" style="font-variation-settings: 'FILL' 1;">{iconMap[tool.data.category || ''] || 'handyman'}</span>
             </div>
-            <h4 class="font-headline text-lg font-bold text-black dark:text-white mb-3 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{tool.data.name || tool.id}</h4>
-            <p class="text-slate-500 dark:text-gray-400 text-xs leading-relaxed">{tool.data.type || tool.data.category || ''}</p>
+            <h4 class="font-headline text-lg font-bold text-black dark:text-white mb-2 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{tool.data.name || tool.id}</h4>
+            <p class="text-slate-500 dark:text-gray-400 text-sm leading-relaxed">{toolSummary[tool.data.name || ''] || tool.data.type || tool.data.category || ''}</p>
           </a>
         ))}
       </div>
@@ -158,7 +170,7 @@ const iconMap: Record<string, string> = {
             <div class="w-8 h-8 bg-[#131315] dark:bg-[#FBE830] rounded-full flex items-center justify-center">
               <span class="material-symbols-outlined text-[#FBE830] dark:text-black text-sm">smart_toy</span>
             </div>
-            <span class="text-[10px] font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase">AAA Bot · Week 02 Analysis</span>
+            <span class="text-sm font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase">AAA Bot · Week 02 Analysis</span>
           </div>
           <h3 class="font-headline text-2xl md:text-3xl font-bold text-black dark:text-white mb-4 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">
             "자동화의 단위는 채널이 아니라 워크플로우다"
