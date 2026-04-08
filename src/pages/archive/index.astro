@@ -8,33 +8,33 @@ const weeks = [
     week: 3,
     title: '자동화를 넘어 실제 서비스 배포',
     members: [
-      { name: '다다', cardTitle: '스터디 운영시스템 + 웹사이트 구축', summary: '커스텀 스킬 5개 생성. Quartz에서 Astro로 마이그레이션. 도구의 한계를 먼저 파악하는 것이 중요하다는 인사이트.', icon: 'architecture', link: '' },
-      { name: '비비안', cardTitle: '셀피쉬클럽 v4.0 자체 플랫폼 셋업', summary: 'Webflow 의존을 끊고 Next.js 기반 자체 플랫폼 구축. BRIEFING.md + CLAUDE.md + DESIGN.md로 문서 우선 개발.', icon: 'engineering', link: '' },
-      { name: '띵끄', cardTitle: 'YFLOW 전체 감사 — 5개 에이전트 동시 투입', summary: '5개 스프린트로 보안/성능/품질/접근성/구조 분석. God Component 2,188줄→186줄. Vitest 31개 테스트.', icon: 'code', link: 'https://github.com/growththink/flowops-dashboard' },
-      { name: '에밀리', cardTitle: 'CRM 알림톡 실제 발송 자동화', summary: 'n8n 알림톡 ①~⑤ 전체 플로우 성공. 맥북 꺼져도 발송되는 하이브리드 아키텍처 재설계. PRD 8개 분리.', icon: 'campaign', link: '' },
-      { name: '오웬', cardTitle: '찜마켓 — 안전한 맞찜 플랫폼', summary: '카카오 로그인 + 스크린샷 인증 + 신뢰 온도 + 크레딧 시스템. /briefing, /timecheck 스킬 2개 제작.', icon: 'photo_camera', link: 'https://zzim-exchange.vercel.app' },
-      { name: '흐민', cardTitle: 'Sullivan + Personal Brand OS', summary: 'Capture 에이전트 강화 + Agent Mode 추가. Python→마크다운 에이전트 전환. 오픈클로 + 로컬 LLM 연구.', icon: 'psychology', link: '' },
+      { name: '다다', cardTitle: '스터디 운영시스템 + 웹사이트 구축', summary: '커스텀 스킬 5개 생성. Quartz에서 Astro로 마이그레이션. 도구의 한계를 먼저 파악하는 것이 중요하다는 인사이트.', detail: '약 6~7시간에 걸쳐 스터디 운영시스템을 설계하고 웹사이트를 구축했다. 커스텀 슬래시 명령어 5개(/analyze, /propose, /ln, /archive, /publish)를 만들어 운영 자동화를 구현했다. Quartz로 시작했으나 CSS 충돌이 반복되어 Astro로 마이그레이션했다. 핵심 인사이트: 증상(디자인 깨짐)만 보고 코드를 계속 고치지 말고, 도구 자체의 한계인지 먼저 의심해보자.', icon: 'architecture', link: '' },
+      { name: '비비안', cardTitle: '셀피쉬클럽 v4.0 자체 플랫폼 셋업', summary: 'Webflow 의존을 끊고 Next.js 기반 자체 플랫폼 구축. BRIEFING.md + CLAUDE.md + DESIGN.md로 문서 우선 개발.', detail: '셀피쉬클럽 v4.0 리뉴얼을 위해 Webflow 의존을 끊고 Next.js 기반 자체 플랫폼을 구축하기 위한 초기 셋업을 완료했다. BRIEFING.md로 전체 기획을 Claude에게 전달하고, CLAUDE.md로 코딩 컨벤션을, DESIGN.md로 디자인 시스템을 정의했다. 기술 스택은 Next.js 16 + TypeScript + Tailwind CSS v4 + Vercel.', icon: 'engineering', link: '' },
+      { name: '띵끄', cardTitle: 'YFLOW 전체 감사 — 5개 에이전트 동시 투입', summary: '5개 스프린트로 보안/성능/품질/접근성/구조 분석. God Component 2,188줄→186줄. Vitest 31개 테스트.', detail: 'team 5 명령으로 5개 전문 에이전트(Security, Performance, Code Review, A11y, Architecture)를 동시에 투입해 YFLOW 프로젝트를 전체 감사했다. 5개 스프린트로 나눠 보안 기반 → API 안전성 → 안정성 → 성능 → 접근성+테스트 순서로 진행했다. God Component 2,188줄을 186줄로 분리하고 Vitest 31개 테스트를 작성했다.', icon: 'code', link: 'https://github.com/growththink/flowops-dashboard' },
+      { name: '에밀리', cardTitle: 'CRM 알림톡 실제 발송 자동화', summary: 'n8n 알림톡 ①~⑤ 전체 플로우 성공. 맥북 꺼져도 발송되는 하이브리드 아키텍처 재설계. PRD 8개 분리.', detail: '2주차에 만든 CRM 자동화를 실제 발송까지 연결했다. 맥북이 꺼져도 알림톡이 나가도록 n8n(서버)과 Claude Code(로컬)를 하이브리드로 재설계했다. n8n 크론을 재설계하여 줌링크 하나만 넣으면 나머지 4개 알림톡에서 자동 재사용하는 구조를 만들었다. CLAUDE.md 372줄을 PRD 8개로 분리하여 에이전트가 자기 채널만 읽도록 개선했다.', icon: 'campaign', link: '' },
+      { name: '오웬', cardTitle: '찜마켓 — 안전한 맞찜 플랫폼', summary: '카카오 로그인 + 스크린샷 인증 + 신뢰 온도 + 크레딧 시스템. /briefing, /timecheck 스킬 2개 제작.', detail: '에이블리/지그재그/무신사 셀러를 위한 안전한 맞찜 플랫폼 \'찜마켓\'을 구축했다. 카카오 로그인, 스크린샷 인증, 당근 매너온도 방식의 신뢰 온도, 24시간 자동 환불 시스템을 구현했다. /briefing(자동 브리핑)과 /timecheck(작업 시간 추적) 스킬 2개를 제작하여 GitHub에 공개했다. 핵심 인사이트: 클로드의 위험성은 내가 똑똑한 것 아닐까라는 착각을 하게 되는 것.', icon: 'photo_camera', link: 'https://zzim-exchange.vercel.app' },
+      { name: '흐민', cardTitle: 'Sullivan + Personal Brand OS', summary: 'Capture 에이전트 강화 + Agent Mode 추가. Python→마크다운 에이전트 전환. 오픈클로 + 로컬 LLM 연구.', detail: 'Sullivan의 Capture 에이전트를 대폭 강화하고 Agent Mode를 추가했다. 코드 레벨에서 대응 불가한 케이스에서 에러 대신 Agent를 호출하여 자동 해결하도록 세팅했다. Personal Brand OS를 구축하여 Obsidian 노트, 사진 등의 소스를 기반으로 다양한 플랫폼별 콘텐츠를 자동 생성하는 멀티에이전트 시스템을 만들었다. Python + Claude SDK에서 .claude/agents/*.md 마크다운 방식으로 전환했다.', icon: 'psychology', link: '' },
     ]
   },
   {
     week: 2,
     title: '원소스 멀티유즈의 폭발',
     members: [
-      { name: '비비안', cardTitle: 'Webflow→Next.js 마이그레이션 설계', summary: '9단계로 체계적 분석. Supabase 락인 해결, Auth 방식 결정, 어드민 스펙 확정.', icon: 'engineering', link: '' },
-      { name: '띵끄', cardTitle: '원소스 멀티유즈 콘텐츠 마케팅 사이트', summary: 'OMC 활용, Vercel 자동배포, YouTube API 연동. 비용관리 자동화.', icon: 'code', link: 'https://content-marketing-team.vercel.app/' },
-      { name: '잽', cardTitle: 'BRAND SHOW UP 원페이지 웹 제안서', summary: '프레임워크 없이 순수 HTML/CSS/JS로 하루 만에 완성. GitHub Pages 배포.', icon: 'web', link: 'https://zap-arch.github.io/brand-showup/' },
-      { name: '흐민', cardTitle: 'Sullivan — 질문하는 AI 어시스턴트', summary: '5개 Agent + Obsidian 연동 + 자동 스케줄러. Anne Sullivan 교육 철학 적용.', icon: 'psychology', link: '' },
-      { name: '에밀리', cardTitle: 'CRM 자동화 — 8채널 20개 콘텐츠', summary: 'URL 하나로 알림톡+카플친+오픈채팅+인스타+이메일+UTM 자동 생성. 6개 에이전트 팀.', icon: 'campaign', link: '' },
-      { name: '다니', cardTitle: '원소스 멀티유즈 3채널 자동 생성', summary: 'URL로 인스타 캐러셀 + 스레드 + 링크드인 콘텐츠 동시 생성. OpenCode 비교 분석.', icon: 'smart_toy', link: '' },
-      { name: '오웬', cardTitle: '인스타그램 카드뉴스 완전 자동화', summary: 'crontab으로 매주 월/목 자동 실행. Claude API + Playwright + instagrapi.', icon: 'photo_camera', link: '' },
+      { name: '비비안', cardTitle: 'Webflow→Next.js 마이그레이션 설계', summary: '9단계로 체계적 분석. Supabase 락인 해결, Auth 방식 결정, 어드민 스펙 확정.', detail: '기존 Webflow 사이트의 구조, 페이지 목록, URL 패턴부터 분석하고 Supabase 락인 문제, Auth 방식, 결제 연동까지 하나씩 풀어나갔다. Magic Link에서 Clerk + 카카오 소셜 로그인으로 전환을 확정했다. 9단계에 걸친 체계적 분석 후 CLAUDE.md를 작성했다.', icon: 'engineering', link: '' },
+      { name: '띵끄', cardTitle: '원소스 멀티유즈 콘텐츠 마케팅 사이트', summary: 'OMC 활용, Vercel 자동배포, YouTube API 연동. 비용관리 자동화.', detail: '콘텐츠 마케팅 사이트를 제작하고 GitHub + Vercel 연결로 자동 배포를 구현했다. YouTube API를 연동하고 OMC를 활용하여 비용관리 자동화(영수증→비용처리)를 시도했다.', icon: 'code', link: 'https://content-marketing-team.vercel.app/' },
+      { name: '잽', cardTitle: 'BRAND SHOW UP 원페이지 웹 제안서', summary: '프레임워크 없이 순수 HTML/CSS/JS로 하루 만에 완성. GitHub Pages 배포.', detail: '에이빙뉴스의 브랜드 홍보 프로젝트 BRAND SHOW UP을 소개하는 원페이지 웹 제안서를 제작했다. 외부 라이브러리 없이 순수 HTML/CSS/JS만으로 프리미엄 결과물을 완성했다. Claude Code와 실시간 페어 프로그래밍으로 하루 만에 기획→디자인→개발→배포를 완료했다.', icon: 'web', link: 'https://zap-arch.github.io/brand-showup/' },
+      { name: '흐민', cardTitle: 'Sullivan — 질문하는 AI 어시스턴트', summary: '5개 Agent + Obsidian 연동 + 자동 스케줄러. Anne Sullivan 교육 철학 적용.', detail: '피드가 호기심의 주도권을 가져간다는 문제의식에서 Sullivan 프로젝트를 시작했다. 정보를 더 주는 AI가 아니라 질문을 던져서 생각을 확장하는 AI를 설계했다. Anne Sullivan의 교육 철학을 AI 설계 원칙으로 적용했다.', icon: 'psychology', link: '' },
+      { name: '에밀리', cardTitle: 'CRM 자동화 — 8채널 20개 콘텐츠', summary: 'URL 하나로 알림톡+카플친+오픈채팅+인스타+이메일+UTM 자동 생성. 6개 에이전트 팀.', detail: '공유회 URL 하나를 입력하면 알림톡 9종, 카플친 배너 3종, 오픈채팅 카피 9개, 인스타 캐러셀 5장, 이메일, UTM 21개를 자동 생성하는 시스템을 구축했다. 6개 에이전트(director, data-collector, timeline-planner, copywriter, media-ops, dispatcher) 팀 구조를 설계했다.', icon: 'campaign', link: '' },
+      { name: '다니', cardTitle: '원소스 멀티유즈 3채널 자동 생성', summary: 'URL로 인스타 캐러셀 + 스레드 + 링크드인 콘텐츠 동시 생성. OpenCode 비교 분석.', detail: 'YouTube 영상 URL 하나를 입력하면 인스타 캐러셀, 스레드, 링크드인 포스트를 동시에 생성하는 원소스 멀티유즈 시스템을 만들었다. Claude Code vs OpenCode 오픈소스 대안도 비교 분석했다.', icon: 'smart_toy', link: '' },
+      { name: '오웬', cardTitle: '인스타그램 카드뉴스 완전 자동화', summary: 'crontab으로 매주 월/목 자동 실행. Claude API + Playwright + instagrapi.', detail: '온라인 셀러를 위한 AI 정보 계정 @aisellerguide를 운영하면서 카드뉴스 자동 제작 시스템을 구축했다. Claude API로 리서치 → HTML 템플릿 → Playwright PNG 변환 → instagrapi 자동 업로드 파이프라인을 만들었다. crontab으로 매주 월/목 12:38 자동 실행.', icon: 'photo_camera', link: '' },
     ]
   },
   {
     week: 1,
     title: 'Agent Loop에서 시작된 여정',
     members: [
-      { name: '다다', cardTitle: 'Claude Code 입문 + Obsidian 연동', summary: 'CLI 설치, Agent Loop 학습, 멀티에이전트로 스터디 자동화 구상.', icon: 'architecture', link: '' },
-      { name: '비비안', cardTitle: 'Agent Loop 구조 분석', summary: '프롬프트 엔지니어링이 결과 품질에 결정적 영향을 미친다는 발견.', icon: 'engineering', link: '' },
+      { name: '다다', cardTitle: 'Claude Code 입문 + Obsidian 연동', summary: 'CLI 설치, Agent Loop 학습, 멀티에이전트로 스터디 자동화 구상.', detail: 'Claude Code CLI를 설치하고 Agent Loop의 기본 구조를 학습했다. Obsidian vault + Claude Code 연동에 성공하고, 멀티에이전트로 스터디 운영을 자동화할 수 있다는 구상을 시작했다.', icon: 'architecture', link: '' },
+      { name: '비비안', cardTitle: 'Agent Loop 구조 분석', summary: '프롬프트 엔지니어링이 결과 품질에 결정적 영향을 미친다는 발견.', detail: 'Claude Code의 기본 개념과 Agent Loop 구조를 이해했다. 프롬프트 엔지니어링이 결과 품질에 큰 영향을 미친다는 것을 발견했다.', icon: 'engineering', link: '' },
     ]
   },
 ];
@@ -76,7 +76,13 @@ const weeks = [
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {week.members.map((member) => (
-            <div class="p-6 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-lg transition-all group cursor-pointer flex flex-col" onclick={member.link ? `window.open('${member.link}','_blank')` : undefined}>
+            <div
+              class="p-6 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-lg transition-all group cursor-pointer flex flex-col modal-trigger"
+              data-name={member.name}
+              data-title={member.cardTitle}
+              data-detail={member.detail}
+              data-link={member.link || ''}
+            >
               <h3 class="font-headline text-base font-bold text-black dark:text-white mb-2 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors line-clamp-1">{member.cardTitle || member.summary}</h3>
               <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2 flex-1">{member.summary}</p>
               <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-[#353437]">
@@ -99,4 +105,65 @@ const weeks = [
       </div>
     ))}
   </section>
+
+  <!-- Modal -->
+  <div id="archive-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[80vh] overflow-y-auto bg-white dark:bg-[#1b1b1d] rounded-2xl shadow-2xl p-8 md:p-10">
+      <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-black dark:hover:text-white transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <h2 id="modal-title" class="font-headline text-2xl font-bold text-black dark:text-white mb-4"></h2>
+      <div id="modal-author" class="flex items-center gap-2 mb-6">
+        <div class="w-7 h-7 bg-slate-100 dark:bg-[#2a2a2c] rounded-full flex items-center justify-center">
+          <span id="modal-avatar" class="text-[10px] font-bold text-slate-500 dark:text-gray-400"></span>
+        </div>
+        <span id="modal-name" class="text-sm text-slate-500 dark:text-gray-400"></span>
+      </div>
+      <p id="modal-detail" class="text-base text-slate-600 dark:text-gray-400 leading-relaxed mb-6"></p>
+      <div id="modal-link-wrap" class="hidden">
+        <a id="modal-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-[#FBE830] text-black font-bold py-3 px-6 rounded-lg text-sm hover:shadow-md transition-all">
+          <span class="material-symbols-outlined text-sm">open_in_new</span>
+          라이브 보기
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    function openModal(name, title, detail, link) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-avatar').textContent = name.charAt(0);
+      document.getElementById('modal-name').textContent = 'by ' + name;
+      document.getElementById('modal-detail').textContent = detail;
+      const linkWrap = document.getElementById('modal-link-wrap');
+      if (link) {
+        document.getElementById('modal-link').href = link;
+        linkWrap.classList.remove('hidden');
+      } else {
+        linkWrap.classList.add('hidden');
+      }
+      document.getElementById('archive-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('archive-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.modal-trigger').forEach(card => {
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('a')) return;
+          openModal(
+            card.dataset.name,
+            card.dataset.title,
+            card.dataset.detail,
+            card.dataset.link
+          );
+        });
+      });
+    });
+  </script>
 </Layout>
