@@ -1,3 +1,5 @@
+---
+---
 ### 결과물
 
 ### 만든 것: 인스타그램 카드뉴스 자동 제작 시스템
@@ -138,7 +140,7 @@ Python 3.9 환경에서 instagrapi 2.3.0 설치 → `TypeError: unsupported oper
 Mac의 crontab에 등록:
 
 ```
-38 12 * * 1,4  /Users/owen/claude\\ total/aiforseller/pipeline/run.sh
+38 12 * * 1,4  /Users/owen/claude\ total/aiforseller/pipeline/run.sh
 ```
 
 `run.sh`가 .env 로드 → Python PATH 설정 → `pipeline.py` 실행 → 로그 파일 자동 기록

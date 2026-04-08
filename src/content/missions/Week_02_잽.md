@@ -1,3 +1,5 @@
+---
+---
 # 잽_2회차 과제
 
 week: 2주차
@@ -188,7 +190,7 @@ Problem → Solution → Evidence → Investment → CTA 순서로 구성했다.
 
 | 항목 | 값 / 경로 |
 | --- | --- |
-| 파이프라인 위치 | `C:\Users\AVING\Documents\projects\test\watcher.py` |
+| 파이프라인 위치 | `C: sers\AVING\Documents\projects	est\watcher.py` |
 | 기사 생성 모델 | `gpt-5.2-chat-latest` (config.yaml) |
 | 트리거 파일명 | `프롬프트-[기업명]` (Google Drive 폴더 내) |
 | 업로드 안정화 함수 | `wait_for_upload_stable()` — 20초 간격 2회 확인 |
