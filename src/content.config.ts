@@ -55,4 +55,13 @@ const proposals = defineCollection({
   }).passthrough(),
 });
 
-export const collections = { insights, gallery, tools, analysis, proposals };
+const missions = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/missions" }),
+  schema: z.object({
+    member: str,
+    week: num,
+    tags,
+  }).passthrough(),
+});
+
+export const collections = { insights, gallery, tools, analysis, proposals, missions };

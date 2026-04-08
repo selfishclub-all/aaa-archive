@@ -1,7 +1,16 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/global.css';
+import { getCollection } from 'astro:content';
 const base = import.meta.env.BASE_URL;
+
+// missions 컬렉션에서 원본 텍스트 가져오기
+const allMissions = await getCollection('missions');
+const getMissionBody = (week: number, name: string): string => {
+  const id = `Week_0${week}_${name}`;
+  const mission = allMissions.find(m => m.id === id);
+  return mission?.body || '';
+};
 
 const weeks = [
   {
@@ -75,12 +84,15 @@ const weeks = [
           </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {week.members.map((member) => (
+          {week.members.map((member) => {
+            const fullBody = getMissionBody(week.week, member.name);
+            const displayDetail = fullBody || member.detail || member.summary;
+            return (
             <div
               class="p-6 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-lg transition-all group cursor-pointer flex flex-col modal-trigger"
               data-name={member.name}
               data-title={member.cardTitle}
-              data-detail={member.detail}
+              data-detail={displayDetail}
               data-link={member.link || ''}
             >
               <h3 class="font-headline text-base font-bold text-black dark:text-white mb-2 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors line-clamp-1">{member.cardTitle || member.summary}</h3>
@@ -100,7 +112,8 @@ const weeks = [
                 )}
               </div>
             </div>
-          ))}
+          );
+          })}
         </div>
       </div>
     ))}
@@ -120,7 +133,7 @@ const weeks = [
         </div>
         <span id="modal-name" class="text-sm text-slate-500 dark:text-gray-400"></span>
       </div>
-      <p id="modal-detail" class="text-base text-slate-600 dark:text-gray-400 leading-relaxed mb-6"></p>
+      <div id="modal-detail" class="text-sm text-slate-600 dark:text-gray-400 leading-relaxed mb-6 whitespace-pre-line max-h-[50vh] overflow-y-auto"></div>
       <div id="modal-link-wrap" class="hidden">
         <a id="modal-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-[#FBE830] text-black font-bold py-3 px-6 rounded-lg text-sm hover:shadow-md transition-all">
           <span class="material-symbols-outlined text-sm">open_in_new</span>

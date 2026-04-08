@@ -1,5 +1,7 @@
 ---
 name: AI Marketing Skills
+tags:
+  - 마케팅
 category: 자동화
 type: Claude Code 스킬
 difficulty: 중급
