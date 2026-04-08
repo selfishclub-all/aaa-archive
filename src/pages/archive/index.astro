@@ -8,33 +8,33 @@ const weeks = [
     week: 3,
     title: '자동화를 넘어 실제 서비스 배포',
     members: [
-      { name: '다다', summary: '스터디 운영시스템 + 웹사이트 구축. 커스텀 스킬 5개 생성. Quartz→Astro 마이그레이션.', icon: 'architecture', link: '' },
-      { name: '비비안', summary: '셀피쉬클럽 v4.0 Next.js 기반 자체 플랫폼 초기 셋업. BRIEFING.md + CLAUDE.md + DESIGN.md 작성.', icon: 'engineering', link: '' },
-      { name: '띵끄', summary: 'YFLOW 전체 감사 — 5개 에이전트 동시 투입, 5개 스프린트. God Component 2,188줄→186줄.', icon: 'code', link: 'https://github.com/growththink/flowops-dashboard' },
-      { name: '에밀리', summary: 'CRM 자동화 실제 발송 연결. n8n 알림톡 ①~⑤ 성공. 맥북 꺼져도 발송되는 하이브리드 아키텍처.', icon: 'campaign', link: '' },
-      { name: '오웬', summary: '찜마켓 — 안전한 맞찜 플랫폼. 카카오 로그인 + 신뢰 온도 + 크레딧 시스템. 스킬 2개 제작.', icon: 'photo_camera', link: 'https://zzim-exchange.vercel.app' },
-      { name: '흐민', summary: 'Sullivan 아키텍처 강화 + Personal Brand OS. Python→마크다운 에이전트 전환. 오픈클로 연구.', icon: 'psychology', link: '' },
+      { name: '다다', cardTitle: '스터디 운영시스템 + 웹사이트 구축', summary: '커스텀 스킬 5개 생성. Quartz에서 Astro로 마이그레이션. 도구의 한계를 먼저 파악하는 것이 중요하다는 인사이트.', icon: 'architecture', link: '' },
+      { name: '비비안', cardTitle: '셀피쉬클럽 v4.0 자체 플랫폼 셋업', summary: 'Webflow 의존을 끊고 Next.js 기반 자체 플랫폼 구축. BRIEFING.md + CLAUDE.md + DESIGN.md로 문서 우선 개발.', icon: 'engineering', link: '' },
+      { name: '띵끄', cardTitle: 'YFLOW 전체 감사 — 5개 에이전트 동시 투입', summary: '5개 스프린트로 보안/성능/품질/접근성/구조 분석. God Component 2,188줄→186줄. Vitest 31개 테스트.', icon: 'code', link: 'https://github.com/growththink/flowops-dashboard' },
+      { name: '에밀리', cardTitle: 'CRM 알림톡 실제 발송 자동화', summary: 'n8n 알림톡 ①~⑤ 전체 플로우 성공. 맥북 꺼져도 발송되는 하이브리드 아키텍처 재설계. PRD 8개 분리.', icon: 'campaign', link: '' },
+      { name: '오웬', cardTitle: '찜마켓 — 안전한 맞찜 플랫폼', summary: '카카오 로그인 + 스크린샷 인증 + 신뢰 온도 + 크레딧 시스템. /briefing, /timecheck 스킬 2개 제작.', icon: 'photo_camera', link: 'https://zzim-exchange.vercel.app' },
+      { name: '흐민', cardTitle: 'Sullivan + Personal Brand OS', summary: 'Capture 에이전트 강화 + Agent Mode 추가. Python→마크다운 에이전트 전환. 오픈클로 + 로컬 LLM 연구.', icon: 'psychology', link: '' },
     ]
   },
   {
     week: 2,
     title: '원소스 멀티유즈의 폭발',
     members: [
-      { name: '비비안', summary: 'Webflow→Next.js 마이그레이션 9단계 설계. Supabase 락인 해결, Auth 방식 결정.', icon: 'engineering', link: '' },
-      { name: '띵끄', summary: '원소스 멀티유즈 콘텐츠 마케팅 사이트. OMC 활용, Vercel 자동배포.', icon: 'code', link: 'https://content-marketing-team.vercel.app/' },
-      { name: '잽', summary: 'BRAND SHOW UP 원페이지 웹 제안서. 프레임워크 없이 순수 HTML/CSS/JS로 하루 만에 완성.', icon: 'web', link: 'https://zap-arch.github.io/brand-showup/' },
-      { name: '흐민', summary: 'Sullivan — 질문으로 생각을 확장하는 AI. 5개 Agent + Obsidian 연동.', icon: 'psychology', link: '' },
-      { name: '에밀리', summary: 'CRM 자동화. URL 하나로 8채널 20개 콘텐츠 자동 생성. 6개 에이전트 팀 설계.', icon: 'campaign', link: '' },
-      { name: '다니', summary: '원소스 멀티유즈. URL로 인스타 캐러셀 + 스레드 + 링크드인 콘텐츠 자동 생성.', icon: 'smart_toy', link: '' },
-      { name: '오웬', summary: '인스타그램 카드뉴스 자동 제작. crontab + Claude API + Playwright + instagrapi.', icon: 'photo_camera', link: '' },
+      { name: '비비안', cardTitle: 'Webflow→Next.js 마이그레이션 설계', summary: '9단계로 체계적 분석. Supabase 락인 해결, Auth 방식 결정, 어드민 스펙 확정.', icon: 'engineering', link: '' },
+      { name: '띵끄', cardTitle: '원소스 멀티유즈 콘텐츠 마케팅 사이트', summary: 'OMC 활용, Vercel 자동배포, YouTube API 연동. 비용관리 자동화.', icon: 'code', link: 'https://content-marketing-team.vercel.app/' },
+      { name: '잽', cardTitle: 'BRAND SHOW UP 원페이지 웹 제안서', summary: '프레임워크 없이 순수 HTML/CSS/JS로 하루 만에 완성. GitHub Pages 배포.', icon: 'web', link: 'https://zap-arch.github.io/brand-showup/' },
+      { name: '흐민', cardTitle: 'Sullivan — 질문하는 AI 어시스턴트', summary: '5개 Agent + Obsidian 연동 + 자동 스케줄러. Anne Sullivan 교육 철학 적용.', icon: 'psychology', link: '' },
+      { name: '에밀리', cardTitle: 'CRM 자동화 — 8채널 20개 콘텐츠', summary: 'URL 하나로 알림톡+카플친+오픈채팅+인스타+이메일+UTM 자동 생성. 6개 에이전트 팀.', icon: 'campaign', link: '' },
+      { name: '다니', cardTitle: '원소스 멀티유즈 3채널 자동 생성', summary: 'URL로 인스타 캐러셀 + 스레드 + 링크드인 콘텐츠 동시 생성. OpenCode 비교 분석.', icon: 'smart_toy', link: '' },
+      { name: '오웬', cardTitle: '인스타그램 카드뉴스 완전 자동화', summary: 'crontab으로 매주 월/목 자동 실행. Claude API + Playwright + instagrapi.', icon: 'photo_camera', link: '' },
     ]
   },
   {
     week: 1,
     title: 'Agent Loop에서 시작된 여정',
     members: [
-      { name: '다다', summary: 'Claude Code CLI 설치 및 Agent Loop 학습. Obsidian vault 연동 성공.', icon: 'architecture', link: '' },
-      { name: '비비안', summary: 'Agent Loop 구조 분석. 프롬프트 엔지니어링의 중요성 발견.', icon: 'engineering', link: '' },
+      { name: '다다', cardTitle: 'Claude Code 입문 + Obsidian 연동', summary: 'CLI 설치, Agent Loop 학습, 멀티에이전트로 스터디 자동화 구상.', icon: 'architecture', link: '' },
+      { name: '비비안', cardTitle: 'Agent Loop 구조 분석', summary: '프롬프트 엔지니어링이 결과 품질에 결정적 영향을 미친다는 발견.', icon: 'engineering', link: '' },
     ]
   },
 ];
@@ -76,20 +76,23 @@ const weeks = [
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {week.members.map((member) => (
-            <div class="p-6 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 transition-all group">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-9 h-9 bg-white dark:bg-[#2a2a2c] rounded-lg flex items-center justify-center shadow-sm">
-                  <span class="material-symbols-outlined text-slate-500 dark:text-gray-400 text-lg" style="font-variation-settings: 'FILL' 0, 'wght' 300;">{member.icon}</span>
+            <div class="p-6 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-lg transition-all group cursor-pointer flex flex-col" onclick={member.link ? `window.open('${member.link}','_blank')` : undefined}>
+              <h3 class="font-headline text-base font-bold text-black dark:text-white mb-2 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors line-clamp-1">{member.cardTitle || member.summary}</h3>
+              <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2 flex-1">{member.summary}</p>
+              <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-[#353437]">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 bg-white dark:bg-[#2a2a2c] rounded-full flex items-center justify-center">
+                    <span class="text-[9px] font-bold text-slate-500 dark:text-gray-400">{member.name.charAt(0)}</span>
+                  </div>
+                  <span class="text-xs text-slate-400 dark:text-gray-500">by {member.name}</span>
                 </div>
-                <span class="font-headline font-bold text-black dark:text-white">{member.name}</span>
+                {member.link && (
+                  <a href={member.link} target="_blank" class="text-[10px] font-bold text-[#d4a800] dark:text-[#FBE830] hover:underline flex items-center gap-1" onclick="event.stopPropagation()">
+                    <span class="material-symbols-outlined text-xs">open_in_new</span>
+                    Live
+                  </a>
+                )}
               </div>
-              <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed mb-3">{member.summary}</p>
-              {member.link && (
-                <a href={member.link} target="_blank" class="text-xs font-bold text-[#d4a800] dark:text-[#FBE830] hover:underline flex items-center gap-1">
-                  <span class="material-symbols-outlined text-sm">open_in_new</span>
-                  라이브 보기
-                </a>
-              )}
             </div>
           ))}
         </div>
