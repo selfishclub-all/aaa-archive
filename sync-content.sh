@@ -7,24 +7,34 @@ IMAGES="$SITE/public/images"
 mkdir -p "$CONTENT/gallery" "$CONTENT/insights" "$CONTENT/tools" "$CONTENT/analysis" "$CONTENT/proposals" "$CONTENT/missions"
 mkdir -p "$IMAGES"
 
-# 이미지 복사: vault 루트의 이미지 파일들
-find "$VAULT" -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) -exec cp {} "$IMAGES/" \;
+# 이미지 복사: 파일명 공백→언더스코어로 변환하여 복사
+copy_image() {
+  local src="$1"
+  local name=$(basename "$src" | tr ' ' '_')
+  cp "$src" "$IMAGES/$name"
+}
 
-# 미션 하위폴더 이미지도 복사 (URL 디코딩된 폴더명)
-find "$VAULT/00_주차별미션/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" \) -exec cp {} "$IMAGES/" \;
+find "$VAULT" -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) | while read f; do
+  copy_image "$f"
+done
+
+find "$VAULT/00_주차별미션/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" \) | while read f; do
+  copy_image "$f"
+done
 
 echo "이미지 동기화: $(find "$IMAGES" -type f | wc -l)개 파일"
 
-# 미션 파일: Week_0N_ 패턴만, 이미지 경로를 /aaa-archive/images/ 로 변환
+# 미션 파일: Week_0N_ 패턴만, 이미지 경로 변환 (공백→언더스코어)
 find "$VAULT/00_주차별미션/" -name "Week_0*.md" -size +10c | while read f; do
   filename=$(basename "$f")
-  # ![[image.png]] → ![image](/aaa-archive/images/image.png)
-  # ![alt](any/path/image.png) → ![alt](/aaa-archive/images/image.png)
-  # ![alt](image.png) → ![alt](/aaa-archive/images/image.png)
+  # 1) ![[image.png]] → ![image](/aaa-archive/images/image.png)
+  # 2) ![alt](path/image.png) → ![alt](/aaa-archive/images/image.png)
+  # 3) 이미지 URL 내 공백을 언더스코어로 변환
   sed -E \
     -e 's/!\[\[([^]]+)\]\]/![\1](\/aaa-archive\/images\/\1)/g' \
     -e 's/!\[([^]]*)\]\(([^)]*\/)?([^)]+\.(png|jpg|jpeg|gif|webp|svg))\)/![\1](\/aaa-archive\/images\/\3)/g' \
-    "$f" > "$CONTENT/missions/$filename"
+    "$f" | perl -pe 's{(\(/aaa-archive/images/)([^)]+)\)}{my $p=$1; my $n=$2; $n=~s/ /_/g; "$p$n)"}ge' \
+    > "$CONTENT/missions/$filename"
 done
 
 find "$VAULT/01_결과물갤러리/" -name "*.md" -exec cp {} "$CONTENT/gallery/" \; 2>/dev/null
