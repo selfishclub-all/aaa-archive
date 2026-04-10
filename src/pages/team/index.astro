@@ -19,50 +19,38 @@ const members = [
   <!-- Hero Banner -->
   <section class="pt-24 md:pt-28 pb-8 px-6 md:px-12 max-w-screen-2xl mx-auto">
     <div class="flex items-center gap-4 border-l-2 border-[#FBE830] pl-6">
-      <h1 class="font-headline text-2xl md:text-3xl font-bold tracking-tight text-black dark:text-white">
-        Builders Who <span class="italic text-black bg-[#FBE830] px-1.5">Ship Every Week</span>
-      </h1>
-      <span class="hidden md:inline text-sm text-slate-400 dark:text-gray-500">매주 AI로 실전 프로젝트를 만드는 팀</span>
+      <h1 class="font-headline text-2xl md:text-3xl font-bold tracking-tight text-black dark:text-white">팀 소개</h1>
+      <span class="hidden md:inline text-sm text-slate-400 dark:text-gray-500">매주 AI로 실전 프로젝트를 만드는 빌더들</span>
     </div>
   </section>
 
   <!-- Team Grid -->
-  <section class="px-6 md:px-12 py-16 md:py-24 max-w-screen-2xl mx-auto">
-    <div class="mb-16 md:mb-20 flex flex-col md:flex-row justify-between items-baseline gap-4">
-      <div>
-        <h2 class="text-xs font-bold uppercase tracking-widest text-black dark:text-white border-l-4 border-[#FBE830] pl-4 mb-2">Our Collective</h2>
-        <p class="text-slate-500 dark:text-gray-400 text-sm font-medium pl-5">Propelling the Digital Curator vision forward.</p>
-      </div>
-      <div class="hidden md:flex items-center gap-8 flex-1">
-        <div class="h-px flex-grow bg-slate-200 dark:bg-[#353437] mx-8"></div>
-        <div class="text-slate-400 dark:text-gray-500 text-xs font-mono whitespace-nowrap">{String(members.length).padStart(2, '0')} ARCHITECTS</div>
-      </div>
+  <section class="px-6 md:px-12 pb-16 max-w-screen-2xl mx-auto">
+    <div class="mb-8 flex items-center gap-4">
+      <span class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500">{members.length}명의 빌더</span>
+      <div class="h-px flex-grow bg-slate-200 dark:bg-[#353437]"></div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
       {members.map((member) => (
-        <div class="bg-white dark:bg-[#131315] group transition-all duration-500 hover:shadow-xl p-6 md:p-8 border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/50">
-          <div class="w-20 h-20 mx-auto mb-6 overflow-hidden bg-slate-100 dark:bg-[#1b1b1d] relative rounded-lg border border-slate-200 dark:border-[#353437] flex items-center justify-center">
-            <span class="material-symbols-outlined text-3xl text-slate-400 dark:text-gray-500 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors" style="font-variation-settings: 'FILL' 0, 'wght' 300;">{member.icon}</span>
-          </div>
-
-          <div class="text-center mb-6">
-            <h3 class="font-headline text-2xl font-bold tracking-tight text-black dark:text-white">{member.name}</h3>
-            <p class="text-slate-500 dark:text-gray-400 text-[10px] font-semibold uppercase tracking-widest mt-1">{member.role}</p>
-          </div>
-
-          <div class="pt-6 border-t border-slate-100 dark:border-[#353437]">
-            <h4 class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-gray-500 mb-3">Focus & Contributions</h4>
-            <p class="text-sm leading-relaxed text-slate-500 dark:text-gray-400 font-light">{member.desc}</p>
-          </div>
-
-          {member.github && (
-            <div class="mt-4 pt-4 border-t border-slate-100 dark:border-[#353437]">
-              <a href={`https://github.com/${member.github}`} target="_blank" class="text-[10px] font-medium text-slate-400 dark:text-gray-500 hover:text-[#d4a800] dark:hover:text-[#FBE830] transition-colors flex items-center gap-1">
-                <span class="material-symbols-outlined text-sm">link</span>
-                @{member.github}
-              </a>
+        <div class="bg-white dark:bg-[#1b1b1d] group transition-all hover:shadow-lg p-4 border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/50 rounded-lg">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 shrink-0 bg-slate-100 dark:bg-[#252527] rounded-full flex items-center justify-center">
+              <span class="material-symbols-outlined text-lg text-slate-400 dark:text-gray-500 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors" style="font-variation-settings: 'FILL' 0, 'wght' 300;">{member.icon}</span>
             </div>
+            <div>
+              <h3 class="font-headline text-base font-bold tracking-tight text-black dark:text-white">{member.name}</h3>
+              <p class="text-slate-400 dark:text-gray-500 text-[9px] font-semibold uppercase tracking-widest">{member.role}</p>
+            </div>
+          </div>
+          {member.desc && (
+            <p class="text-xs leading-relaxed text-slate-500 dark:text-gray-400 line-clamp-3">{member.desc}</p>
+          )}
+          {member.github && (
+            <a href={`https://github.com/${member.github}`} target="_blank" class="mt-2 text-[10px] font-medium text-slate-400 dark:text-gray-500 hover:text-[#d4a800] dark:hover:text-[#FBE830] transition-colors flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">link</span>
+              @{member.github}
+            </a>
           )}
         </div>
       ))}
