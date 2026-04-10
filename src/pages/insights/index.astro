@@ -5,10 +5,25 @@ import { getCollection } from 'astro:content';
 const insights = await getCollection('insights');
 const base = import.meta.env.BASE_URL;
 
-// 모든 키워드 수집
-const allKeywords = [...new Set(insights.flatMap(i => i.data.keywords || []))];
+// 빈 파일 제거 + 제목 정리
+const validInsights = insights.filter(i => {
+  const title = i.id.replace(/[-_]/g, ' ').trim();
+  return title && title !== '무제' && title.length > 1;
+});
+
+// 키워드 수집 + 빈도순 정렬 (상위 10개만)
+const kwCount: Record<string, number> = {};
+validInsights.forEach(i => {
+  (i.data.keywords || []).forEach((kw: string) => {
+    kwCount[kw] = (kwCount[kw] || 0) + 1;
+  });
+});
+const topKeywords = Object.entries(kwCount)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 10)
+  .map(([kw]) => kw);
 ---
-<Layout title="인사이트 - AAA 아카이브">
+<Layout title="인사이트 - AAA TEAM by Selfish Club">
   <!-- Hero Banner -->
   <section class="pt-20 md:pt-24" style="background: linear-gradient(135deg, rgba(251,232,48,0.08) 0%, rgba(251,232,48,0.15) 40%, rgba(200,240,200,0.1) 100%);">
     <div class="max-w-screen-2xl mx-auto px-6 md:px-12 py-10 md:py-14">
@@ -22,33 +37,80 @@ const allKeywords = [...new Set(insights.flatMap(i => i.data.keywords || []))];
     </div>
   </section>
 
-  <section class="pb-24 px-6 md:px-16 max-w-[1440px] mx-auto">
-    <!-- Keyword Filter -->
-    <div class="flex flex-wrap gap-2 mb-10">
-      <button class="kw-filter active text-xs font-bold px-4 py-2 rounded-full transition-all" data-keyword="all">All</button>
-      {allKeywords.map((kw) => (
-        <button class="kw-filter text-xs font-bold px-4 py-2 rounded-full transition-all" data-keyword={kw}>{kw}</button>
-      ))}
+  <!-- Keyword Filter -->
+  <section class="bg-white dark:bg-[#131315] border-b border-slate-100 dark:border-[#353437] sticky top-14 md:top-16 z-40">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-12">
+      <div class="flex gap-2 overflow-x-auto py-3 scrollbar-hide">
+        <button class="kw-filter active whitespace-nowrap text-sm font-bold px-5 py-2 rounded-full transition-all" data-keyword="all">
+          전체 <span class="text-xs font-normal ml-1 opacity-60">{validInsights.length}</span>
+        </button>
+        {topKeywords.map(kw => (
+          <button class="kw-filter whitespace-nowrap text-sm font-medium px-5 py-2 rounded-full transition-all" data-keyword={kw}>
+            {kw}
+          </button>
+        ))}
+      </div>
     </div>
+  </section>
 
-    <!-- Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="insight-grid">
-      {insights.map((insight) => (
-        <a href={`${base}insights/${insight.id}/`} class="insight-item group bg-slate-50 dark:bg-[#1b1b1d] rounded-xl p-8 hover:shadow-lg transition-all duration-300 block border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/30" data-keywords={(insight.data.keywords || []).join(',')}>
-          <div class="flex flex-wrap gap-2 mb-4">
-            {insight.data.keywords?.map((kw: string) => (
-              <span class="bg-[#FBE830]/15 text-[#d4a800] dark:text-[#FBE830] px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider border border-[#FBE830]/20">{kw}</span>
-            ))}
-            {(!insight.data.keywords || insight.data.keywords.length === 0) && (
-              <span class="bg-[#FBE830]/15 text-[#d4a800] dark:text-[#FBE830] px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider border border-[#FBE830]/20">Insight</span>
-            )}
-          </div>
-          <h3 class="font-headline text-xl font-semibold text-black dark:text-white mb-3 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{insight.id.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
-          {insight.data.member && (
-            <span class="text-slate-400 dark:text-gray-500 text-xs">by {insight.data.member}</span>
-          )}
-        </a>
-      ))}
+  <!-- Cards -->
+  <section class="bg-white dark:bg-[#131315]">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-12 pt-10 md:pt-12 pb-24">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="insight-grid">
+        {validInsights.map((insight, idx) => {
+          const title = insight.id.replace(/[-_]/g, ' ').trim();
+          const summary = insight.data.summary || '';
+          const member = insight.data.member || '';
+          const keywords = insight.data.keywords || [];
+          return (
+            <a
+              href={`${base}insights/${insight.id}/`}
+              class="insight-item group block rounded-xl border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/50 bg-slate-50/50 dark:bg-[#1b1b1d] hover:shadow-lg transition-all duration-300 overflow-hidden"
+              data-keywords={keywords.join(',')}
+              style={`animation-delay: ${idx * 40}ms`}
+            >
+              <div class="p-5 md:p-6">
+                {/* Keywords */}
+                <div class="flex flex-wrap gap-1.5 mb-3">
+                  {keywords.slice(0, 3).map((kw: string) => (
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#b8960a] dark:text-[#FBE830] bg-[#FBE830]/10 px-2 py-0.5 rounded">{kw}</span>
+                  ))}
+                </div>
+
+                {/* Title */}
+                <h3 class="font-headline text-base md:text-lg font-bold text-black dark:text-white mb-2 group-hover:text-[#b8960a] dark:group-hover:text-[#FBE830] transition-colors leading-snug line-clamp-2">
+                  {title}
+                </h3>
+
+                {/* Summary */}
+                {summary && (
+                  <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed line-clamp-2 mb-3">{summary}</p>
+                )}
+
+                {/* Footer */}
+                <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-[#353437]">
+                  {member ? (
+                    <div class="flex items-center gap-2">
+                      <div class="w-5 h-5 bg-slate-200 dark:bg-[#252527] rounded-full flex items-center justify-center">
+                        <span class="text-[8px] font-bold text-slate-500 dark:text-gray-400">{member.charAt(0)}</span>
+                      </div>
+                      <span class="text-[11px] text-slate-400 dark:text-gray-500">by {member}</span>
+                    </div>
+                  ) : (
+                    <span class="text-[11px] text-slate-400 dark:text-gray-500">AAA TEAM</span>
+                  )}
+                  <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-sm group-hover:text-[#FBE830] transition-colors">arrow_forward</span>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+
+      <div id="empty-state" class="hidden text-center py-16">
+        <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-5xl block mb-4">search_off</span>
+        <p class="text-slate-400 dark:text-gray-500">해당 키워드의 인사이트가 없습니다.</p>
+      </div>
     </div>
   </section>
 
@@ -56,7 +118,7 @@ const allKeywords = [...new Set(insights.flatMap(i => i.data.keywords || []))];
     .kw-filter {
       background: transparent;
       color: #6b7280;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #e5e7eb;
     }
     .kw-filter:hover {
       border-color: #FBE830;
@@ -65,6 +127,7 @@ const allKeywords = [...new Set(insights.flatMap(i => i.data.keywords || []))];
     .kw-filter.active {
       background: #FBE830;
       color: #000;
+      font-weight: 700;
       border-color: #FBE830;
     }
     :global(.dark) .kw-filter {
@@ -83,28 +146,41 @@ const allKeywords = [...new Set(insights.flatMap(i => i.data.keywords || []))];
     .insight-item.hidden-by-filter {
       display: none;
     }
+    .insight-item {
+      animation: fadeUp 0.4s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 
   <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
       const buttons = document.querySelectorAll('.kw-filter');
       const items = document.querySelectorAll('.insight-item');
+      const emptyState = document.getElementById('empty-state');
 
       buttons.forEach(btn => {
         btn.addEventListener('click', () => {
           buttons.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
-
           const keyword = btn.getAttribute('data-keyword');
+          let visibleCount = 0;
 
           items.forEach(item => {
             const keywords = item.getAttribute('data-keywords') || '';
             if (keyword === 'all' || keywords.includes(keyword)) {
               item.classList.remove('hidden-by-filter');
+              visibleCount++;
             } else {
               item.classList.add('hidden-by-filter');
             }
           });
+
+          if (emptyState) emptyState.classList.toggle('hidden', visibleCount > 0);
         });
       });
     });
