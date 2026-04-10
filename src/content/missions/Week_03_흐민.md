@@ -1,5 +1,3 @@
----
----
 ## 오픈클로팀
 - **오픈클로 활용**
 	- 다양한 사례를 찾아봐도, 지피터스 사례만큼 오픈클로를 잘 활용하는 곳이 없음.
@@ -21,6 +19,7 @@
 			- 맥미니 m1 16gb gpt5.4+codex oAuth, 뻗은 적은 아직 없습니다
 ## 결과물
 ### 설리반 아키텍처
+![sullivan-architecture.png](/aaa-archive/images/sullivan-architecture.png)
 - **iCloud Drive 파일 접근 이슈로 인한 Github 저장소로 마이그레이션 진행**
 - **Capture 에이전트 대폭 강화**
     - **캡쳐 커맨드 체계 정비**
@@ -31,6 +30,7 @@
 - **Reflection 에이전트 리팩토링**
     - **모델 최적화 및 톤/트리거 개선**
 ### Personal Brand OS 아키텍처
+![personal-brand-os-architecture.png](/aaa-archive/images/personal-brand-os-architecture.png)
 **Personal Branding을 위한 플랫폼 별 콘텐츠 생성 시스템 (Personal Branding OS)**
 - **다양한 플랫폼 별로 구축된 멀티에이전트 기반으로 콘텐츠를 자동으로 생성하는 시스템**
     - 사용자의 obsidian 노트, 사진, 텍스트 인풋 등의 소스를 기반으로 하여 다양한 플랫폼 별 콘텐츠를 생성해주는 멀티에이전트 시스템

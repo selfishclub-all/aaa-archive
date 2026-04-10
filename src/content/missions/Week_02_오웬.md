@@ -1,5 +1,3 @@
----
----
 ### 결과물
 
 ### 만든 것: 인스타그램 카드뉴스 자동 제작 시스템
@@ -8,6 +6,7 @@
 
 **계정**: @aisellerguide (온라인 셀러를 위한 AI 정보)
 
+![image.png](/aaa-archive/images/image.png)
 
 crontab 트리거 1개 (매주 월/목 12:38 자동 실행)
 
@@ -64,6 +63,7 @@ crontab 트리거 (월/목 12:38)
 | `pipeline.py` | 위 4단계를 순서대로 실행하는 총괄 스크립트 |
 | `run.sh` | crontab에서 실행하는 쉘 스크립트  |
 
+![image.png](/aaa-archive/images/image%201.png)
 
 ```
 aiforseller/
@@ -140,7 +140,7 @@ Python 3.9 환경에서 instagrapi 2.3.0 설치 → `TypeError: unsupported oper
 Mac의 crontab에 등록:
 
 ```
-38 12 * * 1,4  /Users/owen/claude\ total/aiforseller/pipeline/run.sh
+38 12 * * 1,4  /Users/owen/claude\\ total/aiforseller/pipeline/run.sh
 ```
 
 `run.sh`가 .env 로드 → Python PATH 설정 → `pipeline.py` 실행 → 로그 파일 자동 기록

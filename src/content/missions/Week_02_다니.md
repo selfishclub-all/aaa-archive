@@ -1,5 +1,3 @@
----
----
 # 다니_2주차 과제
 
 week: 2주차
@@ -12,14 +10,21 @@ week: 2주차
 
 **URL 하나를 입력하면 인스타 캐러셀 + 스레드 + 링크드인 콘텐츠를 자동으로 생성하는 시스템을 Claude Code + oh-my-claudecode로 구축**
 
+![image.png](/aaa-archive/images/image.png)
 
 [요즘 다들 클로드코드 말고 이거 쓴다면서요? | OpenCode 코딩 에이전트](https://www.youtube.com/watch?v=y5cze4tAXZU)
 
+![slide_1.png](/aaa-archive/images/slide_1.png)
 
+![slide_2.png](/aaa-archive/images/slide_2.png)
 
+![slide_3.png](/aaa-archive/images/slide_3.png)
 
+![slide_4.png](/aaa-archive/images/slide_4.png)
 
+![slide_5.png](/aaa-archive/images/slide_5.png)
 
+![slide_7.png](/aaa-archive/images/slide_7.png)
 
 ```markdown
 # 링크드인 포스팅
@@ -177,6 +182,7 @@ Claude Code 실행 후 `/plugins` 입력 → 플러그인 UI 진입
 
 완료되면 하단 상태바에 `[OMC#4.9.3]` 표시 확인
 
+![image.png](/aaa-archive/images/image%201.png)
 
 ### Step 6. Gemini API 키 발급
 

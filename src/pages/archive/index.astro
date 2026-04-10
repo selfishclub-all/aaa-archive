@@ -3,9 +3,10 @@ import Layout from '../../layouts/Layout.astro';
 import '../../styles/global.css';
 import fs from 'node:fs';
 import path from 'node:path';
+import { marked } from 'marked';
 const base = import.meta.env.BASE_URL;
 
-// missions 파일을 직접 읽기
+// missions 파일을 직접 읽기 + 마크다운→HTML 변환
 const missionsDir = path.resolve('src/content/missions');
 const getMissionBody = (week: number, name: string): string => {
   const filename = `Week_0${week}_${name}.md`;
@@ -18,6 +19,11 @@ const getMissionBody = (week: number, name: string): string => {
   } catch {
     return '';
   }
+};
+const getMissionHtml = (week: number, name: string): string => {
+  const body = getMissionBody(week, name);
+  if (!body) return '';
+  return marked.parse(body) as string;
 };
 
 const weeks = [
@@ -93,8 +99,8 @@ const weeks = [
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {week.members.map((member) => {
-            const fullBody = getMissionBody(week.week, member.name);
-            const displayDetail = fullBody || member.detail || member.summary;
+            const fullHtml = getMissionHtml(week.week, member.name);
+            const displayDetail = fullHtml || `<p>${member.detail || member.summary}</p>`;
             return (
             <div
               class="p-6 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-lg transition-all group cursor-pointer flex flex-col modal-trigger"
@@ -141,7 +147,7 @@ const weeks = [
         </div>
         <span id="modal-name" class="text-sm text-slate-500 dark:text-gray-400"></span>
       </div>
-      <div id="modal-detail" class="text-sm text-slate-600 dark:text-gray-400 leading-relaxed mb-6 whitespace-pre-line max-h-[50vh] overflow-y-auto"></div>
+      <div id="modal-detail" class="prose prose-sm dark:prose-invert max-w-none mb-6 max-h-[50vh] overflow-y-auto [&_img]:rounded-lg [&_img]:my-4 [&_img]:max-w-full"></div>
       <div id="modal-link-wrap" class="hidden">
         <a id="modal-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-[#FBE830] text-black font-bold py-3 px-6 rounded-lg text-sm hover:shadow-md transition-all">
           <span class="material-symbols-outlined text-sm">open_in_new</span>
@@ -156,7 +162,7 @@ const weeks = [
       document.getElementById('modal-title').textContent = title;
       document.getElementById('modal-avatar').textContent = name.charAt(0);
       document.getElementById('modal-name').textContent = 'by ' + name;
-      document.getElementById('modal-detail').textContent = detail;
+      document.getElementById('modal-detail').innerHTML = detail;
       const linkWrap = document.getElementById('modal-link-wrap');
       if (link) {
         document.getElementById('modal-link').href = link;
