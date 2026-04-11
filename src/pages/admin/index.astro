@@ -54,6 +54,7 @@ const collections = {
       <span class="material-symbols-outlined text-slate-400 text-lg">key</span>
       <input id="token-input" type="password" placeholder="GitHub Personal Access Token" class="flex-1 px-3 py-2 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830]" />
       <button id="token-save" class="bg-[#FBE830] text-black font-bold text-sm px-4 py-2 rounded-lg hover:shadow-md transition-all">연결</button>
+      <button id="token-reset" class="hidden text-xs text-slate-400 hover:text-red-500 transition-colors px-3 py-2" onclick="localStorage.removeItem('gh_token'); location.reload();">토큰 초기화</button>
       <span id="token-status" class="text-xs text-slate-400 hidden">✓ 연결됨</span>
     </div>
   </div>
@@ -345,6 +346,7 @@ const collections = {
         document.getElementById('token-input').style.display = 'none';
         document.getElementById('token-save').style.display = 'none';
         document.getElementById('token-status').classList.remove('hidden');
+        document.getElementById('token-reset').classList.remove('hidden');
         loadFiles();
       }
     }
