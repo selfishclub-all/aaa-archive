@@ -151,10 +151,32 @@ const collections = {
       const match = content.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
       if (!match) return { data: {}, body: content };
       const data = {};
-      match[1].split('\n').forEach(line => {
-        const m = line.match(/^(\w+):\s*(.*)$/);
+      const lines = match[1].split('\n');
+      let currentKey = null;
+      let currentList = null;
+
+      for (const line of lines) {
+        // List item: "  - value"
+        if (line.match(/^\s+-\s+/) && currentKey) {
+          const val = line.replace(/^\s+-\s+/, '').trim();
+          if (!currentList) currentList = [];
+          currentList.push(val);
+          data[currentKey] = currentList;
+          continue;
+        }
+        // Key: value pair
+        const m = line.match(/^([a-zA-Z_]\w*):\s*(.*)$/);
         if (m) {
+          // Save previous list
+          currentList = null;
+          currentKey = m[1];
           let val = m[2].trim();
+
+          if (val === '' || val === '~' || val === 'null') {
+            // Empty value — might be followed by list items
+            data[currentKey] = '';
+            continue;
+          }
           if (val.startsWith('[') && val.endsWith(']')) {
             val = val.slice(1, -1).split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
           } else if (val.startsWith('"') && val.endsWith('"')) {
@@ -162,9 +184,10 @@ const collections = {
           } else if (!isNaN(val) && val !== '') {
             val = Number(val);
           }
-          data[m[1]] = val;
+          data[currentKey] = val;
+          currentList = null;
         }
-      });
+      }
       return { data, body: match[2] };
     }
 
@@ -239,8 +262,6 @@ const collections = {
     async function openEditor(path) {
       const col = collections[currentCollection];
       const file = await api(`contents/${path}`);
-      const content = atob(file.content.replace(/\n/g, ''));
-      // Handle UTF-8 properly
       const decoded = new TextDecoder().decode(Uint8Array.from(atob(file.content.replace(/\n/g, '')), c => c.charCodeAt(0)));
       const { data, body } = parseFrontmatter(decoded);
       currentFile = path;
