@@ -1,206 +1,105 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-
-const insights = await getCollection('insights');
-const tools = await getCollection('tools');
-const analysis = await getCollection('analysis');
 const base = import.meta.env.BASE_URL;
 
-const iconMap: Record<string, string> = {
-  '자동화': 'architecture',
-  '콘텐츠': 'filter_alt',
-  '분석': 'hub',
-  '생산성': 'analytics',
-  '디자인': 'palette',
-};
-
-const toolSummary: Record<string, string> = {
-  'AI Marketing Skills': '마케팅 에이전시가 실전에서 쓰는 11개 자동화 스킬셋',
-  'instagrapi': 'Python으로 인스타그램 캐러셀을 자동 업로드',
-  'n8n': '노코드로 워크플로우 자동화하는 오픈소스 도구',
-  'Obsidian Git': 'Obsidian 안에서 Git push/pull을 바로 실행',
-  'oh-my-claudecode (OMC)': 'Claude Code 멀티에이전트 오케스트레이션',
-  'Playwright': 'HTML을 브라우저에서 열고 PNG로 변환',
-  'Quartz': 'Obsidian vault를 정적 웹사이트로 변환',
-  'SOLAPI': '알림톡/문자를 API로 자동 발송',
-  'Sullivan': '답 대신 질문을 던져서 생각을 확장하는 AI',
+// 최근 주차 미션 데이터
+const latestWeek = {
+  week: 3,
+  title: '자동화를 넘어 실제 서비스 배포',
+  members: [
+    { name: '다다', cardTitle: '스터디 운영시스템 + 웹사이트 구축', summary: '커스텀 스킬 5개 생성. Quartz에서 Astro로 마이그레이션.', link: '' },
+    { name: '비비안', cardTitle: '셀피쉬클럽 v4.0 자체 플랫폼 셋업', summary: 'Webflow→Next.js 마이그레이션. 문서 우선 개발.', link: '' },
+    { name: '띵끄', cardTitle: 'YFLOW 전체 감사 — 5개 에이전트', summary: 'God Component 2,188줄→186줄. Vitest 31개 테스트.', link: 'https://github.com/growththink/flowops-dashboard' },
+    { name: '에밀리', cardTitle: 'CRM 알림톡 실제 발송 자동화', summary: 'n8n 알림톡 전체 플로우 성공. PRD 8개 분리.', link: '' },
+    { name: '오웬', cardTitle: '찜마켓 — 안전한 맞찜 플랫폼', summary: '카카오 로그인 + 스크린샷 인증 + 신뢰 온도.', link: 'https://zzim-exchange.vercel.app' },
+    { name: '흐민', cardTitle: 'Sullivan + Personal Brand OS', summary: 'Agent Mode 추가. 마크다운 에이전트 전환.', link: '' },
+  ]
 };
 ---
 
 <Layout title="AAA TEAM by Selfish Club">
-  <!-- Hero -->
-  <section class="relative min-h-[100svh] md:min-h-[700px] flex items-center justify-center px-6 md:px-12 overflow-hidden bg-white dark:bg-[#131315]" style="background: radial-gradient(circle at center, rgba(251,232,48,0.05), transparent)">
-    <div class="max-w-4xl mx-auto w-full text-center z-10">
-      <span class="inline-block py-1 px-3 bg-slate-50 dark:bg-[#1b1b1d] text-slate-500 dark:text-gray-400 text-[10px] font-bold tracking-[0.2em] uppercase mb-8 rounded">Selfish Club × AAA TEAM</span>
-      <h1 class="font-headline text-5xl md:text-7xl font-extrabold text-black dark:text-white leading-[1.05] tracking-tighter mb-8 mx-auto">
+  <!-- Hero (compact) -->
+  <section class="pt-14 md:pt-16" style="background: linear-gradient(135deg, rgba(251,232,48,0.08) 0%, rgba(251,232,48,0.15) 40%, rgba(200,240,200,0.1) 100%);">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-12 pt-16 md:pt-24 pb-12 md:pb-16 text-center">
+      <span class="inline-block py-1 px-3 bg-white/60 dark:bg-[#1b1b1d]/60 text-slate-500 dark:text-gray-400 text-[10px] font-bold tracking-[0.2em] uppercase mb-6 rounded border border-slate-200 dark:border-[#353437]">Selfish Club × AAA TEAM</span>
+      <h1 class="font-headline text-4xl md:text-6xl font-extrabold text-black dark:text-white leading-[1.1] tracking-tighter mb-5 mx-auto">
         이기적으로 만들고,<br/>이기적으로 공유한다.
       </h1>
-      <p class="font-body text-lg md:text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed mb-0">
+      <p class="text-sm md:text-base text-slate-600 dark:text-gray-400 max-w-lg mx-auto leading-relaxed">
         셀피쉬클럽이 만든 AAA TEAM.<br/>매주 AI로 실전 프로젝트를 빌드하고,<br/>그 과정을 낱낱이 공유합니다.
       </p>
     </div>
   </section>
 
-  <!-- Latest Insights (Text Only) -->
-  <section class="py-24 md:py-32 px-6 md:px-12 bg-white dark:bg-[#131315]">
-    <div class="max-w-screen-2xl mx-auto">
-      <div class="flex flex-col items-center mb-16 text-center">
-        <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-black dark:text-white tracking-tight mb-4 uppercase">Latest Insights</h2>
-        <div class="h-1.5 w-24 bg-[#FBE830] mb-6"></div>
-        <a class="text-sm font-bold text-black dark:text-white border-b border-black dark:border-white pb-1 hover:text-slate-600 dark:hover:text-gray-400 transition-colors" href={`${base}insights/`}>Archive View</a>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-        {insights.slice(0, 3).map((insight) => {
-          // summary 필드 우선, 없으면 본문 첫 문장
-          const summary = insight.data.summary || (() => {
-            const body = insight.body || '';
-            const lines = body.split('\n').filter((l: string) => l.trim() && !l.startsWith('#') && !l.startsWith('-') && !l.startsWith('>') && !l.startsWith('http') && !l.startsWith('---') && !l.startsWith('[') && !l.startsWith('```'));
-            const first = lines[0]?.replace(/\*\*/g, '').trim().slice(0, 60) || '';
-            return first.length >= 60 ? first + '...' : first || '스터디에서 발견한 인사이트';
-          })();
-
-          return (
-          <a href={`${base}insights/${insight.id}/`} class="group cursor-pointer pt-8 border-t border-slate-100 dark:border-[#353437] block flex flex-col">
-            <div class="flex flex-wrap gap-1.5 mb-3 min-h-[24px]">
-              {insight.data.keywords?.map((kw: string) => (
-                <span class="bg-[#FBE830]/15 text-[#b8960a] dark:text-[#FBE830] px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider border border-[#FBE830]/20">{kw}</span>
-              ))}
-              {(!insight.data.keywords || insight.data.keywords.length === 0) && (
-                <span class="bg-[#FBE830]/15 text-[#b8960a] dark:text-[#FBE830] px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider border border-[#FBE830]/20">Insight</span>
-              )}
-            </div>
-            <h3 class="font-headline text-xl md:text-2xl font-bold text-black dark:text-white leading-snug group-hover:text-slate-700 dark:group-hover:text-gray-300 transition-colors h-[3.5rem] md:h-[4rem] line-clamp-2 mb-3">{insight.id.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
-            <p class="text-slate-500 dark:text-gray-400 text-sm leading-relaxed line-clamp-2 mt-auto">{summary}</p>
-          </a>
-          );
-        })}
-        {insights.length < 3 && (
-          <div class="pt-8 border-t border-dashed border-slate-200 dark:border-[#353437] flex items-start">
-            <div>
-              <span class="text-[10px] font-bold tracking-widest text-slate-300 dark:text-gray-600 uppercase mb-2 block">Coming Soon</span>
-              <h3 class="font-headline text-2xl font-bold text-slate-300 dark:text-gray-600 mb-3 leading-snug">더 많은 인사이트가 추가될 예정입니다</h3>
-            </div>
+  <!-- Latest Weekly Mission -->
+  <section class="bg-white dark:bg-[#131315]">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-12 pt-12 md:pt-16 pb-16 md:pb-20">
+      <div class="flex items-center justify-between mb-8">
+        <div class="flex items-baseline gap-3">
+          <span class="text-3xl md:text-4xl font-headline font-black text-[#FBE830]">W{String(latestWeek.week).padStart(2, '0')}</span>
+          <div>
+            <h2 class="text-lg md:text-xl font-bold text-black dark:text-white tracking-tight">{latestWeek.title}</h2>
+            <p class="text-xs text-slate-400 dark:text-gray-500">{latestWeek.members.length}명 참여</p>
           </div>
-        )}
-      </div>
-    </div>
-  </section>
-
-  <!-- Popular Toolsets -->
-  <section class="py-24 md:py-32 px-6 md:px-12 bg-white dark:bg-[#131315]">
-    <div class="max-w-screen-2xl mx-auto">
-      <div class="flex flex-col items-center mb-16 md:mb-20 text-center">
-        <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-black dark:text-white tracking-tight mb-4 uppercase">Popular Toolsets</h2>
-        <div class="h-1.5 w-24 bg-[#FBE830] mb-6"></div>
-        <p class="text-slate-500 dark:text-gray-400 max-w-2xl leading-relaxed mb-8">멤버들이 실전에서 검증한 도구 모음입니다.</p>
-        <a href={`${base}tools/`} class="flex items-center gap-2 text-black dark:text-white font-bold text-sm group">
-          Explore All Tools
-          <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </div>
+        <a href={`${base}archive/`} class="text-xs font-bold text-slate-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1">
+          전체 보기
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
         </a>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {tools.slice(0, 4).map((tool) => (
-          <a href={`${base}tools/${tool.id}/`} class="p-8 bg-slate-50 dark:bg-[#1b1b1d] border border-transparent hover:border-[#FBE830]/30 transition-all rounded-xl block group">
-            <div class="w-12 h-12 bg-white dark:bg-[#2a2a2c] flex items-center justify-center rounded-lg shadow-sm mb-6">
-              <span class="material-symbols-outlined text-black dark:text-white" style="font-variation-settings: 'FILL' 1;">{iconMap[tool.data.category || ''] || 'handyman'}</span>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {latestWeek.members.map((member) => (
+          <div class="p-5 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-md transition-all group">
+            <h3 class="font-headline text-sm font-bold text-black dark:text-white mb-1.5 group-hover:text-[#b8960a] dark:group-hover:text-[#FBE830] transition-colors line-clamp-1">{member.cardTitle}</h3>
+            <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed mb-3 line-clamp-2">{member.summary}</p>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-[#353437]">
+              <div class="flex items-center gap-2">
+                <div class="w-5 h-5 bg-white dark:bg-[#252527] rounded-full flex items-center justify-center">
+                  <span class="text-[8px] font-bold text-slate-500 dark:text-gray-400">{member.name.charAt(0)}</span>
+                </div>
+                <span class="text-[11px] text-slate-400 dark:text-gray-500">by {member.name}</span>
+              </div>
+              {member.link && (
+                <a href={member.link} target="_blank" class="text-[10px] font-bold text-[#b8960a] dark:text-[#FBE830] hover:underline flex items-center gap-0.5" onclick="event.stopPropagation()">
+                  <span class="material-symbols-outlined text-xs">open_in_new</span>
+                  결과물
+                </a>
+              )}
             </div>
-            <h4 class="font-headline text-lg font-bold text-black dark:text-white mb-2 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{tool.data.name || tool.id}</h4>
-            <p class="text-slate-500 dark:text-gray-400 text-sm leading-relaxed">{toolSummary[tool.data.name || ''] || tool.data.type || tool.data.category || ''}</p>
-          </a>
+          </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Gallery Highlights (Bento Grid) -->
-  <section class="py-24 md:py-32 px-6 md:px-12 bg-slate-50 dark:bg-[#0e0e10]">
-    <div class="max-w-screen-2xl mx-auto">
-      <div class="mb-16 md:mb-20 text-center flex flex-col items-center">
-        <span class="text-[10px] font-bold tracking-[0.3em] text-slate-400 uppercase mb-2">Visual Repository</span>
-        <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-black dark:text-white tracking-tight uppercase mb-4">Gallery Highlights</h2>
-        <div class="h-1.5 w-24 bg-[#FBE830]"></div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 md:h-[800px]">
-        <a href="https://zap-arch.github.io/brand-showup/" target="_blank" class="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-xl bg-slate-200 dark:bg-[#1b1b1d] min-h-[300px] block">
-          <div class="absolute inset-0 bg-gradient-to-br from-slate-100 dark:from-[#2a2a2c] to-slate-300 dark:to-[#1b1b1d] flex items-center justify-center">
-            <span class="text-[100px] opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-700">🏢</span>
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-            <span class="text-[#FBE830] text-xs font-bold uppercase tracking-widest mb-2">Week 02</span>
-            <h4 class="text-white text-2xl font-bold">BRAND SHOW UP</h4>
-            <p class="text-white/60 text-sm mt-1">잽 — 원페이지 웹 제안서</p>
-          </div>
-        </a>
-        <a href="https://content-marketing-team.vercel.app/" target="_blank" class="md:col-span-2 relative group overflow-hidden rounded-xl bg-slate-200 dark:bg-[#1b1b1d] min-h-[150px] block">
-          <div class="absolute inset-0 bg-gradient-to-br from-slate-100 dark:from-[#2a2a2c] to-slate-200 dark:to-[#1b1b1d] flex items-center justify-center">
-            <span class="text-6xl opacity-10 group-hover:opacity-20 transition-all">📢</span>
-          </div>
-          <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <span class="text-white font-bold">콘텐츠 마케팅 · 띵끄</span>
-          </div>
-        </a>
-        <a href="https://instagram.com/aisellerguide" target="_blank" class="relative group overflow-hidden rounded-xl bg-slate-200 dark:bg-[#1b1b1d] min-h-[150px] block">
-          <div class="absolute inset-0 bg-gradient-to-br from-slate-100 dark:from-[#2a2a2c] to-slate-200 dark:to-[#1b1b1d] flex items-center justify-center">
-            <span class="text-5xl opacity-10 group-hover:opacity-20 transition-all">📸</span>
-          </div>
-          <div class="absolute bottom-3 left-3 text-xs font-medium text-slate-500 dark:text-gray-400">AI셀러가이드 · 오웬</div>
-        </a>
-        <a href={`${base}gallery/`} class="relative group overflow-hidden rounded-xl bg-slate-100 dark:bg-[#1b1b1d] border-2 border-dashed border-slate-200 dark:border-[#353437] min-h-[150px] flex items-center justify-center block">
-          <div class="text-center">
-            <span class="material-symbols-outlined text-slate-300 dark:text-gray-500 text-3xl block mb-2">add</span>
-            <span class="text-slate-400 dark:text-gray-500 text-xs font-bold uppercase tracking-wider">View All</span>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
+  <!-- Contact -->
+  <section class="bg-slate-50 dark:bg-[#0e0e10] border-t border-slate-100 dark:border-[#353437]">
+    <div class="max-w-2xl mx-auto px-6 md:px-12 py-16 md:py-24 text-center">
+      <h2 class="font-headline text-2xl md:text-3xl font-extrabold text-black dark:text-white tracking-tight mb-3">Contact Us</h2>
+      <p class="text-sm text-slate-500 dark:text-gray-400 mb-8">AAA TEAM에 대해 궁금한 점이 있다면 연락해주세요.</p>
 
-  <!-- AI Analysis Preview -->
-  <section class="py-24 md:py-32 px-6 md:px-12 bg-white dark:bg-[#131315]">
-    <div class="max-w-screen-2xl mx-auto">
-      <div class="flex flex-col items-center mb-16 text-center">
-        <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-black dark:text-white tracking-tight mb-4 uppercase">Latest Analysis</h2>
-        <div class="h-1.5 w-24 bg-[#FBE830] mb-6"></div>
-        <a class="text-sm font-bold text-black dark:text-white border-b border-black dark:border-white pb-1 hover:text-slate-600 dark:hover:text-gray-400 transition-colors" href={`${base}analysis/`}>전체 보기</a>
-      </div>
-      <a href={`${base}analysis/${analysis.sort((a, b) => (b.data.week || 0) - (a.data.week || 0))[0]?.id}/`} class="block group">
-        <div class="bg-slate-50 dark:bg-[#1b1b1d] p-10 md:p-16 rounded-2xl border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/30 transition-all text-center max-w-3xl mx-auto">
-          <div class="flex items-center justify-center gap-3 mb-8">
-            <div class="w-8 h-8 bg-[#131315] dark:bg-[#FBE830] rounded-full flex items-center justify-center">
-              <span class="material-symbols-outlined text-[#FBE830] dark:text-black text-sm">smart_toy</span>
-            </div>
-            <span class="text-sm font-bold tracking-widest text-[#d4a800] dark:text-[#FBE830] uppercase">AAA Bot · Week 03 Analysis</span>
-          </div>
-          <h3 class="font-headline text-2xl md:text-3xl font-bold text-black dark:text-white mb-4 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">
-            "자동화를 넘어 실제 서비스를 배포하기 시작했다"
-          </h3>
-          <p class="text-slate-500 dark:text-gray-400 leading-relaxed max-w-xl mx-auto mb-8">
-            더 이상 실험이 아니다. 맞찜 플랫폼, CRM 실발송, 자체 웹 플랫폼 — 실제 사용자를 만나는 프로덕트를 만들기 시작했다.
-          </p>
-          <span class="text-sm font-bold text-[#d4a800] dark:text-[#FBE830] group-hover:underline">분석 리포트 읽기 →</span>
+      <form class="space-y-4 text-left" onsubmit="event.preventDefault(); document.getElementById('form-success').classList.remove('hidden'); this.reset();">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">이름</label>
+          <input type="text" required class="w-full px-4 py-3 bg-white dark:bg-[#1b1b1d] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830] transition-colors" placeholder="이름을 입력해주세요" />
         </div>
-      </a>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">이메일</label>
+          <input type="email" required class="w-full px-4 py-3 bg-white dark:bg-[#1b1b1d] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830] transition-colors" placeholder="email@example.com" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">메시지</label>
+          <textarea rows="4" required class="w-full px-4 py-3 bg-white dark:bg-[#1b1b1d] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830] transition-colors resize-none" placeholder="궁금한 점을 적어주세요"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-[#FBE830] text-black font-bold py-3 px-6 rounded-lg text-sm hover:shadow-lg transition-all active:scale-[0.98]">
+          보내기
+        </button>
+      </form>
+
+      <div id="form-success" class="hidden mt-6 p-4 bg-[#FBE830]/10 border border-[#FBE830]/30 rounded-lg">
+        <p class="text-sm font-medium text-[#b8960a] dark:text-[#FBE830]">메시지가 전송되었습니다. 감사합니다!</p>
+      </div>
     </div>
   </section>
-
-  <!-- Floating Toolbar -->
-  <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-40">
-    <div class="bg-white/70 dark:bg-[#1b1b1d]/70 backdrop-blur-xl border border-slate-200/50 dark:border-[#353437]/50 px-6 py-3 rounded-full shadow-2xl flex items-center gap-6 md:gap-8">
-      <a href={`${base}gallery/`} class="flex items-center gap-2 group">
-        <span class="material-symbols-outlined text-slate-400 group-hover:text-black dark:group-hover:text-white transition-colors text-[20px]">collections</span>
-        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-black dark:group-hover:text-white transition-colors hidden md:inline">Gallery</span>
-      </a>
-      <div class="h-4 w-[1px] bg-slate-200 dark:bg-[#353437]"></div>
-      <a href={`${base}tools/`} class="flex items-center gap-2 group">
-        <span class="material-symbols-outlined text-slate-400 group-hover:text-black dark:group-hover:text-white transition-colors text-[20px]">handyman</span>
-        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-black dark:group-hover:text-white transition-colors hidden md:inline">Tools</span>
-      </a>
-      <div class="h-4 w-[1px] bg-slate-200 dark:bg-[#353437]"></div>
-      <a href={`${base}analysis/`} class="flex items-center gap-2 group">
-        <span class="material-symbols-outlined text-slate-400 group-hover:text-black dark:group-hover:text-white transition-colors text-[20px]">analytics</span>
-        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-black dark:group-hover:text-white transition-colors hidden md:inline">Analysis</span>
-      </a>
-    </div>
-  </div>
 </Layout>
