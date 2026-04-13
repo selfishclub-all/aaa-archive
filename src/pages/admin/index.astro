@@ -36,6 +36,25 @@ const collections = {
       { key: 'summary', label: '요약', type: 'textarea' },
       { key: 'keywords', label: '키워드 (쉼표 구분)', type: 'tags' },
     ]
+  },
+  analysis: {
+    label: '분석',
+    path: 'src/content/analysis',
+    fields: [
+      { key: 'week', label: '주차', type: 'number' },
+      { key: 'date', label: '날짜', type: 'text', placeholder: '2026-04-12' },
+      { key: 'total_submissions', label: '제출 인원', type: 'number' },
+      { key: 'tags', label: '태그 (쉼표 구분)', type: 'tags' },
+    ]
+  },
+  proposals: {
+    label: '제안',
+    path: 'src/content/proposals',
+    fields: [
+      { key: 'tags', label: '태그 (쉼표 구분)', type: 'tags' },
+      { key: 'status', label: '상태', type: 'select', options: ['제안', '검토중', '채택', '완료', '보류'] },
+      { key: 'last_updated', label: '최종 수정일', type: 'text', placeholder: '2026-04-12' },
+    ]
   }
 };
 ---
@@ -62,10 +81,17 @@ const collections = {
   <!-- Tab Filter -->
   <section class="bg-white dark:bg-[#131315] border-b border-slate-100 dark:border-[#353437] sticky top-14 md:top-16 z-40">
     <div class="max-w-screen-2xl mx-auto px-6 md:px-12">
-      <div class="flex gap-2 py-3">
+      <div class="flex items-center gap-2 py-3">
         <button class="tab-btn active text-sm font-bold px-5 py-2 rounded-full transition-all" data-collection="gallery">갤러리</button>
         <button class="tab-btn text-sm font-medium px-5 py-2 rounded-full transition-all" data-collection="tools">도구 모음</button>
         <button class="tab-btn text-sm font-medium px-5 py-2 rounded-full transition-all" data-collection="insights">인사이트</button>
+        <button class="tab-btn text-sm font-medium px-5 py-2 rounded-full transition-all" data-collection="analysis">분석</button>
+        <button class="tab-btn text-sm font-medium px-5 py-2 rounded-full transition-all" data-collection="proposals">제안</button>
+        <div class="flex-1"></div>
+        <button id="create-btn" class="hidden items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-full bg-black dark:bg-white text-white dark:text-black hover:shadow-md transition-all" onclick="openCreateModal()">
+          <span class="material-symbols-outlined text-base">add</span>
+          새 파일
+        </button>
       </div>
     </div>
   </section>
@@ -89,7 +115,7 @@ const collections = {
       <!-- File List -->
       <div id="file-list" class="hidden space-y-2"></div>
 
-      <!-- Edit Form (Modal) -->
+      <!-- Edit Modal -->
       <div id="edit-modal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeEditor()"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[80vh] overflow-y-auto bg-white dark:bg-[#1b1b1d] rounded-2xl shadow-2xl p-6 md:p-8">
@@ -105,6 +131,37 @@ const collections = {
             <button onclick="closeEditor()" class="px-6 py-3 border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-slate-500 hover:text-black dark:hover:text-white transition-colors">취소</button>
           </div>
           <div id="save-status" class="hidden mt-3 p-3 rounded-lg text-sm text-center"></div>
+          <div class="mt-4 pt-4 border-t border-slate-100 dark:border-[#353437]">
+            <button id="delete-btn" onclick="deleteFile()" class="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-sm text-red-400 hover:text-white hover:bg-red-500 border border-red-200 dark:border-red-900 hover:border-red-500 transition-all">
+              <span class="material-symbols-outlined text-base">delete</span>
+              파일 삭제
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Create Modal -->
+      <div id="create-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeCreateModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white dark:bg-[#1b1b1d] rounded-2xl shadow-2xl p-6 md:p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="font-headline text-lg font-bold text-black dark:text-white">새 파일 만들기</h2>
+            <button onclick="closeCreateModal()" class="text-slate-400 hover:text-black dark:hover:text-white">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">파일명 (.md 자동 추가)</label>
+              <input id="create-filename" type="text" placeholder="예: Week_04_분석" class="w-full px-3 py-2.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830]" />
+            </div>
+            <div id="create-fields" class="space-y-4"></div>
+          </div>
+          <div class="flex gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-[#353437]">
+            <button id="create-save-btn" onclick="createFile()" class="flex-1 bg-black dark:bg-white text-white dark:text-black font-bold py-3 rounded-lg text-sm hover:shadow-lg transition-all">생성</button>
+            <button onclick="closeCreateModal()" class="px-6 py-3 border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-slate-500 hover:text-black dark:hover:text-white transition-colors">취소</button>
+          </div>
+          <div id="create-status" class="hidden mt-3 p-3 rounded-lg text-sm text-center"></div>
         </div>
       </div>
     </div>
@@ -156,7 +213,6 @@ const collections = {
       let currentList = null;
 
       for (const line of lines) {
-        // List item: "  - value"
         if (line.match(/^\s+-\s+/) && currentKey) {
           const val = line.replace(/^\s+-\s+/, '').trim();
           if (!currentList) currentList = [];
@@ -164,16 +220,13 @@ const collections = {
           data[currentKey] = currentList;
           continue;
         }
-        // Key: value pair
         const m = line.match(/^([a-zA-Z_]\w*):\s*(.*)$/);
         if (m) {
-          // Save previous list
           currentList = null;
           currentKey = m[1];
           let val = m[2].trim();
 
           if (val === '' || val === '~' || val === 'null') {
-            // Empty value — might be followed by list items
             data[currentKey] = '';
             continue;
           }
@@ -196,7 +249,11 @@ const collections = {
       for (const [key, val] of Object.entries(data)) {
         if (val === undefined || val === null || val === '') continue;
         if (Array.isArray(val)) {
-          yaml += `${key}: [${val.map(v => `"${v}"`).join(', ')}]\n`;
+          if (val.length === 0) continue;
+          yaml += `${key}:\n`;
+          for (const item of val) {
+            yaml += `  - ${item}\n`;
+          }
         } else if (typeof val === 'number') {
           yaml += `${key}: ${val}\n`;
         } else {
@@ -205,6 +262,49 @@ const collections = {
       }
       yaml += '---\n';
       return yaml + (body || '');
+    }
+
+    function renderFieldHtml(field, val) {
+      if (field.type === 'select') {
+        const opts = (field.options || []).map(o =>
+          `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`
+        ).join('');
+        return `
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">${field.label}</label>
+            <select data-key="${field.key}" class="admin-input w-full px-3 py-2.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830]">
+              <option value="">선택...</option>
+              ${opts}
+            </select>
+          </div>`;
+      }
+      if (field.type === 'textarea') {
+        return `
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">${field.label}</label>
+            <textarea data-key="${field.key}" rows="3" class="admin-input w-full px-3 py-2.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830] resize-none">${val}</textarea>
+          </div>`;
+      }
+      return `
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">${field.label}</label>
+          <input data-key="${field.key}" type="${field.type === 'number' ? 'number' : 'text'}" value="${val}" placeholder="${field.placeholder || ''}"
+            class="admin-input w-full px-3 py-2.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830]" />
+        </div>`;
+    }
+
+    function collectFieldData(selector) {
+      const col = collections[currentCollection];
+      const data = {};
+      document.querySelectorAll(selector).forEach(input => {
+        const key = input.dataset.key;
+        let val = input.value.trim();
+        const field = col.fields.find(f => f.key === key);
+        if (field?.type === 'number' && val) val = Number(val);
+        if (field?.type === 'tags' && val) val = val.split(',').map(s => s.trim()).filter(Boolean);
+        if (val !== '' && val !== null) data[key] = val;
+      });
+      return data;
     }
 
     // Token setup
@@ -273,36 +373,10 @@ const collections = {
 
       const fieldsEl = document.getElementById('edit-fields');
       fieldsEl.innerHTML = col.fields.map(field => {
-        const val = field.key === 'keywords' && Array.isArray(data[field.key])
+        const val = (field.type === 'tags' || field.key === 'keywords') && Array.isArray(data[field.key])
           ? data[field.key].join(', ')
           : (data[field.key] || '');
-
-        if (field.type === 'select') {
-          const opts = (field.options || []).map(o =>
-            `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`
-          ).join('');
-          return `
-            <div>
-              <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">${field.label}</label>
-              <select data-key="${field.key}" class="admin-input w-full px-3 py-2.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830]">
-                <option value="">선택...</option>
-                ${opts}
-              </select>
-            </div>`;
-        }
-        if (field.type === 'textarea') {
-          return `
-            <div>
-              <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">${field.label}</label>
-              <textarea data-key="${field.key}" rows="3" class="admin-input w-full px-3 py-2.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830] resize-none">${val}</textarea>
-            </div>`;
-        }
-        return `
-          <div>
-            <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">${field.label}</label>
-            <input data-key="${field.key}" type="${field.type === 'number' ? 'number' : 'text'}" value="${val}" placeholder="${field.placeholder || ''}"
-              class="admin-input w-full px-3 py-2.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830]" />
-          </div>`;
+        return renderFieldHtml(field, val);
       }).join('');
 
       document.getElementById('save-status').classList.add('hidden');
@@ -322,17 +396,7 @@ const collections = {
       btn.disabled = true;
 
       try {
-        const col = collections[currentCollection];
-        const data = {};
-        document.querySelectorAll('.admin-input').forEach(input => {
-          const key = input.dataset.key;
-          let val = input.value.trim();
-          const field = col.fields.find(f => f.key === key);
-          if (field?.type === 'number' && val) val = Number(val);
-          if (field?.type === 'tags' && val) val = val.split(',').map(s => s.trim()).filter(Boolean);
-          if (val !== '' && val !== null) data[key] = val;
-        });
-
+        const data = collectFieldData('#edit-fields .admin-input');
         const newContent = buildFrontmatter(data, currentBody);
         const encoded = btoa(unescape(encodeURIComponent(newContent)));
 
@@ -361,6 +425,105 @@ const collections = {
       }
     };
 
+    window.deleteFile = async function() {
+      if (!currentFile) return;
+      const fileName = currentFile.split('/').pop();
+      if (!confirm(`"${decodeURIComponent(fileName)}" 파일을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) return;
+
+      const btn = document.getElementById('delete-btn');
+      const statusEl = document.getElementById('save-status');
+      btn.textContent = '삭제 중...';
+      btn.disabled = true;
+
+      try {
+        await api(`contents/${currentFile}`, {
+          method: 'DELETE',
+          body: JSON.stringify({
+            message: `admin: ${fileName} 삭제`,
+            sha: currentSha,
+          })
+        });
+
+        statusEl.className = 'mt-3 p-3 rounded-lg text-sm text-center bg-red-50 dark:bg-red-900/20 text-red-500 border border-red-200 dark:border-red-900';
+        statusEl.textContent = '✓ 삭제 완료.';
+        statusEl.classList.remove('hidden');
+        btn.textContent = '파일 삭제';
+        btn.disabled = false;
+
+        setTimeout(() => { closeEditor(); loadFiles(); }, 1200);
+      } catch (e) {
+        statusEl.className = 'mt-3 p-3 rounded-lg text-sm text-center bg-red-50 text-red-500 border border-red-200';
+        statusEl.textContent = '삭제 실패: ' + e.message;
+        statusEl.classList.remove('hidden');
+        btn.textContent = '파일 삭제';
+        btn.disabled = false;
+      }
+    };
+
+    window.openCreateModal = function() {
+      const col = collections[currentCollection];
+      document.getElementById('create-filename').value = '';
+
+      const fieldsEl = document.getElementById('create-fields');
+      fieldsEl.innerHTML = col.fields.map(field => renderFieldHtml(field, '')).join('');
+
+      document.getElementById('create-status').classList.add('hidden');
+      document.getElementById('create-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('create-filename').focus();
+    };
+
+    window.closeCreateModal = function() {
+      document.getElementById('create-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    };
+
+    window.createFile = async function() {
+      const filename = document.getElementById('create-filename').value.trim();
+      const statusEl = document.getElementById('create-status');
+      const btn = document.getElementById('create-save-btn');
+
+      if (!filename) {
+        statusEl.className = 'mt-3 p-3 rounded-lg text-sm text-center bg-red-50 text-red-500 border border-red-200';
+        statusEl.textContent = '파일명을 입력해주세요.';
+        statusEl.classList.remove('hidden');
+        return;
+      }
+
+      btn.textContent = '생성 중...';
+      btn.disabled = true;
+
+      try {
+        const col = collections[currentCollection];
+        const data = collectFieldData('#create-fields .admin-input');
+        const content = buildFrontmatter(data, '\n');
+        const encoded = btoa(unescape(encodeURIComponent(content)));
+        const filePath = `${col.path}/${filename}.md`;
+
+        await api(`contents/${filePath}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            message: `admin: ${filename}.md 생성`,
+            content: encoded,
+          })
+        });
+
+        statusEl.className = 'mt-3 p-3 rounded-lg text-sm text-center bg-[#FBE830]/10 text-[#b8960a] border border-[#FBE830]/30';
+        statusEl.textContent = '✓ 생성 완료!';
+        statusEl.classList.remove('hidden');
+        btn.textContent = '생성';
+        btn.disabled = false;
+
+        setTimeout(() => { closeCreateModal(); loadFiles(); }, 1200);
+      } catch (e) {
+        statusEl.className = 'mt-3 p-3 rounded-lg text-sm text-center bg-red-50 text-red-500 border border-red-200';
+        statusEl.textContent = '생성 실패: ' + e.message;
+        statusEl.classList.remove('hidden');
+        btn.textContent = '생성';
+        btn.disabled = false;
+      }
+    };
+
     function initAdmin() {
       if (getToken()) {
         document.getElementById('no-token').classList.add('hidden');
@@ -368,11 +531,18 @@ const collections = {
         document.getElementById('token-save').style.display = 'none';
         document.getElementById('token-status').classList.remove('hidden');
         document.getElementById('token-reset').classList.remove('hidden');
+        document.getElementById('create-btn').classList.remove('hidden');
+        document.getElementById('create-btn').classList.add('flex');
         loadFiles();
       }
     }
 
     document.addEventListener('DOMContentLoaded', initAdmin);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditor(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeEditor();
+        closeCreateModal();
+      }
+    });
   </script>
 </Layout>
