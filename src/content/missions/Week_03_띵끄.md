@@ -1,53 +1,78 @@
-### 결과물
+오마이클로드 → 플러그인 (클로드 안에서 써~)
 
-### **과제1. YFLOW 프로젝트 전체 감사 및 개선**
+- **링크드인 스레드 유튜브 등에서 유용한 정보들 2회 이상 슬렉에 올리기**
 
-Team 5 (5개 전문 에이전트) 동시 투입으로 전체 프로젝트 감사 후 5개 스프린트로 나눠서 순차 수정 → 자동 커밋 → 깃허브 푸시 → 버셀 배포까지 완료
 
-https://github.com/growththink/flowops-dashboard
+링크드인 링크
 
-### 스프린트 요약
+[https://www.linkedin.com/feed/update/urn:li:activity:7445776271273357312/](https://www.linkedin.com/feed/update/urn:li:activity:7445776271273357312/)
 
-| Sprint | 주제 | 핵심 변경 |
-|--------|------|-----------|
-| 1 | 보안 기반 | API 키 URL 노출 제거, 미들웨어 활성화, 보안 헤더 추가 |
-| 2 | API 안전성 | Zod 입력 검증 6개 라우트, Rate Limiting 7개 라우트, SSRF 방어 4곳 |
-| 3 | 안정성 | Error Boundary 2개, Loading/404 UI, alert→toast 9개 |
-| 4 | 성능 | select('*') 최적화 24개 파일, 랜딩 SSR 전환, God Component 분리 (2,188줄→186줄) |
-| 5 | 접근성+테스트 | Label-Input 연결 16개, ARIA 속성 5개 컴포넌트, Vitest 31개 테스트 |
+영수증인식시 첨부된 사진도 같이 노출되도록 설정
+![image - 2026-04-12T164731.202.png](/aaa-archive/images/image_-_2026-04-12T164731.202.png)
+데이터토대로 분석진할수있는 대시보드 부분 추가(AI 미사용) → 결과값이 늘다르게 나오기때
+![image - 2026-04-12T164729.244.png](/aaa-archive/images/image_-_2026-04-12T164729.244.png)
+![image - 2026-04-12T164727.604.png](/aaa-archive/images/image_-_2026-04-12T164727.604.png)
+![image - 2026-04-12T164726.095.png](/aaa-archive/images/image_-_2026-04-12T164726.095.png)
+resend APi를 활용해 영수증 및 인보이스 발송탭 추가![image - 2026-04-12T164721.046.png](/aaa-archive/images/image_-_2026-04-12T164721.046.png)
+![image - 2026-04-12T164724.519.png](/aaa-archive/images/image_-_2026-04-12T164724.519.png)
+![image - 2026-04-12T164722.790.png](/aaa-archive/images/image_-_2026-04-12T164722.790.png)
+작업이 완료되면 obsidian에 업데이트 파일을 제공하도록 클로드에게 요청진행
 
-### **과제2. Obsidian 볼트로 문서화**
+- 기본적인 부분은 클로드에게 보안점검을 요청하면 진행해주지만 클로드라고 완벽한것은 아니기때문에 보안관련해서 공부진행후 실제 놓친부분들은 없는지 확인이 필요해보임
+![image - 2026-04-12T164718.603.png](/aaa-archive/images/image_-_2026-04-12T164718.603.png)
+![image - 2026-04-12T164716.927.png](/aaa-archive/images/image_-_2026-04-12T164716.927.png)
+보안점검시 이런오류들이 발생함
 
-감사 결과를 Obsidian 볼트로 정리해서 깃허브에 업로드 완료
 
-- `docs/audit-vault/` 에 9개 문서 + Obsidian 설정
-- wikilink 연결로 그래프 뷰에서 스프린트 간 관계 시각화 가능
+### 만든과정 및 삽질
 
-### 만든 과정 및 삽질
+기능강화
 
-1. `team 5` 명령으로 5개 에이전트(Security, Performance, Code Review, A11y, Architecture) 동시 투입해서 전체 프로젝트 분석
-2. 감사 결과를 우선순위별(CRITICAL → HIGH → MEDIUM)로 정리한 후 스프린트 분배
-3. 각 스프린트마다: 에이전트 작업 → 빌드 검증 → 테스트 → 커밋 → 푸시 → 버셀 배포
-4. **Zod v4 이슈**: `z.record(z.unknown())` 가 v4에서 안 됨 → `z.record(z.string(), z.unknown())` 으로 수정 (3개 파일)
-5. **ai-report 타입 불일치**: `z.array(z.unknown())` 가 `unknown[]` 타입 생성 → 전체 캠페인 오브젝트 스키마를 명시적으로 정의해서 해결
-6. **God Component 분리**: expenses 페이지 2,188줄을 6개 컴포넌트로 쪼개는 과정에서 상태 공유/이벤트 핸들러 전달이 복잡했음
-7. **병렬 에이전트 실행**: Sprint 5에서 접근성(a11y-worker)과 테스트(test-worker) 2개를 동시에 백그라운드로 돌려서 시간 절약
+- 파이프라인 및 유저 갤러리 대시보드 제작해주라고 클로드 코드에게요청
+- 영수증 발송 기능을 추가하고싶은데 메일발송기능 추가해달라고 요청
+    - 활용은 resend API (일주일에 1000건 가능)
+    - [https://resend.com/emails](https://resend.com/emails)
+![image - 2026-04-12T164714.660 1.png](/aaa-archive/images/image_-_2026-04-12T164714.660_1.png)
+보안강화![image - 2026-04-12T164712.324.png](/aaa-archive/images/image_-_2026-04-12T164712.324.png)
+![image - 2026-04-12T164709.611.png](/aaa-archive/images/image_-_2026-04-12T164709.611.png)
+- 최근 바이브 코딩앱들에 대해서 보안문제가 나타난다는 것을보고 실제 앱 출시를 위해서 보안쪽에대해서 공부를 진행함![image - 2026-04-12T164703.859.png](/aaa-archive/images/image_-_2026-04-12T164703.859.png)
+- [https://lilys.ai/digest/8924886/10165771?s=1&noteVersionId=6654596](https://lilys.ai/digest/8924886/10165771?s=1&noteVersionId=6654596)
+
+영상을 토대로 클로드와 대화를 통해 웹사이트 보안 분석 MD파일 제작
+- 보다 나은 작업방식을위해 PRD형식의 MD파일로 제작 요청
+
+
+- 사용한 MD파일
+    
+    [YFLOW_Security_Audit_PRD.md](attachment:74d8cdf5-c0a2-4a82-941a-6f8f28200175:YFLOW_Security_Audit_PRD.md)
+    
+
+
+제작한 홈페이지 내의 보안관련 문제 다시한번 점검 진행
+
 
 ### 인사이트
 
-- **team N 활용법**: `team 5`로 5개 에이전트를 동시에 돌리면 각자 다른 관점(보안/성능/품질/접근성/구조)에서 분석 → 사람이 놓치기 쉬운 부분 발견
-    - 예) API 키가 URL 파라미터에 노출되는 건 보안 에이전트가, select('*')는 성능 에이전트가, Label-Input 미연결은 접근성 에이전트가 각각 찾음
-- **스프린트 분배의 중요성**: CRITICAL → HIGH → MEDIUM 순서로 하니까 가장 위험한 것부터 해결됨
-    - Sprint 1(보안)이 가장 급해서 먼저 처리 → Sprint 5(접근성/테스트)는 상대적으로 여유
-- **빌드 검증 필수**: 매 스프린트마다 `next build` 돌려서 TypeScript 에러 0개 확인 후 커밋
-    - Zod v4 이슈처럼 빌드 안 돌리면 놓칠 수 있는 타입 에러가 있음
-- **테스트 도입 타이밍**: Sprint 2에서 만든 유틸리티(validate-url, validations, rate-limit)를 Sprint 5에서 테스트 → 코드 작성과 테스트를 분리하면 테스트가 더 객관적
-- **Obsidian 볼트 활용**: 감사 결과를 wikilink로 연결하면 그래프 뷰에서 전체 구조를 한눈에 볼 수 있음
-- **백그라운드 에이전트**: `run_in_background: true`로 독립적인 작업을 병렬 실행하면 대기 시간 대폭 감소
+웹사이트 서비스에 supabase나 API연결시 프론트엔드 개발에 노출되어있는 경우가 많아 해킹, 토큰소모량 극대화 등 해외에서 이슈가 생긴다는 것을 확인
 
+- 체크리스트도 클로드에게 요청해서 제작해보았습니다.
+
+
+- 클로드에서 두개 계정으로 작업 시
+    
+    - 연결되어있는 supabsae, n8n, github, vercel 계정이다르면 CLI나 MCP가 작동을 하지않습니다.
+    - 계정을옮기면서 작업시 기존에 연결해둔 계정의 토큰을 다소모하기전에 20%정도는 토큰을 남겨두고 다른계정에서 작업진행 후 다시 연결되어있는 계정으로 작업을 해야 실제 데이터에 접근및 수정이 가능합니다.
+- 만우절 이벤트로 버디기능이 생겼습니다!
+    
+- /budy
+    
+![image - 2026-04-12T164659.902.png](/aaa-archive/images/image_-_2026-04-12T164659.902.png)
 ### 다시 한다면?
 
-- 감사 전에 프로젝트의 핵심 비즈니스 로직을 먼저 정리했으면 우선순위 판단이 더 정확했을 것
-- E2E 테스트(Playwright)도 Sprint 5에 포함했으면 좋았을 텐데, 시간 관계상 유닛 테스트만 진행
-- God Component 분리 시 상태 관리 라이브러리(Zustand 등) 도입을 검토했으면 props drilling이 줄었을 것
-- 각 스프린트 작업 전에 브랜치를 분리해서 PR로 관리했으면 리뷰/롤백이 편했을 것
+클로드코드를 통해서 바이브 코딩으로 웹서비스를 만들수있다는 것이 너무나 재미있지만
+
+실제 서비스 출시를 위해서라면 보안점검을 필수적으로 진행해보는것이 필요해보입니다.
+
+앞으로 서비스 설계시 보안쪽도 초반에 체크리스트 및 기초공부를 통해서 확인후 작업진행할것같습니다.
+
+특히 데이터베이스 연결이나 서버 API연결시 필수적으로 필요해보입니다.

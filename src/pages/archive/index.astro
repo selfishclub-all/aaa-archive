@@ -28,6 +28,19 @@ const getMissionHtml = (week: number, name: string): string => {
 
 const weeks = [
   {
+    week: 4,
+    title: '실전 SaaS와 자동화의 완성',
+    members: [
+      { name: '다다', cardTitle: 'AAA TEAM 공식 홈페이지 + 어드민', summary: 'Obsidian vault 기반 외부 공개 사이트 구축. Vercel 배포.', detail: 'Obsidian vault에 멤버들이 작성한 과제, 인사이트, 도구 정보를 외부에 공개하는 웹사이트를 만들었다. 메인 랜딩, 주간 미션, 인사이트, 도구 모음, 갤러리, AI 분석, 팀소개 등 7개 페이지를 구축하고 Vercel로 배포했다. 어드민 페이지를 추가하여 frontmatter 기반 콘텐츠 관리 시스템을 구현했다.', icon: 'architecture', link: '' },
+      { name: '비비안', cardTitle: '셀피쉬클럽 v4.0 — 토큰 효율화 + 인증', summary: 'CLAUDE.md 정비 + BetterAuth 카카오 로그인 구축. 하네스 엔지니어링으로 토큰 효율화.', detail: 'Claude Code가 읽는 설정 파일들을 정비하여 토큰 효율화를 선행했다. CLAUDE.md에 현재 진행 상황 섹션을 추가하고, AGENTS.md에 서브에이전트용 절대 규칙을 추가했다. BetterAuth + 카카오 OAuth를 연결하고 Supabase DB에 인증 테이블 4개를 생성했다. selfishclub-ax 전용 GitHub 레포를 연결하고 GitHub Actions 자동 동기화를 설정했다.', icon: 'engineering', link: '' },
+      { name: '띵끄', cardTitle: 'GrowthLink — 비즈니스 통합 대시보드', summary: '148커밋, 26페이지, 67 API. Stripe·Calendly·GHL·Meta·n8n 5개 서비스 통합.', detail: '에이전시 사업 운영에 필요한 5~6개 툴(Stripe, Calendly, GoHighLevel, Meta, n8n)을 하나의 대시보드에서 통합 관리하는 SaaS GrowthLink(구 YFLOW)를 완성했다. 약 1개월간 148커밋, 26개 대시보드 페이지, 67개 API 엔드포인트, 20개+ DB 테이블을 구축했다. AI 인스타그램 캐러셀 생성기와 High-Ticket OS를 핵심 기능으로 포함했다.', icon: 'code', link: '' },
+      { name: '에밀리', cardTitle: 'CRM 알림톡 9종 자동 발송 완성', summary: '알림톡 9종 + 카플친·오카방·온드미디어 카피 자동화. 크루 7명 실전 테스트.', detail: '공유회 하나당 각기 다른 템플릿 알림톡 9종(오픈알림, 리마인드, D-1, 당일, 할인쿠폰, 입장링크, 시작알림, 혜택안내, VOD)을 자동 발송하는 시스템을 완성했다. n8n 크론이 매일 아침 10시에 오늘 나가야 할 알림톡을 자동 확인한다. 카플친·오카방·온드미디어 카피 자동화와 랜딩페이지 작업까지 확장했다.', icon: 'campaign', link: '' },
+      { name: '오웬', cardTitle: '찜마켓 — 146커밋 안전 맞찜 플랫폼', summary: 'AI 스크린샷 인증 + 크레딧 경제 + 셀러 커뮤니티. Microsoft Clarity 분석.', detail: '에이블리/지그재그/무신사 셀러 전용 안전 맞찜 플랫폼 찜마켓을 146커밋(feat 78/fix 57)으로 완성했다. 맞찜 전체 플로우(요청→수락→인증→AI 검증→완료), Claude Vision AI 스크린샷 자동 인증, 크레딧 경제 시스템, 셀러 커뮤니티, 실시간 알림을 구현했다. Microsoft Clarity 히트맵/세션리플레이로 분석 환경을 세팅했다.', icon: 'photo_camera', link: 'https://zzim-exchange.vercel.app' },
+      { name: '흐민', cardTitle: 'Personal OS + Sullivan 마이그레이션', summary: 'Claude-Channel 마이그레이션. 3레이어 아키텍처 설계. 영속 세션 인프라.', detail: 'Sullivan의 동작 구조를 Claude-Channel 기능으로 마이그레이션하고, 재부팅 후에도 Sullivan이 자동으로 살아나는 영속 세션 인프라를 구축했다. Personal OS를 3레이어 아키텍처(사고·지식·퍼블리싱)로 설계하고, Karpathy LLM Wiki + Graphify를 리서치하여 적용했다. OmC Deep-Interview를 통해 요구사항을 구체화하고 리브랜딩했다.', icon: 'psychology', link: '' },
+      { name: '다니', cardTitle: 'Remotion — 터미널에서 영상 만들기', summary: 'React + Claude Code로 자연어 영상 제작. 30~40분이면 첫 영상 완성.', detail: 'Remotion(React로 영상을 만드는 프레임워크)과 Claude Code를 결합하여 터미널에서 자연어로 영상을 만드는 워크플로우를 구축했다. After Effects나 프리미어 없이, 코드 한 줄도 안 건드리고 "이런 영상 만들어줘"라고 대화하면 AI가 코드를 짜고 브라우저에서 실시간 미리보기를 확인하며 수정할 수 있다. 총 30~40분이면 첫 영상까지 완성 가능.', icon: 'smart_toy', link: '' },
+    ]
+  },
+  {
     week: 3,
     title: '자동화를 넘어 실제 서비스 배포',
     members: [
