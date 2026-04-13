@@ -1,6 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+import { marked } from 'marked';
 const base = import.meta.env.BASE_URL;
+
+const missionsDir = path.resolve('src/content/missions');
+const getMissionHtml = (week: number, name: string): string => {
+  const filename = `Week_0${week}_${name}.md`;
+  const filepath = path.join(missionsDir, filename);
+  try {
+    const content = fs.readFileSync(filepath, 'utf8');
+    const body = content.replace(/^---[\s\S]*?---\n?/, '');
+    return body.trim() ? (marked.parse(body.trim()) as string) : '';
+  } catch { return ''; }
+};
 
 // 최근 주차 미션 데이터
 const latestWeek = {
@@ -50,12 +64,15 @@ const latestWeek = {
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {latestWeek.members.map((member) => (
+        {latestWeek.members.map((member) => {
+          const fullHtml = getMissionHtml(latestWeek.week, member.name);
+          const displayDetail = fullHtml || `<p>${member.summary}</p>`;
+          return (
           <div
             class="p-5 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-md transition-all group cursor-pointer main-card"
             data-name={member.name}
             data-title={member.cardTitle}
-            data-summary={member.summary}
+            data-detail={displayDetail}
             data-link={member.link || ''}
           >
             <h3 class="font-headline text-sm font-bold text-black dark:text-white mb-1.5 group-hover:text-[#b8960a] dark:group-hover:text-[#FBE830] transition-colors line-clamp-1">{member.cardTitle}</h3>
@@ -75,7 +92,8 @@ const latestWeek = {
               )}
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   </section>
@@ -94,7 +112,7 @@ const latestWeek = {
         </div>
         <span id="main-modal-name" class="text-sm text-slate-500 dark:text-gray-400"></span>
       </div>
-      <p id="main-modal-summary" class="text-sm text-slate-600 dark:text-gray-400 leading-relaxed mb-6"></p>
+      <div id="main-modal-detail" class="prose prose-sm dark:prose-invert max-w-none mb-6 max-h-[50vh] overflow-y-auto [&_img]:rounded-lg [&_img]:my-4 [&_img]:max-w-full [&_video]:rounded-lg [&_video]:my-4 [&_video]:max-w-full"></div>
       <div id="main-modal-link-wrap" class="hidden">
         <a id="main-modal-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-[#FBE830] text-black font-bold py-3 px-6 rounded-lg text-sm hover:shadow-md transition-all">
           <span class="material-symbols-outlined text-sm">open_in_new</span>
@@ -122,12 +140,12 @@ const latestWeek = {
           if (e.target.closest('a')) return;
           const name = card.dataset.name;
           const title = card.dataset.title;
-          const summary = card.dataset.summary;
+          const detail = card.dataset.detail;
           const link = card.dataset.link;
           document.getElementById('main-modal-title').textContent = title;
           document.getElementById('main-modal-avatar').textContent = name.charAt(0);
           document.getElementById('main-modal-name').textContent = 'by ' + name;
-          document.getElementById('main-modal-summary').textContent = summary;
+          document.getElementById('main-modal-detail').innerHTML = detail;
           const linkWrap = document.getElementById('main-modal-link-wrap');
           if (link) {
             document.getElementById('main-modal-link').href = link;
