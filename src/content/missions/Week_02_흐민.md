@@ -1,6 +1,6 @@
 ### 결과물
 
-![image.png](/aaa-archive/images/image.png)
+![image.png](/images/image.png)
 
 <aside>
 
@@ -14,7 +14,7 @@
 
 - 콘텐츠 자동화 프로젝트로 확장 진행중
 
-![image.png](/aaa-archive/images/image%201.png)
+![image.png](/images/image%201.png)
 
 ## 1. 왜 이걸 만들었나
 

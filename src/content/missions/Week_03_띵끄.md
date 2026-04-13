@@ -8,19 +8,19 @@
 [https://www.linkedin.com/feed/update/urn:li:activity:7445776271273357312/](https://www.linkedin.com/feed/update/urn:li:activity:7445776271273357312/)
 
 영수증인식시 첨부된 사진도 같이 노출되도록 설정
-![image - 2026-04-12T164731.202.png](/aaa-archive/images/image_-_2026-04-12T164731.202.png)
+![image - 2026-04-12T164731.202.png](/images/image_-_2026-04-12T164731.202.png)
 데이터토대로 분석진할수있는 대시보드 부분 추가(AI 미사용) → 결과값이 늘다르게 나오기때
-![image - 2026-04-12T164729.244.png](/aaa-archive/images/image_-_2026-04-12T164729.244.png)
-![image - 2026-04-12T164727.604.png](/aaa-archive/images/image_-_2026-04-12T164727.604.png)
-![image - 2026-04-12T164726.095.png](/aaa-archive/images/image_-_2026-04-12T164726.095.png)
-resend APi를 활용해 영수증 및 인보이스 발송탭 추가![image - 2026-04-12T164721.046.png](/aaa-archive/images/image_-_2026-04-12T164721.046.png)
-![image - 2026-04-12T164724.519.png](/aaa-archive/images/image_-_2026-04-12T164724.519.png)
-![image - 2026-04-12T164722.790.png](/aaa-archive/images/image_-_2026-04-12T164722.790.png)
+![image - 2026-04-12T164729.244.png](/images/image_-_2026-04-12T164729.244.png)
+![image - 2026-04-12T164727.604.png](/images/image_-_2026-04-12T164727.604.png)
+![image - 2026-04-12T164726.095.png](/images/image_-_2026-04-12T164726.095.png)
+resend APi를 활용해 영수증 및 인보이스 발송탭 추가![image - 2026-04-12T164721.046.png](/images/image_-_2026-04-12T164721.046.png)
+![image - 2026-04-12T164724.519.png](/images/image_-_2026-04-12T164724.519.png)
+![image - 2026-04-12T164722.790.png](/images/image_-_2026-04-12T164722.790.png)
 작업이 완료되면 obsidian에 업데이트 파일을 제공하도록 클로드에게 요청진행
 
 - 기본적인 부분은 클로드에게 보안점검을 요청하면 진행해주지만 클로드라고 완벽한것은 아니기때문에 보안관련해서 공부진행후 실제 놓친부분들은 없는지 확인이 필요해보임
-![image - 2026-04-12T164718.603.png](/aaa-archive/images/image_-_2026-04-12T164718.603.png)
-![image - 2026-04-12T164716.927.png](/aaa-archive/images/image_-_2026-04-12T164716.927.png)
+![image - 2026-04-12T164718.603.png](/images/image_-_2026-04-12T164718.603.png)
+![image - 2026-04-12T164716.927.png](/images/image_-_2026-04-12T164716.927.png)
 보안점검시 이런오류들이 발생함
 
 
@@ -32,10 +32,10 @@ resend APi를 활용해 영수증 및 인보이스 발송탭 추가![image - 202
 - 영수증 발송 기능을 추가하고싶은데 메일발송기능 추가해달라고 요청
     - 활용은 resend API (일주일에 1000건 가능)
     - [https://resend.com/emails](https://resend.com/emails)
-![image - 2026-04-12T164714.660 1.png](/aaa-archive/images/image_-_2026-04-12T164714.660_1.png)
-보안강화![image - 2026-04-12T164712.324.png](/aaa-archive/images/image_-_2026-04-12T164712.324.png)
-![image - 2026-04-12T164709.611.png](/aaa-archive/images/image_-_2026-04-12T164709.611.png)
-- 최근 바이브 코딩앱들에 대해서 보안문제가 나타난다는 것을보고 실제 앱 출시를 위해서 보안쪽에대해서 공부를 진행함![image - 2026-04-12T164703.859.png](/aaa-archive/images/image_-_2026-04-12T164703.859.png)
+![image - 2026-04-12T164714.660 1.png](/images/image_-_2026-04-12T164714.660_1.png)
+보안강화![image - 2026-04-12T164712.324.png](/images/image_-_2026-04-12T164712.324.png)
+![image - 2026-04-12T164709.611.png](/images/image_-_2026-04-12T164709.611.png)
+- 최근 바이브 코딩앱들에 대해서 보안문제가 나타난다는 것을보고 실제 앱 출시를 위해서 보안쪽에대해서 공부를 진행함![image - 2026-04-12T164703.859.png](/images/image_-_2026-04-12T164703.859.png)
 - [https://lilys.ai/digest/8924886/10165771?s=1&noteVersionId=6654596](https://lilys.ai/digest/8924886/10165771?s=1&noteVersionId=6654596)
 
 영상을 토대로 클로드와 대화를 통해 웹사이트 보안 분석 MD파일 제작
@@ -66,7 +66,7 @@ resend APi를 활용해 영수증 및 인보이스 발송탭 추가![image - 202
     
 - /budy
     
-![image - 2026-04-12T164659.902.png](/aaa-archive/images/image_-_2026-04-12T164659.902.png)
+![image - 2026-04-12T164659.902.png](/images/image_-_2026-04-12T164659.902.png)
 ### 다시 한다면?
 
 클로드코드를 통해서 바이브 코딩으로 웹서비스를 만들수있다는 것이 너무나 재미있지만

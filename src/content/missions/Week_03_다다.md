@@ -4,11 +4,11 @@
 		_template
 - 폴더 구조 설계
 
-![Pasted image 20260404152028.png](/aaa-archive/images/Pasted_image_20260404152028.png)
+![Pasted image 20260404152028.png](/images/Pasted_image_20260404152028.png)
 
 **웹사이트**
 **[https://selfishclub-all.github.io/aaa-archive/](https://selfishclub-all.github.io/aaa-archive/)**
-![Pasted image 20260404160718.png](/aaa-archive/images/Pasted_image_20260404160718.png)
+![Pasted image 20260404160718.png](/images/Pasted_image_20260404160718.png)
 
 **스킬 생성**
 
@@ -29,7 +29,7 @@
 스킬 만들었지만 , 자연어로 해도 충분히 다 된다 
 
 #### 증상(디자인 깨짐)만 보고 코드를 계속 고치지 말고, 도구 자체의 한계인지 먼저 의심해보자"**
->  ![Pasted image 20260404103012.png](/aaa-archive/images/Pasted_image_20260404103012.png)![Pasted image 20260404103026.png](/aaa-archive/images/Pasted_image_20260404103026.png)
+>  ![Pasted image 20260404103012.png](/images/Pasted_image_20260404103012.png)![Pasted image 20260404103026.png](/images/Pasted_image_20260404103026.png)
 
 **상황** 
 Obsidian에 있는 Markdown 파일을 웹사이트로 변환하기 위해 Quartz*를 사용하고 있었는데, 디자인이 의도대로 나오지 않는 문제가 있었다.

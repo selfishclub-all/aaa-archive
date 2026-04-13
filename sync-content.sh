@@ -31,9 +31,9 @@ find "$VAULT/00_주차별미션/" -name "Week_0*.md" -size +10c | while read f; 
   # 2) ![alt](path/image.png) → ![alt](/aaa-archive/images/image.png)
   # 3) 이미지 URL 내 공백을 언더스코어로 변환
   sed -E \
-    -e 's/!\[\[([^]]+)\]\]/![\1](\/aaa-archive\/images\/\1)/g' \
-    -e 's/!\[([^]]*)\]\(([^)]*\/)?([^)]+\.(png|jpg|jpeg|gif|webp|svg))\)/![\1](\/aaa-archive\/images\/\3)/g' \
-    "$f" | perl -pe 's{(\(/aaa-archive/images/)([^)]+)\)}{my $p=$1; my $n=$2; $n=~s/ /_/g; "$p$n)"}ge' \
+    -e 's/!\[\[([^]]+)\]\]/![\1](\/images\/\1)/g' \
+    -e 's/!\[([^]]*)\]\(([^)]*\/)?([^)]+\.(png|jpg|jpeg|gif|webp|svg))\)/![\1](\/images\/\3)/g' \
+    "$f" | perl -pe 's{(\(/images/)([^)]+)\)}{my $p=$1; my $n=$2; $n=~s/ /_/g; "$p$n)"}ge' \
     > "$CONTENT/missions/$filename"
 done
 

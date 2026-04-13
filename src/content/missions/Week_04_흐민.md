@@ -1,6 +1,6 @@
 ## 결과물
 ### Personal OS 레이어
-![selforge-abstract.png](/aaa-archive/images/selforge-abstract.png)
+![selforge-abstract.png](/images/selforge-abstract.png)
 
 - **Personal OS**
     - Karpathy [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) + [Graphify](https://github.com/safishamsi/graphify) 리서치 및 적용

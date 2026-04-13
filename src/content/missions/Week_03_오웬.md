@@ -8,7 +8,7 @@
 > 카톡으로 맞찜 구하고, 답방 안 오고, 먹튀 당하는 셀러들을 위한 서비스.  
 > 스크린샷 인증 + 신뢰 온도 + 크레딧 시스템으로 "진짜 맞찜"만 합니다.
     오웬아 오웬아 왜요 클 왜요 클 처음부터 한길을 가지 그랬니
-![Pasted image 20260404171345.png](/aaa-archive/images/Pasted_image_20260404171345.png)
+![Pasted image 20260404171345.png](/images/Pasted_image_20260404171345.png)
 
 **주요 기능:**
 
@@ -33,11 +33,11 @@
 **🔧 스킬 2개 제작 (GitHub 공개)**
 
 - ==`/briefing` — "지금까지 뭐했지?" 자동 브리핑
-	- ![Pasted image 20260405164626.png](/aaa-archive/images/Pasted_image_20260405164626.png)
+	- ![Pasted image 20260405164626.png](/images/Pasted_image_20260405164626.png)
 
 
 - ==`/timecheck` — 작업 시간 추적 + 병목 분석==
-	- ![Pasted image 20260405164648.png](/aaa-archive/images/Pasted_image_20260405164648.png)
+	- ![Pasted image 20260405164648.png](/images/Pasted_image_20260405164648.png)
   
 > **클로드의 위험성은 나의 부족함을 언제나 매워주는 클로드 덕분에 
 > 내가 똑똑한 것 아닐까라는 착각을 하게 되는 것에 있음**
@@ -64,7 +64,7 @@
 
 팀원들이 CRM 자동화, 기사 자동화, 홈페이지 리뉴얼을 뚝딱 만들어내는 걸 보면서... 나는 이메일 로그인 + URL 복붙 수준의 프로토타입만 만들고 멈춰 있음
 
-![Pasted image 20260404171723.png](/aaa-archive/images/Pasted_image_20260404171723.png)
+![Pasted image 20260404171723.png](/images/Pasted_image_20260404171723.png)
 
 #### 3주차 후반: 멈추고 다시 물었다
 
@@ -72,7 +72,7 @@
 
 방향이 잡히니까 다시 움직일 수 있었습니다.
 
-![Group 1.png|454](/aaa-archive/images/Group_1.png|454)
+![Group 1.png|454](/images/Group_1.png|454)
 
 #### 4주차: 4시간 만에 MVP → 고도화까지
 
@@ -85,13 +85,13 @@
 	- 일단 가벼운(?) 스레드 형태의 커뮤니티 만드는 것 시도 
 	- 가벼운 것 맞나?
 		- 문득 이거 나중에 서버비 같은 것들 실질적으로 어떻게 될까?
-	- ![Pasted image 20260405154014.png](/aaa-archive/images/Pasted_image_20260405154014.png)
+	- ![Pasted image 20260405154014.png](/images/Pasted_image_20260405154014.png)
 - 알림 기능이 없어 알림 기능 구현 
 	- 알림이 있으니 좋다
-- ![Pasted image 20260405154433.png|328](/aaa-archive/images/Pasted_image_20260405154433.png|328)
+- ![Pasted image 20260405154433.png|328](/images/Pasted_image_20260405154433.png|328)
 	- 클로드코드에서 시간 오래 걸린다고 진짜 할건지 물어봄
 	- 사실 오래 안걸림
-	-![Pasted image 20260405140808.png|483](/aaa-archive/images/Pasted_image_20260405140808.png|483)
+	-![Pasted image 20260405140808.png|483](/images/Pasted_image_20260405140808.png|483)
 
 
 **고객은 어떻게 모을거냐?**
@@ -100,7 +100,7 @@
 - 유료 결제 태워봄 일 2만원
 	- 근데 갑자기 방장님 사업 제안함...?!!
 
-![Pasted image 20260405153549.png|697](/aaa-archive/images/Pasted_image_20260405153549.png|697)
+![Pasted image 20260405153549.png|697](/images/Pasted_image_20260405153549.png|697)
 
 /timechek skill
 
@@ -118,7 +118,7 @@
 | **총**           |                           | **약 5시간 40분** |
 
 추가로 클라리티 설치
-![Pasted image 20260405160141.png](/aaa-archive/images/Pasted_image_20260405160141.png)
+![Pasted image 20260405160141.png](/images/Pasted_image_20260405160141.png)
 
 **설리반에 영감을 받은 오리반 프로젝트**
 
@@ -134,17 +134,17 @@
 - 위 프로젝트들이 근데 하나의 헌장 등을 같기는 애매한데, 실제로 셀피쉬 오픈 클로 소모임에서도 하고 있는 고민들을 딥하게 해봐야 할듯 -> 같은 일을 하기 위해 각각의 역할을 수행하는 형태일 때, 효율적일텐데 개인의 학습 / 건강 관리 / 투자 이렇게 파편화된 부분에서는 따로 가져가는게 맞을지 그럼에도 불구하고 하나의 트리 안에서 있으면 좋을지 아직 잘 모르겠음. 
 	- 단기 투자 봇은 재앙급.... 
 		- 여기도 역시나 단기 거래 최적화 된 매매법 + 트레이더들 관점 섞었는데 실시간 대응의 관점에서 어려움이 많은 듯 -> 거래 api까지 붙여야 제대로 작동할까 고민?
-		- ![Pasted image 20260405164913.png](/aaa-archive/images/Pasted_image_20260405164913.png)
-![Pasted image 20260405162721.png|387](/aaa-archive/images/Pasted_image_20260405162721.png|387)
-![Pasted image 20260405215329.png|332](/aaa-archive/images/Pasted_image_20260405215329.png|332)
+		- ![Pasted image 20260405164913.png](/images/Pasted_image_20260405164913.png)
+![Pasted image 20260405162721.png|387](/images/Pasted_image_20260405162721.png|387)
+![Pasted image 20260405215329.png|332](/images/Pasted_image_20260405215329.png|332)
 
 
 **주요 삽질:**
 
 - 카카오 KOE205 에러 — 비즈 앱 전환 필요 (이걸 몰라서 30분)
-	- 더 정확히 말하면 시킨대로 비즈 앱 인증 했으면 될것을 그거 하기 싫어 이메일은 권한 빼려다 오히려 스탭 꼬임![스크린샷 2026-04-03 오후 12.18.32 복사본.png](/aaa-archive/images/스크린샷_2026-04-03_오후_12.18.32_복사본.png)
-	- ![스크린샷 2026-04-03 오후 12.30.21 복사본.png](/aaa-archive/images/스크린샷_2026-04-03_오후_12.30.21_복사본.png)
-	- ![스크린샷 2026-04-03 오후 12.18.32 복사본.png](/aaa-archive/images/스크린샷_2026-04-03_오후_12.18.32_복사본.png)
+	- 더 정확히 말하면 시킨대로 비즈 앱 인증 했으면 될것을 그거 하기 싫어 이메일은 권한 빼려다 오히려 스탭 꼬임![스크린샷 2026-04-03 오후 12.18.32 복사본.png](/images/스크린샷_2026-04-03_오후_12.18.32_복사본.png)
+	- ![스크린샷 2026-04-03 오후 12.30.21 복사본.png](/images/스크린샷_2026-04-03_오후_12.30.21_복사본.png)
+	- ![스크린샷 2026-04-03 오후 12.18.32 복사본.png](/images/스크린샷_2026-04-03_오후_12.18.32_복사본.png)
 - shadcn v4가 Next.js 14와 비호환 → v3 컴포넌트로 수동 교체
 	- > **최신 레고 블록이 내 레고판에 안 맞아서, 구버전 블록으로 바꿔 끼운 것**
 		shadcn은 버튼, 카드 같은 UI 부품 세트야. 최신 버전(v4)을 설치했는데, 우리 프로젝트 기반(Next.js 14)이 구버전이라 부품이 안 맞았어. "이 나사가 구멍에 안 들어가네?" 같은 상황. 결국 구버전(v3) 부품으로 하나하나 교체해서 해결.
@@ -155,7 +155,7 @@
 		- ==**1. 코드 구현 후 `npm run build && npm start`로 프로덕션 모드 테스트**==
 		- ==**2. Playwright E2E 테스트로 핵심 플로우 자동 검증**==
 		- ==**3. Sentry 연동해서 프로덕션 에러 실시간 감지**==
-		- ![Pasted image 20260405164737.png](/aaa-archive/images/Pasted_image_20260405164737.png)
+		- ![Pasted image 20260405164737.png](/images/Pasted_image_20260405164737.png)
 - Cal.com 디자인 적용했다가 "너무 단순해서 신뢰성이 없다"고 바로 롤백
 	- 링크드인에서 본 디자인.md 파일 쓴건데 의미 없었음
 	- 링크드인에 올릴 때 조심해야겠다는 생각 
@@ -164,7 +164,7 @@
 	- 다다가 추천해준 스티치가 디자인 개선에 가장 큰 도움이 됨 
 	- 해당 코드를 다시 갖고 오는 과정에서의 어색함은 있지만, 개선할 방법이 있을듯
 	- https://stitch.withgoogle.com/projects/18283416601627786620?pli=1
-	- ![Pasted image 20260405135741.png](/aaa-archive/images/Pasted_image_20260405135741.png)
+	- ![Pasted image 20260405135741.png](/images/Pasted_image_20260405135741.png)
 ### 인사이트
 
 **1. WHY가 없으면 2주도 부족하고, 있으면 4시간이면 된다**

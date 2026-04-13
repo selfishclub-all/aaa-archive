@@ -3,7 +3,7 @@ Remotion은 React 코드로 영상을 만드는 프레임워크
 
 # 터미널에서 Claude Code로 영상 만들기 🎬
 http://localhost:3000/TutorialVideo
-![TutorialVideo.mp4](/aaa-archive/images/TutorialVideo.mp4)
+![TutorialVideo.mp4](/images/TutorialVideo.mp4)
 > **Remotion + Claude Code 실전 가이드**  
 > 영상 편집 툴 없이, 코드도 직접 안 짜고, 자연어로 AI랑 대화하면서 영상 만드는 법.  
 > 실제 해보니까 **총 30~40분** 정도면 첫 영상까지 뽑을 수 있어요.

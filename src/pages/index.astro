@@ -51,7 +51,7 @@ const latestWeek = {
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {latestWeek.members.map((member) => (
-          <div class="p-5 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-md transition-all group">
+          <a href={`${base}archive/`} class="p-5 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-md transition-all group block">
             <h3 class="font-headline text-sm font-bold text-black dark:text-white mb-1.5 group-hover:text-[#b8960a] dark:group-hover:text-[#FBE830] transition-colors line-clamp-1">{member.cardTitle}</h3>
             <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed mb-3 line-clamp-2">{member.summary}</p>
             <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-[#353437]">
@@ -68,7 +68,7 @@ const latestWeek = {
                 </a>
               )}
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </div>
