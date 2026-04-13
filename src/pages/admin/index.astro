@@ -21,7 +21,7 @@ const collections = {
     path: 'src/content/tools',
     fields: [
       { key: 'name', label: '도구명', type: 'text' },
-      { key: 'category', label: '카테고리', type: 'select', options: ['자동화', '콘텐츠', '분석', '생산성', '디자인'] },
+      { key: 'category', label: '카테고리', type: 'multiselect', options: ['자동화', '콘텐츠', '분석', '생산성', '디자인'] },
       { key: 'type', label: '유형', type: 'select', options: ['Claude Code 스킬', 'Obsidian 플러그인', 'CLI 도구', '웹 도구', 'MCP 서버'] },
       { key: 'difficulty', label: '난이도', type: 'select', options: ['초급', '중급', '고급'] },
       { key: 'link', label: '링크', type: 'text', placeholder: 'https://...' },
@@ -168,6 +168,17 @@ const collections = {
   </section>
 
   <style>
+    .ms-chip {
+      background: transparent;
+      color: #6b7280;
+      border-color: #e5e7eb;
+    }
+    .ms-chip:hover { border-color: #FBE830; color: #000; }
+    .ms-chip.active { background: #FBE830; color: #000; border-color: #FBE830; font-weight: 700; }
+    :global(.dark) .ms-chip { border-color: #353437; color: #9ca3af; }
+    :global(.dark) .ms-chip:hover { border-color: #FBE830; color: #fff; }
+    :global(.dark) .ms-chip.active { background: #FBE830; color: #000; border-color: #FBE830; }
+
     .tab-btn {
       background: transparent;
       color: #6b7280;
@@ -264,7 +275,25 @@ const collections = {
       return yaml + (body || '');
     }
 
+    function safeDecodeUri(str) {
+      try { return decodeURIComponent(str); } catch { return str; }
+    }
+
     function renderFieldHtml(field, val) {
+      if (field.type === 'multiselect') {
+        const selected = Array.isArray(val) ? val : (val ? [val] : []);
+        const chips = (field.options || []).map(o => {
+          const active = selected.includes(o);
+          return `<button type="button" data-option="${o}" class="ms-chip ${active ? 'active' : ''} px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer">${o}</button>`;
+        }).join('');
+        return `
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">${field.label}</label>
+            <div data-key="${field.key}" data-type="multiselect" class="admin-input flex flex-wrap gap-2 p-2.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg min-h-[42px]">
+              ${chips}
+            </div>
+          </div>`;
+      }
       if (field.type === 'select') {
         const opts = (field.options || []).map(o =>
           `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`
@@ -298,6 +327,11 @@ const collections = {
       const data = {};
       document.querySelectorAll(selector).forEach(input => {
         const key = input.dataset.key;
+        if (input.dataset.type === 'multiselect') {
+          const selected = Array.from(input.querySelectorAll('.ms-chip.active')).map(c => c.dataset.option);
+          if (selected.length > 0) data[key] = selected;
+          return;
+        }
         let val = input.value.trim();
         const field = col.fields.find(f => f.key === key);
         if (field?.type === 'number' && val) val = Number(val);
@@ -306,6 +340,13 @@ const collections = {
       });
       return data;
     }
+
+    // Multiselect chip toggle
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('ms-chip')) {
+        e.target.classList.toggle('active');
+      }
+    });
 
     // Token setup
     document.getElementById('token-save').addEventListener('click', () => {
@@ -341,7 +382,7 @@ const collections = {
           <div class="file-item flex items-center gap-4 px-5 py-3.5 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1b1b1d] transition-all cursor-pointer border border-transparent hover:border-[#FBE830]/30 group"
                data-path="${f.path}" data-sha="${f.sha}">
             <span class="material-symbols-outlined text-slate-400 group-hover:text-[#FBE830] text-lg">description</span>
-            <span class="flex-1 text-sm font-medium text-black dark:text-white group-hover:text-[#b8960a] dark:group-hover:text-[#FBE830] truncate">${decodeURIComponent(f.name.replace('.md', ''))}</span>
+            <span class="flex-1 text-sm font-medium text-black dark:text-white group-hover:text-[#b8960a] dark:group-hover:text-[#FBE830] truncate">${safeDecodeUri(f.name.replace('.md', ''))}</span>
             <span class="material-symbols-outlined text-slate-300 text-sm">edit</span>
           </div>
         `).join('');
@@ -369,13 +410,14 @@ const collections = {
       currentBody = body;
 
       const fileName = path.split('/').pop().replace('.md', '');
-      document.getElementById('edit-title').textContent = decodeURIComponent(fileName);
+      document.getElementById('edit-title').textContent = safeDecodeUri(fileName);
 
       const fieldsEl = document.getElementById('edit-fields');
       fieldsEl.innerHTML = col.fields.map(field => {
-        const val = (field.type === 'tags' || field.key === 'keywords') && Array.isArray(data[field.key])
-          ? data[field.key].join(', ')
-          : (data[field.key] || '');
+        let val = data[field.key] || '';
+        if ((field.type === 'tags' || field.key === 'keywords') && Array.isArray(val)) {
+          val = val.join(', ');
+        }
         return renderFieldHtml(field, val);
       }).join('');
 
@@ -428,7 +470,7 @@ const collections = {
     window.deleteFile = async function() {
       if (!currentFile) return;
       const fileName = currentFile.split('/').pop();
-      if (!confirm(`"${decodeURIComponent(fileName)}" 파일을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) return;
+      if (!confirm(`"${safeDecodeUri(fileName)}" 파일을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) return;
 
       const btn = document.getElementById('delete-btn');
       const statusEl = document.getElementById('save-status');

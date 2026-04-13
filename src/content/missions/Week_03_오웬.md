@@ -72,7 +72,7 @@
 
 방향이 잡히니까 다시 움직일 수 있었습니다.
 
-![Group 1.png|454](/images/Group_1.png|454)
+![Group 1.png](/images/Group_1.png)
 
 #### 4주차: 4시간 만에 MVP → 고도화까지
 
@@ -88,10 +88,10 @@
 	- ![Pasted image 20260405154014.png](/images/Pasted_image_20260405154014.png)
 - 알림 기능이 없어 알림 기능 구현 
 	- 알림이 있으니 좋다
-- ![Pasted image 20260405154433.png|328](/images/Pasted_image_20260405154433.png|328)
+- ![Pasted image 20260405154433.png](/images/Pasted_image_20260405154433.png)
 	- 클로드코드에서 시간 오래 걸린다고 진짜 할건지 물어봄
 	- 사실 오래 안걸림
-	-![Pasted image 20260405140808.png|483](/images/Pasted_image_20260405140808.png|483)
+	-![Pasted image 20260405140808.png](/images/Pasted_image_20260405140808.png)
 
 
 **고객은 어떻게 모을거냐?**
@@ -100,7 +100,7 @@
 - 유료 결제 태워봄 일 2만원
 	- 근데 갑자기 방장님 사업 제안함...?!!
 
-![Pasted image 20260405153549.png|697](/images/Pasted_image_20260405153549.png|697)
+![Pasted image 20260405153549.png](/images/Pasted_image_20260405153549.png)
 
 /timechek skill
 
@@ -135,8 +135,8 @@
 	- 단기 투자 봇은 재앙급.... 
 		- 여기도 역시나 단기 거래 최적화 된 매매법 + 트레이더들 관점 섞었는데 실시간 대응의 관점에서 어려움이 많은 듯 -> 거래 api까지 붙여야 제대로 작동할까 고민?
 		- ![Pasted image 20260405164913.png](/images/Pasted_image_20260405164913.png)
-![Pasted image 20260405162721.png|387](/images/Pasted_image_20260405162721.png|387)
-![Pasted image 20260405215329.png|332](/images/Pasted_image_20260405215329.png|332)
+![Pasted image 20260405162721.png](/images/Pasted_image_20260405162721.png)
+![Pasted image 20260405215329.png](/images/Pasted_image_20260405215329.png)
 
 
 **주요 삽질:**

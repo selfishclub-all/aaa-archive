@@ -22,6 +22,11 @@ find "$VAULT/00_주차별미션/" -type f \( -name "*.png" -o -name "*.jpg" -o -
   copy_image "$f"
 done
 
+# _attachments 폴더 (이미지 + 영상)
+find "$VAULT/_attachments/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" -o -name "*.mp4" \) 2>/dev/null | while read f; do
+  copy_image "$f"
+done
+
 echo "이미지 동기화: $(find "$IMAGES" -type f | wc -l)개 파일"
 
 # 미션 파일: Week_0N_ 패턴만, 이미지 경로 변환 (공백→언더스코어)
@@ -31,9 +36,12 @@ find "$VAULT/00_주차별미션/" -name "Week_0*.md" -size +10c | while read f; 
   # 2) ![alt](path/image.png) → ![alt](/aaa-archive/images/image.png)
   # 3) 이미지 URL 내 공백을 언더스코어로 변환
   sed -E \
+    -e 's/!\[\[([^]|]+)\|[0-9]+\]\]/![\1](\/images\/\1)/g' \
     -e 's/!\[\[([^]]+)\]\]/![\1](\/images\/\1)/g' \
+    -e 's/!\[([^]]*)\]\(([^)]*\/)?([^)]+\.(png|jpg|jpeg|gif|webp|svg))\|[0-9]+\)/![\1](\/images\/\3)/g' \
     -e 's/!\[([^]]*)\]\(([^)]*\/)?([^)]+\.(png|jpg|jpeg|gif|webp|svg))\)/![\1](\/images\/\3)/g' \
-    "$f" | perl -pe 's{(\(/images/)([^)]+)\)}{my $p=$1; my $n=$2; $n=~s/ /_/g; "$p$n)"}ge' \
+    -e 's/!\[([^]]*)\]\(([^)]*\/)?([^)]+\.mp4)\)/<video src="\/images\/\3" controls style="max-width:100%;border-radius:8px;"><\/video>/g' \
+    "$f" | perl -pe 's{(\(/images/|src="/images/)([^)"]+)([)"])}{my $p=$1; my $n=$2; my $e=$3; $n=~s/ /_/g; "$p$n$e"}ge' \
     > "$CONTENT/missions/$filename"
 done
 
