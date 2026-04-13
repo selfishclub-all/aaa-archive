@@ -63,7 +63,7 @@ Sullivan 프로젝트의 세 가지 설계 원칙은 Anne Sullivan의 교육 철
        Sullivan: "[아이디어] 하네스 엔지니어링의 핵심 사고법
                  • 막힘의 원인을 환경 문제로 재해석
                  • 과잉 엔지니어링 금지 — 모델 발전 시 걸림돌
-                 연결: [[LangChain Agent 설계]], [[Sullivan 설계 원칙]]"
+                 연결: [LangChain Agent 설계](/missions/LangChain Agent 설계/), [Sullivan 설계 원칙](/missions/Sullivan 설계 원칙/)"
 
 13:00  [점심 체크인 자동]
        Sullivan: "오전 어땠어?"

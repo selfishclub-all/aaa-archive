@@ -30,7 +30,8 @@ done
 echo "이미지 동기화: $(find "$IMAGES" -type f | wc -l)개 파일"
 
 # 미션 파일: Week_0N_ 패턴만, 이미지 경로 변환 (공백→언더스코어)
-find "$VAULT/00_주차별미션/" -name "Week_0*.md" -size +10c | while read f; do
+# 모든 미션 파일 (Week_0* + 보조 문서)
+find "$VAULT/00_주차별미션/" -name "*.md" -size +10c | while read f; do
   filename=$(basename "$f")
   # 1) ![[image.png]] → ![image](/aaa-archive/images/image.png)
   # 2) ![alt](path/image.png) → ![alt](/aaa-archive/images/image.png)
@@ -42,6 +43,8 @@ find "$VAULT/00_주차별미션/" -name "Week_0*.md" -size +10c | while read f; 
     -e 's/!\[([^]]*)\]\(([^)]*\/)?([^)]+\.(png|jpg|jpeg|gif|webp|svg))\)/![\1](\/images\/\3)/g' \
     -e 's/!\[([^]]*)\]\(([^)]*\/)?([^)]+\.mp4)\)/<video src="\/images\/\3" controls style="max-width:100%;border-radius:8px;"><\/video>/g' \
     "$f" | perl -pe 's{(\(/images/|src="/images/)([^)"]+)([)"])}{my $p=$1; my $n=$2; my $e=$3; $n=~s/ /_/g; "$p$n$e"}ge' \
+    | sed -E 's/\[\[([^]|]+)\]\]/[\1](\/missions\/\1\/)/g' \
+    | sed -E 's/\[\[([^]|]+)\|([^]]+)\]\]/[\2](\/missions\/\1\/)/g' \
     > "$CONTENT/missions/$filename"
 done
 

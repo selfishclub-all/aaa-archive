@@ -37,7 +37,7 @@
 - **작업 타임라인**
     - Python + Claude SDK로 6개 에이전트 순차 파이프라인 구현
     - Python 코드 대신 `.claude/agents/*.md` 마크다운으로 에이전트를 정의하는 v2 구조로 전환. 동시에 네이버 블로그 파이프라인 설계.
-    - 네이버 블로그 실전 테스트, 3가지 이슈 해소 - [[2026-04-01_오바마연탄구이_상봉점_restaurant]]
+    - 네이버 블로그 실전 테스트, 3가지 이슈 해소 - [2026-04-01_오바마연탄구이_상봉점_restaurant](/missions/2026-04-01_오바마연탄구이_상봉점_restaurant/)
     - 패러다임 전환: “소재 기반” → “정체성 기반”
         - Polysona — 심리학 기반 다중 페르소나 프레임워크 활용
 ### **juicify 플러그인 제작 (****[링크](https://github.com/hminnnnnn/juicify)****)**
@@ -49,25 +49,25 @@
     - work-juice : 해당 세션에서 진행한 작업 내용, 그 속에 있는 사고 과정을 정리해주고 인사이트를 추출하여 정리해준다. (md 파일 형태로)
         - 전체 케이스 정리 / 부분 케이스 정리 / 최신 케이스 정리 등 선택 가능한 구조
 ## 만든 과정 & 인사이트
-- 설리반 프로젝트 아키텍처 개선 - [[2026-04-01-icloud-edeadlk-local-git-migration]]
+- 설리반 프로젝트 아키텍처 개선 - [2026-04-01-icloud-edeadlk-local-git-migration](/missions/2026-04-01-icloud-edeadlk-local-git-migration/)
 	- iCloud Drive 파일 접근 이슈로 인한 Github 저장소로 마이그레이션 진행
 		- 기존 : iCloud Drive를 옵시디언 저장소로 두어 iOS<->Mac 동기화
 		- 변경 : Github 레포 기반 Git 동기화 아키텍처로 전환
 - **Jucify 플러그인 제작** (****[링크](https://github.com/hminnnnnn/juicify)****)
 	- 반복되는 커맨드는 스킬로 만들어서 사용
-		- [[2026-03-31-commands-to-skills-migration]]
+		- [2026-03-31-commands-to-skills-migration](/missions/2026-03-31-commands-to-skills-migration/)
 - **Personal Branding OS**
-	- 빌드업 과정 - [[2026-04-03-weekly-share]]
+	- 빌드업 과정 - [2026-04-03-weekly-share](/missions/2026-04-03-weekly-share/)
 		- Python + Claude SDK로 6개 에이전트 순차 파이프라인 구현
 		- Python 코드 대신 `.claude/agents/*.md` 마크다운으로 에이전트를 정의하는 v2 구조로 전환. 동시에 네이버 블로그 파이프라인 설계.
 		- 네이버 블로그 실전 테스트, 3가지 이슈 해소
 		- 패러다임 전환: “소재 기반” → “정체성 기반”
 	        - Polysona — 심리학 기반 다중 페르소나 프레임워크 활용
-	- 폴리소나(정체성) 레이어 추가 - [[폴리소나와 기존 파이프라인 융합]]
-		- 폴리소나 프로젝트 개요 ([링크](https://selfishclub-official.slack.com/archives/C084CJ4F484/p1775139709895009)) - [[폴리소나?]]
-		- 폴리소나 프로젝트 해체/분석 (skill-juice 사용) - [[polysona 프로젝트 해체, 분석]]
-		- 폴리소나로 본 현재 콘텐츠 생성 에이전트의 한계 - [[2026-04-02-polysona-persona-architecture-insight]]
-		- 폴리소나 시뮬레이션을 통해 효과성 검증 - [[폴리소나 효과성 검증 시뮬레이션]]
+	- 폴리소나(정체성) 레이어 추가 - [폴리소나와 기존 파이프라인 융합](/missions/폴리소나와 기존 파이프라인 융합/)
+		- 폴리소나 프로젝트 개요 ([링크](https://selfishclub-official.slack.com/archives/C084CJ4F484/p1775139709895009)) - [폴리소나?](/missions/폴리소나?/)
+		- 폴리소나 프로젝트 해체/분석 (skill-juice 사용) - [polysona 프로젝트 해체, 분석](/missions/polysona 프로젝트 해체, 분석/)
+		- 폴리소나로 본 현재 콘텐츠 생성 에이전트의 한계 - [2026-04-02-polysona-persona-architecture-insight](/missions/2026-04-02-polysona-persona-architecture-insight/)
+		- 폴리소나 시뮬레이션을 통해 효과성 검증 - [폴리소나 효과성 검증 시뮬레이션](/missions/폴리소나 효과성 검증 시뮬레이션/)
 ### 이후 계획
 - **Personal Branding OS**
 	- 폴리소나 기반으로 최적화된 인터뷰 레이어 셋업 (30분)

@@ -19,14 +19,14 @@
 
 ## 만든 과정 & 인사이트
 - 설리반의 동작 구조를 Claude-Channel 기능으로 마이그레이션
-	- 마이그레이션 과정 - [[2026-04-07-channel-migration]]
-	- 영속 세션 인프라 구축 - [[2026-04-08-persistent-session-infrastructure]]
+	- 마이그레이션 과정 - [2026-04-07-channel-migration](/missions/2026-04-07-channel-migration/)
+	- 영속 세션 인프라 구축 - [2026-04-08-persistent-session-infrastructure](/missions/2026-04-08-persistent-session-infrastructure/)
 		- 재부팅 후에도 Sullivan이 자동으로 살아나는 구조
 			- Sullivan에 연결되어 있는 클로드 코드 세션이 계속 유지가 되도록 하기 위함
 - **Personal OS** : Selforge (Self + forge) 방향성 구체화
 	- Personal OS의 아이덴티티 부여
-		- [[2026-04-11-selforge-identity]]
+		- [2026-04-11-selforge-identity](/missions/2026-04-11-selforge-identity/)
 	- 지식 레이어에 LLM wiki, Graphify 적용
-		- [[2026-04-12-llm-wiki-graphify-share]]
+		- [2026-04-12-llm-wiki-graphify-share](/missions/2026-04-12-llm-wiki-graphify-share/)
 		- Graphify의 효과성 검증 시뮬레이션
-			- [[2026-04-12-graphify-token-efficiency-test]]
+			- [2026-04-12-graphify-token-efficiency-test](/missions/2026-04-12-graphify-token-efficiency-test/)
