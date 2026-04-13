@@ -51,7 +51,13 @@ const latestWeek = {
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {latestWeek.members.map((member) => (
-          <a href={`${base}archive/`} class="p-5 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-md transition-all group block">
+          <div
+            class="p-5 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-md transition-all group cursor-pointer main-card"
+            data-name={member.name}
+            data-title={member.cardTitle}
+            data-summary={member.summary}
+            data-link={member.link || ''}
+          >
             <h3 class="font-headline text-sm font-bold text-black dark:text-white mb-1.5 group-hover:text-[#b8960a] dark:group-hover:text-[#FBE830] transition-colors line-clamp-1">{member.cardTitle}</h3>
             <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed mb-3 line-clamp-2">{member.summary}</p>
             <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-[#353437]">
@@ -68,11 +74,73 @@ const latestWeek = {
                 </a>
               )}
             </div>
-          </a>
+          </div>
         ))}
       </div>
     </div>
   </section>
+
+  <!-- Modal -->
+  <div id="main-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeMainModal()"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[80vh] overflow-y-auto bg-white dark:bg-[#1b1b1d] rounded-2xl shadow-2xl p-6 md:p-8">
+      <button onclick="closeMainModal()" class="absolute top-4 right-4 text-slate-400 hover:text-black dark:hover:text-white transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <h2 id="main-modal-title" class="font-headline text-xl font-bold text-black dark:text-white mb-3"></h2>
+      <div id="main-modal-author" class="flex items-center gap-2 mb-5">
+        <div class="w-6 h-6 bg-slate-100 dark:bg-[#252527] rounded-full flex items-center justify-center">
+          <span id="main-modal-avatar" class="text-[9px] font-bold text-slate-500 dark:text-gray-400"></span>
+        </div>
+        <span id="main-modal-name" class="text-sm text-slate-500 dark:text-gray-400"></span>
+      </div>
+      <p id="main-modal-summary" class="text-sm text-slate-600 dark:text-gray-400 leading-relaxed mb-6"></p>
+      <div id="main-modal-link-wrap" class="hidden">
+        <a id="main-modal-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-[#FBE830] text-black font-bold py-3 px-6 rounded-lg text-sm hover:shadow-md transition-all">
+          <span class="material-symbols-outlined text-sm">open_in_new</span>
+          실제 결과물 보기
+        </a>
+      </div>
+      <div class="mt-4 pt-4 border-t border-slate-100 dark:border-[#353437]">
+        <a href={`${base}archive/`} class="text-xs font-bold text-slate-400 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1">
+          주간 미션 전체 보기
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    function closeMainModal() {
+      document.getElementById('main-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMainModal(); });
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.main-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('a')) return;
+          const name = card.dataset.name;
+          const title = card.dataset.title;
+          const summary = card.dataset.summary;
+          const link = card.dataset.link;
+          document.getElementById('main-modal-title').textContent = title;
+          document.getElementById('main-modal-avatar').textContent = name.charAt(0);
+          document.getElementById('main-modal-name').textContent = 'by ' + name;
+          document.getElementById('main-modal-summary').textContent = summary;
+          const linkWrap = document.getElementById('main-modal-link-wrap');
+          if (link) {
+            document.getElementById('main-modal-link').href = link;
+            linkWrap.classList.remove('hidden');
+          } else {
+            linkWrap.classList.add('hidden');
+          }
+          document.getElementById('main-modal').classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+    });
+  </script>
 
   <!-- Contact -->
   <section id="contact" class="bg-slate-50 dark:bg-[#0e0e10] border-t border-slate-100 dark:border-[#353437]">
