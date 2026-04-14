@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AAA TEAM — 시스템 아키텍처</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --y: #FBE830;
+    --yd: #b8960a;
+    --bg: #0c0c0e;
+    --card: #151517;
+    --border: #252527;
+    --text: #e4e4e7;
+    --muted: #71717a;
+    --code: #1e1e20;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans KR', 'Manrope', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--y); color: #000; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(12,12,14,0.85); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  nav .logo { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.85rem; letter-spacing: -0.02em; color: #fff; }
+  nav .logo span { color: var(--y); }
+  nav .links { display: flex; gap: 1.5rem; }
+  nav .links a { font-size: 0.75rem; color: var(--muted); text-decoration: none; font-weight: 600; transition: color 0.2s; }
+  nav .links a:hover { color: var(--y); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 6rem 2rem 4rem;
+    position: relative;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(251,232,48,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero .badge {
+    display: inline-block; padding: 0.3rem 1rem; border: 1px solid var(--border);
+    border-radius: 100px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+    color: var(--muted); text-transform: uppercase; margin-bottom: 1.5rem;
+    background: var(--card);
+  }
+  .hero h1 {
+    font-family: 'Manrope', sans-serif; font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1;
+    letter-spacing: -0.04em; color: #fff; margin-bottom: 1.2rem;
+  }
+  .hero h1 em { font-style: normal; color: var(--y); }
+  .hero p { font-size: 1rem; color: var(--muted); max-width: 520px; margin-bottom: 2rem; }
+  .hero .scroll-hint {
+    margin-top: 3rem; animation: float 2s ease-in-out infinite;
+    font-size: 0.7rem; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+  }
+  .hero .scroll-hint .arrow { font-size: 1.2rem; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  section.full { max-width: 100%; padding: 5rem 0; }
+  .section-label {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--y); margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Manrope', sans-serif; font-weight: 800;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem); line-height: 1.15;
+    letter-spacing: -0.03em; color: #fff; margin-bottom: 1rem;
+  }
+  .section-desc { color: var(--muted); font-size: 0.95rem; max-width: 600px; margin-bottom: 3rem; }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow-diagram {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; flex-wrap: wrap; padding: 2rem 0;
+  }
+  .flow-node {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 1.5rem 1.8rem; text-align: center; min-width: 160px;
+    position: relative; transition: all 0.3s;
+  }
+  .flow-node:hover { border-color: var(--y); transform: translateY(-4px); box-shadow: 0 8px 32px rgba(251,232,48,0.08); }
+  .flow-node .icon { font-size: 1.8rem; margin-bottom: 0.6rem; display: block; }
+  .flow-node .name { font-weight: 700; font-size: 0.85rem; color: #fff; margin-bottom: 0.2rem; }
+  .flow-node .desc { font-size: 0.7rem; color: var(--muted); }
+  .flow-node.highlight { border-color: var(--y); background: rgba(251,232,48,0.04); }
+  .flow-arrow {
+    font-size: 1.5rem; color: var(--y); padding: 0 0.8rem;
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  }
+  @media (max-width: 768px) {
+    .flow-diagram { flex-direction: column; gap: 0.5rem; }
+    .flow-arrow { transform: rotate(90deg); padding: 0.3rem 0; }
+  }
+
+  /* ── ADMIN FLOW ── */
+  .admin-flow {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 768px) { .admin-flow { grid-template-columns: 1fr; } }
+  .admin-step {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 2rem; position: relative; overflow: hidden;
+    transition: all 0.3s;
+  }
+  .admin-step:hover { border-color: var(--y); }
+  .admin-step .step-num {
+    position: absolute; top: -8px; right: 16px;
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 4rem;
+    color: rgba(251,232,48,0.06); line-height: 1; pointer-events: none;
+  }
+  .admin-step h3 { font-weight: 700; font-size: 1rem; color: #fff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+  .admin-step h3 .emoji { font-size: 1.2rem; }
+  .admin-step p { font-size: 0.82rem; color: var(--muted); }
+  .admin-step .code-tag {
+    display: inline-block; margin-top: 0.8rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+    background: var(--code); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.25rem 0.6rem; color: var(--y);
+  }
+
+  /* ── COLLECTIONS ── */
+  .collections-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 900px) { .collections-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .collections-grid { grid-template-columns: 1fr; } }
+  .col-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 1.5rem; transition: all 0.3s; cursor: default;
+  }
+  .col-card:hover { border-color: var(--y); transform: translateY(-2px); }
+  .col-card .col-icon { font-size: 1.5rem; margin-bottom: 0.8rem; display: block; }
+  .col-card h4 { font-weight: 700; font-size: 0.95rem; color: #fff; margin-bottom: 0.6rem; }
+  .col-card .fields { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .col-card .field-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+    background: var(--code); border: 1px solid var(--border);
+    border-radius: 100px; padding: 0.2rem 0.6rem; color: var(--muted);
+  }
+  .col-card .field-tag.new {
+    border-color: var(--y); color: var(--y); background: rgba(251,232,48,0.05);
+  }
+
+  /* ── FEATURES ── */
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 768px) { .features-grid { grid-template-columns: 1fr; } }
+  .feat-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 2rem; transition: all 0.3s;
+  }
+  .feat-card:hover { border-color: var(--y); }
+  .feat-card .feat-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(251,232,48,0.08); border: 1px solid rgba(251,232,48,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; margin-bottom: 1rem;
+  }
+  .feat-card h4 { font-weight: 700; font-size: 0.95rem; color: #fff; margin-bottom: 0.5rem; }
+  .feat-card p { font-size: 0.8rem; color: var(--muted); }
+
+  /* ── PAGE COMPOSITION ── */
+  .page-comp {
+    display: flex; flex-direction: column; gap: 0.5rem;
+    max-width: 500px; margin: 2rem auto 0;
+  }
+  .page-block {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .page-block:hover { border-color: var(--y); }
+  .page-block .block-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .page-block .block-info { flex: 1; }
+  .page-block .block-name { font-weight: 700; font-size: 0.85rem; color: #fff; }
+  .page-block .block-desc { font-size: 0.7rem; color: var(--muted); }
+  .page-block .block-badge {
+    font-size: 0.6rem; font-weight: 700; padding: 0.15rem 0.5rem;
+    border-radius: 100px; background: rgba(251,232,48,0.1);
+    color: var(--y); border: 1px solid rgba(251,232,48,0.2);
+    white-space: nowrap;
+  }
+  .page-block .connector {
+    position: absolute; bottom: -14px; left: 50%;
+    width: 2px; height: 14px; background: var(--border);
+  }
+  .page-block:last-child .connector { display: none; }
+
+  /* ── TECH STACK ── */
+  .tech-row {
+    display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center;
+    margin-top: 2rem;
+  }
+  .tech-pill {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.5rem 1rem; border-radius: 100px;
+    background: var(--card); border: 1px solid var(--border);
+    font-size: 0.75rem; font-weight: 600; color: var(--text);
+    transition: all 0.3s;
+  }
+  .tech-pill:hover { border-color: var(--y); color: var(--y); }
+  .tech-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 4rem 2rem;
+    border-top: 1px solid var(--border);
+  }
+  footer p { font-size: 0.75rem; color: var(--muted); }
+  footer p span { color: var(--y); }
+
+  /* ── ANIMATIONS ── */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px; max-width: 1100px; margin: 0 auto;
+    background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><span>AAA</span> TEAM Architecture</div>
+  <div class="links">
+    <a href="#system">시스템</a>
+    <a href="#admin">어드민</a>
+    <a href="#collections">콘텐츠</a>
+    <a href="#features">기능</a>
+    <a href="#page">페이지</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">SYSTEM ARCHITECTURE OVERVIEW</div>
+  <h1>
+    Obsidian에서 시작해<br/>
+    <em>웹으로 배포</em>되기까지
+  </h1>
+  <p>AAA TEAM의 콘텐츠가 어떻게 관리되고, 어드민에서 편집되며, 자동으로 배포되는지 전체 흐름을 설명합니다.</p>
+  <div class="scroll-hint">
+    <span>아래로 스크롤</span>
+    <span class="arrow">↓</span>
+  </div>
+</div>
+
+<!-- 1. SYSTEM FLOW -->
+<section id="system">
+  <div class="reveal">
+    <div class="section-label">01 — System Flow</div>
+    <div class="section-title">전체 시스템 흐름</div>
+    <div class="section-desc">Obsidian Vault에서 작성한 마크다운이 웹사이트로 배포되기까지의 파이프라인.</div>
+  </div>
+
+  <div class="flow-diagram reveal reveal-delay-1">
+    <div class="flow-node">
+      <span class="icon">🗄️</span>
+      <div class="name">Obsidian Vault</div>
+      <div class="desc">selfish-aaa/<br/>마크다운 원본 관리</div>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node">
+      <span class="icon">⚙️</span>
+      <div class="name">sync-content.sh</div>
+      <div class="desc">이미지 경로 변환<br/>위키링크 → HTML</div>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node highlight">
+      <span class="icon">🚀</span>
+      <div class="name">Astro Site</div>
+      <div class="desc">selfish-aaa-site-astro/<br/>SSG 빌드</div>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node">
+      <span class="icon">▲</span>
+      <div class="name">Vercel</div>
+      <div class="desc">git push → 자동 배포<br/>aaa-homepage.vercel.app</div>
+    </div>
+  </div>
+
+  <div class="flow-diagram reveal reveal-delay-2" style="margin-top: 2rem;">
+    <div class="flow-node" style="min-width: 200px;">
+      <span class="icon">📁</span>
+      <div class="name">3개 Remote 동기화</div>
+      <div class="desc" style="text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; line-height: 1.8;">
+        origin → selfishclub-all/aaa-archive<br/>
+        personal → tomost-dada/aaa-archive<br/>
+        selfishclub → selfishclub/aaa-admin
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 2. ADMIN FLOW -->
+<section id="admin">
+  <div class="reveal">
+    <div class="section-label">02 — Admin Flow</div>
+    <div class="section-title">어드민 동작 원리</div>
+    <div class="section-desc">브라우저에서 GUI로 편집 → GitHub API로 커밋 → Vercel 자동 배포. 서버 없이 동작합니다.</div>
+  </div>
+
+  <div class="admin-flow">
+    <div class="admin-step reveal">
+      <div class="step-num">01</div>
+      <h3><span class="emoji">🔐</span> 인증</h3>
+      <p>GitHub Personal Access Token을 입력하면 localStorage에 저장. 이후 모든 API 요청에 토큰 사용.</p>
+      <span class="code-tag">localStorage.setItem('gh_token', token)</span>
+    </div>
+    <div class="admin-step reveal reveal-delay-1">
+      <div class="step-num">02</div>
+      <h3><span class="emoji">📄</span> 파일 목록 로드</h3>
+      <p>GitHub Contents API로 해당 컬렉션 폴더의 .md 파일 목록을 가져옴. 클릭 시 개별 파일 내용 로드.</p>
+      <span class="code-tag">GET /repos/:owner/:repo/contents/:path</span>
+    </div>
+    <div class="admin-step reveal reveal-delay-2">
+      <div class="step-num">03</div>
+      <h3><span class="emoji">✏️</span> Frontmatter 편집</h3>
+      <p>Base64 디코딩 → YAML frontmatter 파싱 → GUI 폼 렌더링. 수정 후 다시 YAML로 직렬화.</p>
+      <span class="code-tag">parseFrontmatter() → renderFieldHtml()</span>
+    </div>
+    <div class="admin-step reveal reveal-delay-3">
+      <div class="step-num">04</div>
+      <h3><span class="emoji">💾</span> 저장 & 배포</h3>
+      <p>수정된 내용을 Base64 인코딩 → PUT API로 커밋. selfishclub/aaa-admin에 push되면 Vercel이 자동 재배포.</p>
+      <span class="code-tag">PUT /repos/:owner/:repo/contents/:path</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 3. COLLECTIONS -->
+<section id="collections">
+  <div class="reveal">
+    <div class="section-label">03 — Content Schema</div>
+    <div class="section-title">6개 콘텐츠 컬렉션</div>
+    <div class="section-desc">각 컬렉션은 고유한 frontmatter 스키마를 가지며, 어드민에서 타입별 UI로 편집됩니다.</div>
+  </div>
+
+  <div class="collections-grid">
+    <div class="col-card reveal">
+      <span class="col-icon">🖼️</span>
+      <h4>갤러리</h4>
+      <div class="fields">
+        <span class="field-tag">name</span>
+        <span class="field-tag">maker</span>
+        <span class="field-tag">thumbnail</span>
+        <span class="field-tag">link</span>
+        <span class="field-tag">week</span>
+      </div>
+    </div>
+    <div class="col-card reveal reveal-delay-1">
+      <span class="col-icon">👥</span>
+      <h4>멤버</h4>
+      <div class="fields">
+        <span class="field-tag">name</span>
+        <span class="field-tag">role</span>
+        <span class="field-tag">desc</span>
+        <span class="field-tag">github</span>
+        <span class="field-tag">avatar</span>
+      </div>
+    </div>
+    <div class="col-card reveal reveal-delay-2">
+      <span class="col-icon">🛠️</span>
+      <h4>도구 모음</h4>
+      <div class="fields">
+        <span class="field-tag">name</span>
+        <span class="field-tag new">category ✦</span>
+        <span class="field-tag">link</span>
+        <span class="field-tag">added_by</span>
+      </div>
+    </div>
+    <div class="col-card reveal reveal-delay-1">
+      <span class="col-icon">💡</span>
+      <h4>인사이트</h4>
+      <div class="fields">
+        <span class="field-tag">member</span>
+        <span class="field-tag">summary</span>
+        <span class="field-tag new">keywords ✦</span>
+      </div>
+    </div>
+    <div class="col-card reveal reveal-delay-2">
+      <span class="col-icon">📊</span>
+      <h4>분석</h4>
+      <div class="fields">
+        <span class="field-tag">week</span>
+        <span class="field-tag">date</span>
+        <span class="field-tag">total_submissions</span>
+        <span class="field-tag">tags</span>
+        <span class="field-tag new">body ✦</span>
+      </div>
+    </div>
+    <div class="col-card reveal reveal-delay-3">
+      <span class="col-icon">💬</span>
+      <h4>제안</h4>
+      <div class="fields">
+        <span class="field-tag">tags</span>
+        <span class="field-tag">status</span>
+        <span class="field-tag">last_updated</span>
+        <span class="field-tag new">body ✦</span>
+      </div>
+    </div>
+  </div>
+  <p style="font-size: 0.7rem; color: var(--y); margin-top: 1.5rem; text-align: center;">✦ 새로 추가된 기능 — managed-tags 또는 마크다운 본문 에디터</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- 4. FEATURES -->
+<section id="features">
+  <div class="reveal">
+    <div class="section-label">04 — Admin Features</div>
+    <div class="section-title">어드민 핵심 기능</div>
+    <div class="section-desc">서버 없이 브라우저만으로 콘텐츠를 관리하는 3가지 핵심 시스템.</div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feat-card reveal">
+      <div class="feat-icon">🏷️</div>
+      <h4>태그 관리 시스템</h4>
+      <p>
+        카테고리·키워드를 노션 다중선택처럼 관리. 칩 클릭으로 선택/해제, hover 시 X로 즉시 삭제, 새 태그 입력으로 추가.<br/><br/>
+        <strong style="color: var(--y);">저장:</strong> localStorage<br/>
+        <strong style="color: var(--y);">인사이트:</strong> 최대 3개 제한<br/>
+        <strong style="color: var(--y);">한글 IME:</strong> isComposing 체크로 중복 방지
+      </p>
+    </div>
+    <div class="feat-card reveal reveal-delay-1">
+      <div class="feat-icon">📝</div>
+      <h4>마크다운 본문 에디터</h4>
+      <p>
+        분석·제안 탭에서 frontmatter + 본문을 함께 편집. 노션 스타일 툴바로 마크다운 삽입.<br/><br/>
+        <strong style="color: var(--y);">H2/H3:</strong> 제목 삽입<br/>
+        <strong style="color: var(--y);">Bold:</strong> 선택 텍스트 굵게<br/>
+        <strong style="color: var(--y);">목록/인용/코드:</strong> 원클릭 삽입<br/>
+        <strong style="color: var(--y);">모달:</strong> max-w-3xl 확장
+      </p>
+    </div>
+    <div class="feat-card reveal reveal-delay-2">
+      <div class="feat-icon">🖼️</div>
+      <h4>이미지 업로드</h4>
+      <p>
+        파일 선택 또는 URL 입력으로 이미지 등록. GitHub API로 public/images/에 직접 업로드.<br/><br/>
+        <strong style="color: var(--y);">프리뷰:</strong> data URL 즉시 표시<br/>
+        <strong style="color: var(--y);">경로:</strong> /images/gallery/ 또는 /members/<br/>
+        <strong style="color: var(--y);">파일명:</strong> timestamp + 안전 문자 변환
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 5. PAGE COMPOSITION -->
+<section id="page">
+  <div class="reveal">
+    <div class="section-label">05 — Page Composition</div>
+    <div class="section-title">메인 페이지 구성</div>
+    <div class="section-desc">index.astro의 섹션 구조. 빌드 시 Astro가 콘텐츠를 수집해 정적 HTML로 렌더링합니다.</div>
+  </div>
+
+  <div class="page-comp">
+    <div class="page-block reveal">
+      <span class="block-icon">⚡</span>
+      <div class="block-info">
+        <div class="block-name">Hero</div>
+        <div class="block-desc">브랜드 소개 + 태그라인</div>
+      </div>
+      <span class="block-badge">정적</span>
+      <div class="connector"></div>
+    </div>
+    <div class="page-block reveal reveal-delay-1">
+      <span class="block-icon">📋</span>
+      <div class="block-info">
+        <div class="block-name">주간 미션</div>
+        <div class="block-desc">최신 주차 멤버 카드 + 모달</div>
+      </div>
+      <span class="block-badge">getMissionHtml()</span>
+      <div class="connector"></div>
+    </div>
+    <div class="page-block reveal reveal-delay-2">
+      <span class="block-icon">🛠️</span>
+      <div class="block-info">
+        <div class="block-name">도구 모음</div>
+        <div class="block-desc">카테고리 뱃지 + 최근 6개 도구</div>
+      </div>
+      <span class="block-badge">getCollection('tools')</span>
+      <div class="connector"></div>
+    </div>
+    <div class="page-block reveal reveal-delay-3">
+      <span class="block-icon">💡</span>
+      <div class="block-info">
+        <div class="block-name">인사이트</div>
+        <div class="block-desc">키워드 뱃지 + 최근 6개 카드</div>
+      </div>
+      <span class="block-badge">getCollection('insights')</span>
+      <div class="connector"></div>
+    </div>
+    <div class="page-block reveal reveal-delay-4">
+      <span class="block-icon">✉️</span>
+      <div class="block-info">
+        <div class="block-name">Contact</div>
+        <div class="block-desc">문의 폼</div>
+      </div>
+      <span class="block-badge">정적</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TECH STACK -->
+<section style="text-align: center;">
+  <div class="reveal">
+    <div class="section-label">Tech Stack</div>
+    <div class="section-title" style="font-size: 1.5rem;">사용 기술</div>
+  </div>
+  <div class="tech-row reveal reveal-delay-1">
+    <span class="tech-pill"><span class="dot" style="background: #FF5D01;"></span> Astro 5</span>
+    <span class="tech-pill"><span class="dot" style="background: #38BDF8;"></span> TailwindCSS</span>
+    <span class="tech-pill"><span class="dot" style="background: #FBE830;"></span> GitHub API</span>
+    <span class="tech-pill"><span class="dot" style="background: #000; border: 1px solid #555;"></span> Vercel</span>
+    <span class="tech-pill"><span class="dot" style="background: #7C3AED;"></span> Obsidian</span>
+    <span class="tech-pill"><span class="dot" style="background: #10B981;"></span> Claude Code</span>
+    <span class="tech-pill"><span class="dot" style="background: #F97316;"></span> marked.js</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><span>AAA TEAM</span> by Selfish Club — System Architecture Document</p>
+  <p style="margin-top: 0.5rem; font-size: 0.65rem;">Built with Claude Code. 2026-04-14</p>
+</footer>
+
+<!-- SCROLL REVEAL -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
