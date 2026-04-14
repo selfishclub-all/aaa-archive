@@ -356,6 +356,7 @@ const collections = {
         reader.onload = async () => {
           try {
             const base64 = reader.result.split(',')[1];
+            const dataUrl = reader.result;
             const safeName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
             const filePath = `${uploadPath}/${safeName}`;
             await api(`contents/${filePath}`, {
@@ -365,7 +366,8 @@ const collections = {
                 content: base64,
               })
             });
-            resolve(`/images/${uploadPath.replace('public/images/', '')}/${safeName}`);
+            const result = `/images/${uploadPath.replace('public/images/', '')}/${safeName}`;
+            resolve({ url: result, dataUrl });
           } catch (e) { reject(e); }
         };
         reader.onerror = reject;
@@ -590,9 +592,10 @@ const collections = {
       }
     });
 
-    // Managed tags: enter key to add
+    // Managed tags: enter key to add (skip during IME composition)
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && e.target.classList.contains('new-tag-input')) {
+        if (e.isComposing || e.keyCode === 229) return;
         e.preventDefault();
         const wrapper = e.target.closest('[data-type="managed-tags"]');
         wrapper.querySelector('.add-tag-btn').click();
@@ -625,9 +628,9 @@ const collections = {
         const uploadPath = wrapper.dataset.uploadPath;
         previewEl.innerHTML = '<p class="text-xs text-slate-400 animate-pulse">업로드 중...</p>';
         try {
-          const url = await uploadImage(file, uploadPath);
-          urlInput.value = url;
-          previewEl.innerHTML = `<img src="https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${uploadPath.replace('public/','')}/${url.split('/').pop()}" class="w-full h-24 object-cover rounded-lg border border-slate-200 dark:border-[#353437]" />`;
+          const result = await uploadImage(file, uploadPath);
+          urlInput.value = result.url;
+          previewEl.innerHTML = `<img src="${result.dataUrl}" class="w-full h-24 object-cover rounded-lg border border-slate-200 dark:border-[#353437]" />`;
         } catch (err) {
           previewEl.innerHTML = `<p class="text-xs text-red-500">업로드 실패: ${err.message}</p>`;
         }
