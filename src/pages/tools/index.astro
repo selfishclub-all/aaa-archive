@@ -69,9 +69,8 @@ const dotColors: Record<string, string> = {
             <div class="flex-1 min-w-0">
               <h4 class="text-sm font-bold text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors truncate">{tool.data.name || tool.id}</h4>
             </div>
-            <span class="text-[10px] text-slate-400 dark:text-gray-500 hidden md:inline">{tool.data.type || ''}</span>
-            {tool.data.difficulty && (
-              <span class="text-[9px] font-bold text-[#d4a800] dark:text-[#FBE830] bg-[#FBE830]/10 px-2 py-0.5 rounded">{tool.data.difficulty}</span>
+            {tool.data.category && (
+              <span class="text-[10px] font-medium text-slate-500 dark:text-gray-400 hidden md:inline">{Array.isArray(tool.data.category) ? tool.data.category.join(', ') : tool.data.category}</span>
             )}
             <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-base">chevron_right</span>
           </a>

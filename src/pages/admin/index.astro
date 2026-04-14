@@ -11,9 +11,20 @@ const collections = {
     fields: [
       { key: 'name', label: '프로젝트명', type: 'text' },
       { key: 'maker', label: '제작자', type: 'select', options: members },
-      { key: 'thumbnail', label: '썸네일 이모지', type: 'text', placeholder: '🚀' },
+      { key: 'thumbnail', label: '썸네일 이미지', type: 'image', sizeHint: '600x320px (2:1 비율)', uploadPath: 'public/images/gallery' },
       { key: 'link', label: '링크', type: 'text', placeholder: 'https://...' },
       { key: 'week', label: '주차', type: 'number' },
+    ]
+  },
+  members: {
+    label: '멤버',
+    path: 'src/content/members',
+    fields: [
+      { key: 'name', label: '이름', type: 'text' },
+      { key: 'role', label: '역할', type: 'select', options: ['Builder', 'Organizer', 'Mentor'] },
+      { key: 'desc', label: '한줄소개', type: 'textarea' },
+      { key: 'github', label: 'GitHub 아이디', type: 'text', placeholder: 'username' },
+      { key: 'avatar', label: '프로필 이미지', type: 'image', sizeHint: '200x200px (정사각형)', uploadPath: 'public/images/members' },
     ]
   },
   tools: {
@@ -21,9 +32,7 @@ const collections = {
     path: 'src/content/tools',
     fields: [
       { key: 'name', label: '도구명', type: 'text' },
-      { key: 'category', label: '카테고리', type: 'multiselect', options: ['자동화', '콘텐츠', '분석', '생산성', '디자인'] },
-      { key: 'type', label: '유형', type: 'select', options: ['Claude Code 스킬', 'Obsidian 플러그인', 'CLI 도구', '웹 도구', 'MCP 서버'] },
-      { key: 'difficulty', label: '난이도', type: 'select', options: ['초급', '중급', '고급'] },
+      { key: 'category', label: '카테고리', type: 'managed-tags', storageKey: 'tool_categories', defaults: ['자동화', '콘텐츠', '분석', '생산성', '디자인'] },
       { key: 'link', label: '링크', type: 'text', placeholder: 'https://...' },
       { key: 'added_by', label: '등록자', type: 'select', options: members },
     ]
@@ -34,12 +43,13 @@ const collections = {
     fields: [
       { key: 'member', label: '작성자', type: 'select', options: members },
       { key: 'summary', label: '요약', type: 'textarea' },
-      { key: 'keywords', label: '키워드 (쉼표 구분)', type: 'tags' },
+      { key: 'keywords', label: '키워드 (최대 3개, 기존 키워드 우선 활용)', type: 'managed-tags', storageKey: 'insight_keywords', defaults: [], maxTags: 3 },
     ]
   },
   analysis: {
     label: '분석',
     path: 'src/content/analysis',
+    hasBodyEditor: true,
     fields: [
       { key: 'week', label: '주차', type: 'number' },
       { key: 'date', label: '날짜', type: 'text', placeholder: '2026-04-12' },
@@ -50,6 +60,7 @@ const collections = {
   proposals: {
     label: '제안',
     path: 'src/content/proposals',
+    hasBodyEditor: true,
     fields: [
       { key: 'tags', label: '태그 (쉼표 구분)', type: 'tags' },
       { key: 'status', label: '상태', type: 'select', options: ['제안', '검토중', '채택', '완료', '보류'] },
@@ -83,6 +94,7 @@ const collections = {
     <div class="max-w-screen-2xl mx-auto px-6 md:px-12">
       <div class="flex items-center gap-2 py-3">
         <button class="tab-btn active text-sm font-bold px-5 py-2 rounded-full transition-all" data-collection="gallery">갤러리</button>
+        <button class="tab-btn text-sm font-medium px-5 py-2 rounded-full transition-all" data-collection="members">멤버</button>
         <button class="tab-btn text-sm font-medium px-5 py-2 rounded-full transition-all" data-collection="tools">도구 모음</button>
         <button class="tab-btn text-sm font-medium px-5 py-2 rounded-full transition-all" data-collection="insights">인사이트</button>
         <button class="tab-btn text-sm font-medium px-5 py-2 rounded-full transition-all" data-collection="analysis">분석</button>
@@ -118,7 +130,7 @@ const collections = {
       <!-- Edit Modal -->
       <div id="edit-modal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeEditor()"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[80vh] overflow-y-auto bg-white dark:bg-[#1b1b1d] rounded-2xl shadow-2xl p-6 md:p-8">
+        <div id="edit-modal-inner" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[85vh] overflow-y-auto bg-white dark:bg-[#1b1b1d] rounded-2xl shadow-2xl p-6 md:p-8 transition-all">
           <div class="flex items-center justify-between mb-6">
             <h2 id="edit-title" class="font-headline text-lg font-bold text-black dark:text-white"></h2>
             <button onclick="closeEditor()" class="text-slate-400 hover:text-black dark:hover:text-white">
@@ -126,6 +138,21 @@ const collections = {
             </button>
           </div>
           <div id="edit-fields" class="space-y-4"></div>
+          <!-- Body Editor (분석/제안용) -->
+          <div id="body-editor-wrap" class="hidden mt-6 pt-4 border-t border-slate-100 dark:border-[#353437]">
+            <div class="flex items-center justify-between mb-2">
+              <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider">본문 (마크다운)</label>
+              <div class="flex gap-1">
+                <button type="button" onclick="insertMd('## ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="제목">H2</button>
+                <button type="button" onclick="insertMd('### ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="소제목">H3</button>
+                <button type="button" onclick="insertMd('**', '**')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors font-bold" title="굵게">B</button>
+                <button type="button" onclick="insertMd('- ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="목록">•</button>
+                <button type="button" onclick="insertMd('> ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="인용">❝</button>
+                <button type="button" onclick="insertMd('```\n', '\n```')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors font-mono" title="코드">{}</button>
+              </div>
+            </div>
+            <textarea id="body-editor" rows="16" class="w-full px-4 py-3 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830] font-mono leading-relaxed resize-y" placeholder="마크다운으로 본문을 작성하세요..."></textarea>
+          </div>
           <div class="flex gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-[#353437]">
             <button id="save-btn" onclick="saveFile()" class="flex-1 bg-[#FBE830] text-black font-bold py-3 rounded-lg text-sm hover:shadow-lg transition-all">저장</button>
             <button onclick="closeEditor()" class="px-6 py-3 border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-slate-500 hover:text-black dark:hover:text-white transition-colors">취소</button>
@@ -189,6 +216,17 @@ const collections = {
     :global(.dark) .tab-btn { border-color: #353437; color: #9ca3af; }
     :global(.dark) .tab-btn:hover { border-color: #FBE830; color: #fff; }
     :global(.dark) .tab-btn.active { background: #FBE830; color: #000; border-color: #FBE830; }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    #body-editor {
+      min-height: 300px;
+      tab-size: 2;
+    }
   </style>
 
   <script is:inline define:vars={{ collections }}>
@@ -279,7 +317,112 @@ const collections = {
       try { return decodeURIComponent(str); } catch { return str; }
     }
 
+    async function uploadImage(file, uploadPath) {
+      const reader = new FileReader();
+      return new Promise((resolve, reject) => {
+        reader.onload = async () => {
+          try {
+            const base64 = reader.result.split(',')[1];
+            const safeName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+            const filePath = `${uploadPath}/${safeName}`;
+            await api(`contents/${filePath}`, {
+              method: 'PUT',
+              body: JSON.stringify({
+                message: `admin: 이미지 업로드 ${safeName}`,
+                content: base64,
+              })
+            });
+            resolve(`/images/${uploadPath.replace('public/images/', '')}/${safeName}`);
+          } catch (e) { reject(e); }
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Managed tags helpers
+    function getManagedTags(storageKey, defaults) {
+      const stored = localStorage.getItem(storageKey);
+      if (stored) {
+        try { return JSON.parse(stored); } catch { /* fall through */ }
+      }
+      return [...defaults];
+    }
+    function saveManagedTags(storageKey, tags) {
+      localStorage.setItem(storageKey, JSON.stringify(tags));
+    }
+
+    // Collect all existing keywords from insight files for autocomplete
+    let allInsightKeywords = [];
+    async function loadInsightKeywords() {
+      try {
+        const files = await api('contents/src/content/insights');
+        const mdFiles = files.filter(f => f.name.endsWith('.md'));
+        const kwSet = new Set();
+        for (const f of mdFiles.slice(0, 30)) {
+          try {
+            const file = await api(`contents/${f.path}`);
+            const decoded = new TextDecoder().decode(Uint8Array.from(atob(file.content.replace(/\n/g, '')), c => c.charCodeAt(0)));
+            const { data } = parseFrontmatter(decoded);
+            if (data.keywords) {
+              const kws = Array.isArray(data.keywords) ? data.keywords : [data.keywords];
+              kws.forEach(kw => kwSet.add(kw));
+            }
+          } catch {}
+        }
+        allInsightKeywords = [...kwSet];
+        saveManagedTags('insight_keywords', allInsightKeywords);
+      } catch {}
+    }
+
     function renderFieldHtml(field, val) {
+      if (field.type === 'managed-tags') {
+        const managedTags = getManagedTags(field.storageKey, field.defaults || []);
+        const selected = Array.isArray(val) ? val : (val ? val.split(',').map(s => s.trim()).filter(Boolean) : []);
+        const maxTags = field.maxTags || 0;
+        const maxHint = maxTags > 0 ? ` (최대 ${maxTags}개)` : '';
+        const chips = managedTags.map(tag => {
+          const active = selected.includes(tag);
+          return `<button type="button" data-option="${tag}" class="ms-chip ${active ? 'active' : ''} px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer">${tag}</button>`;
+        }).join('');
+
+        return `
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">${field.label}${maxHint}</label>
+            <div data-key="${field.key}" data-type="managed-tags" data-storage-key="${field.storageKey}" data-max-tags="${maxTags}" class="admin-input">
+              <div class="flex flex-wrap gap-2 p-2.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg min-h-[42px] managed-chips">
+                ${chips}
+              </div>
+              <div class="flex gap-2 mt-2">
+                <input type="text" placeholder="새 태그 입력..." class="new-tag-input flex-1 px-3 py-1.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-xs text-black dark:text-white focus:outline-none focus:border-[#FBE830]" />
+                <button type="button" class="add-tag-btn px-3 py-1.5 bg-black dark:bg-white text-white dark:text-black rounded-lg text-xs font-bold hover:shadow-md transition-all">추가</button>
+              </div>
+              <div class="flex gap-2 mt-1.5">
+                <button type="button" class="manage-tags-btn text-[10px] text-slate-400 hover:text-red-500 transition-colors flex items-center gap-0.5">
+                  <span class="material-symbols-outlined text-xs">settings</span>
+                  태그 관리 (삭제/수정)
+                </button>
+              </div>
+            </div>
+          </div>`;
+      }
+      if (field.type === 'image') {
+        const preview = val ? `<img src="${val}" class="w-full h-24 object-cover rounded-lg border border-slate-200 dark:border-[#353437]" />` : '';
+        return `
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">${field.label}</label>
+            <p class="text-[10px] text-slate-400 dark:text-gray-500 mb-2">권장: <strong>${field.sizeHint || ''}</strong></p>
+            <div data-key="${field.key}" data-type="image" data-upload-path="${field.uploadPath || ''}" class="admin-input">
+              <div class="img-preview mb-2">${preview}</div>
+              <input type="text" value="${val || ''}" placeholder="이미지 URL 붙여넣기" class="img-url w-full px-3 py-2 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830] mb-2" />
+              <label class="flex items-center justify-center gap-2 px-3 py-2.5 bg-slate-100 dark:bg-[#252527] border border-dashed border-slate-300 dark:border-[#454547] rounded-lg cursor-pointer hover:border-[#FBE830] transition-colors">
+                <span class="material-symbols-outlined text-sm text-slate-400">upload</span>
+                <span class="text-xs text-slate-500 dark:text-gray-400">파일 선택 또는 드래그</span>
+                <input type="file" accept="image/*" class="img-file hidden" />
+              </label>
+            </div>
+          </div>`;
+      }
       if (field.type === 'multiselect') {
         const selected = Array.isArray(val) ? val : (val ? [val] : []);
         const chips = (field.options || []).map(o => {
@@ -327,9 +470,19 @@ const collections = {
       const data = {};
       document.querySelectorAll(selector).forEach(input => {
         const key = input.dataset.key;
+        if (input.dataset.type === 'managed-tags') {
+          const selected = Array.from(input.querySelectorAll('.managed-chips .ms-chip.active')).map(c => c.dataset.option);
+          if (selected.length > 0) data[key] = selected;
+          return;
+        }
         if (input.dataset.type === 'multiselect') {
           const selected = Array.from(input.querySelectorAll('.ms-chip.active')).map(c => c.dataset.option);
           if (selected.length > 0) data[key] = selected;
+          return;
+        }
+        if (input.dataset.type === 'image') {
+          const val = input.querySelector('.img-url')?.value.trim();
+          if (val) data[key] = val;
           return;
         }
         let val = input.value.trim();
@@ -341,10 +494,175 @@ const collections = {
       return data;
     }
 
-    // Multiselect chip toggle
+    // Multiselect chip toggle (including managed-tags)
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('ms-chip')) {
+        const wrapper = e.target.closest('[data-type="managed-tags"]');
+        if (wrapper) {
+          const maxTags = parseInt(wrapper.dataset.maxTags) || 0;
+          if (!e.target.classList.contains('active') && maxTags > 0) {
+            const activeCount = wrapper.querySelectorAll('.ms-chip.active').length;
+            if (activeCount >= maxTags) {
+              e.target.style.animation = 'shake 0.3s ease';
+              setTimeout(() => e.target.style.animation = '', 300);
+              return;
+            }
+          }
+        }
         e.target.classList.toggle('active');
+      }
+    });
+
+    // Managed tags: add new tag
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('add-tag-btn')) {
+        const wrapper = e.target.closest('[data-type="managed-tags"]');
+        const input = wrapper.querySelector('.new-tag-input');
+        const tag = input.value.trim();
+        if (!tag) return;
+        const storageKey = wrapper.dataset.storageKey;
+        const tags = getManagedTags(storageKey, []);
+        if (tags.includes(tag)) { input.value = ''; return; }
+        tags.push(tag);
+        saveManagedTags(storageKey, tags);
+        // Add chip to UI
+        const chipsEl = wrapper.querySelector('.managed-chips');
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.dataset.option = tag;
+        chip.className = 'ms-chip active px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer';
+        chip.textContent = tag;
+        chipsEl.appendChild(chip);
+        input.value = '';
+      }
+    });
+
+    // Managed tags: enter key to add
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.target.classList.contains('new-tag-input')) {
+        e.preventDefault();
+        const wrapper = e.target.closest('[data-type="managed-tags"]');
+        wrapper.querySelector('.add-tag-btn').click();
+      }
+    });
+
+    // Managed tags: manage (delete/rename)
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.manage-tags-btn')) {
+        const wrapper = e.target.closest('[data-type="managed-tags"]');
+        const storageKey = wrapper.dataset.storageKey;
+        const tags = getManagedTags(storageKey, []);
+        const chipsEl = wrapper.querySelector('.managed-chips');
+
+        // Toggle manage mode
+        const isManaging = wrapper.dataset.managing === 'true';
+        if (isManaging) {
+          wrapper.dataset.managing = 'false';
+          e.target.closest('.manage-tags-btn').innerHTML = '<span class="material-symbols-outlined text-xs">settings</span> 태그 관리 (삭제/수정)';
+          // Re-render chips normally
+          const selected = Array.from(chipsEl.querySelectorAll('.ms-chip.active')).map(c => c.dataset.option);
+          const currentTags = getManagedTags(storageKey, []);
+          chipsEl.innerHTML = currentTags.map(tag => {
+            const active = selected.includes(tag);
+            return `<button type="button" data-option="${tag}" class="ms-chip ${active ? 'active' : ''} px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer">${tag}</button>`;
+          }).join('');
+          return;
+        }
+
+        wrapper.dataset.managing = 'true';
+        e.target.closest('.manage-tags-btn').innerHTML = '<span class="material-symbols-outlined text-xs">check</span> 관리 완료';
+
+        // Render editable chips with delete buttons
+        chipsEl.innerHTML = tags.map(tag => `
+          <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border border-slate-300 dark:border-[#454547] bg-slate-100 dark:bg-[#252527] text-black dark:text-white manage-tag-item" data-tag="${tag}">
+            <input type="text" value="${tag}" class="rename-tag-input bg-transparent border-none text-xs w-16 focus:outline-none text-center" />
+            <button type="button" class="delete-tag-btn text-red-400 hover:text-red-600 transition-colors" data-tag="${tag}">✕</button>
+          </span>
+        `).join('');
+      }
+    });
+
+    // Delete tag
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('delete-tag-btn')) {
+        const tag = e.target.dataset.tag;
+        const wrapper = e.target.closest('[data-type="managed-tags"]');
+        const storageKey = wrapper.dataset.storageKey;
+        const tags = getManagedTags(storageKey, []);
+        const idx = tags.indexOf(tag);
+        if (idx > -1) {
+          tags.splice(idx, 1);
+          saveManagedTags(storageKey, tags);
+        }
+        e.target.closest('.manage-tag-item').remove();
+      }
+    });
+
+    // Rename tag on blur
+    document.addEventListener('change', (e) => {
+      if (e.target.classList.contains('rename-tag-input')) {
+        const wrapper = e.target.closest('[data-type="managed-tags"]');
+        const storageKey = wrapper.dataset.storageKey;
+        const item = e.target.closest('.manage-tag-item');
+        const oldTag = item.dataset.tag;
+        const newTag = e.target.value.trim();
+        if (!newTag || newTag === oldTag) return;
+        const tags = getManagedTags(storageKey, []);
+        const idx = tags.indexOf(oldTag);
+        if (idx > -1) {
+          tags[idx] = newTag;
+          saveManagedTags(storageKey, tags);
+          item.dataset.tag = newTag;
+          item.querySelector('.delete-tag-btn').dataset.tag = newTag;
+        }
+      }
+    });
+
+    // Body editor: insert markdown
+    window.insertMd = function(prefix, suffix) {
+      const editor = document.getElementById('body-editor');
+      if (!editor) return;
+      const start = editor.selectionStart;
+      const end = editor.selectionEnd;
+      const text = editor.value;
+      const selected = text.substring(start, end);
+      const replacement = suffix ? prefix + (selected || '텍스트') + suffix : prefix + (selected || '');
+      editor.value = text.substring(0, start) + replacement + text.substring(end);
+      editor.focus();
+      const cursorPos = start + replacement.length;
+      editor.setSelectionRange(cursorPos, cursorPos);
+    };
+
+    // Image field: file upload + URL preview
+    document.addEventListener('change', async (e) => {
+      if (e.target.classList.contains('img-file')) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const wrapper = e.target.closest('[data-type="image"]');
+        const urlInput = wrapper.querySelector('.img-url');
+        const previewEl = wrapper.querySelector('.img-preview');
+        const uploadPath = wrapper.dataset.uploadPath;
+        previewEl.innerHTML = '<p class="text-xs text-slate-400 animate-pulse">업로드 중...</p>';
+        try {
+          const url = await uploadImage(file, uploadPath);
+          urlInput.value = url;
+          previewEl.innerHTML = `<img src="https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${uploadPath.replace('public/','')}/${url.split('/').pop()}" class="w-full h-24 object-cover rounded-lg border border-slate-200 dark:border-[#353437]" />`;
+        } catch (err) {
+          previewEl.innerHTML = `<p class="text-xs text-red-500">업로드 실패: ${err.message}</p>`;
+        }
+      }
+    });
+
+    document.addEventListener('input', (e) => {
+      if (e.target.classList.contains('img-url')) {
+        const wrapper = e.target.closest('[data-type="image"]');
+        const previewEl = wrapper.querySelector('.img-preview');
+        const val = e.target.value.trim();
+        if (val && (val.startsWith('http') || val.startsWith('/'))) {
+          previewEl.innerHTML = `<img src="${val}" class="w-full h-24 object-cover rounded-lg border border-slate-200 dark:border-[#353437]" onerror="this.parentElement.innerHTML=''" />`;
+        } else {
+          previewEl.innerHTML = '';
+        }
       }
     });
 
@@ -421,6 +739,26 @@ const collections = {
         return renderFieldHtml(field, val);
       }).join('');
 
+      // Body editor for analysis/proposals
+      const bodyWrap = document.getElementById('body-editor-wrap');
+      const bodyEditor = document.getElementById('body-editor');
+      const modalInner = document.getElementById('edit-modal-inner');
+      if (col.hasBodyEditor) {
+        bodyEditor.value = body || '';
+        bodyWrap.classList.remove('hidden');
+        modalInner.classList.remove('max-w-lg');
+        modalInner.classList.add('max-w-3xl');
+      } else {
+        bodyWrap.classList.add('hidden');
+        modalInner.classList.remove('max-w-3xl');
+        modalInner.classList.add('max-w-lg');
+      }
+
+      // Load insight keywords for autocomplete if editing insights
+      if (currentCollection === 'insights' && allInsightKeywords.length === 0) {
+        loadInsightKeywords();
+      }
+
       document.getElementById('save-status').classList.add('hidden');
       document.getElementById('edit-modal').classList.remove('hidden');
       document.body.style.overflow = 'hidden';
@@ -439,7 +777,9 @@ const collections = {
 
       try {
         const data = collectFieldData('#edit-fields .admin-input');
-        const newContent = buildFrontmatter(data, currentBody);
+        const col = collections[currentCollection];
+        const bodyContent = col.hasBodyEditor ? document.getElementById('body-editor').value : currentBody;
+        const newContent = buildFrontmatter(data, bodyContent);
         const encoded = btoa(unescape(encodeURIComponent(newContent)));
 
         await api(`contents/${currentFile}`, {
@@ -509,6 +849,15 @@ const collections = {
       const fieldsEl = document.getElementById('create-fields');
       fieldsEl.innerHTML = col.fields.map(field => renderFieldHtml(field, '')).join('');
 
+      // Add body editor to create modal if collection supports it
+      if (col.hasBodyEditor) {
+        fieldsEl.innerHTML += `
+          <div class="pt-4 border-t border-slate-100 dark:border-[#353437]">
+            <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider mb-2">본문 (마크다운)</label>
+            <textarea id="create-body-editor" rows="12" class="w-full px-4 py-3 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830] font-mono leading-relaxed resize-y" placeholder="마크다운으로 본문을 작성하세요..."></textarea>
+          </div>`;
+      }
+
       document.getElementById('create-status').classList.add('hidden');
       document.getElementById('create-modal').classList.remove('hidden');
       document.body.style.overflow = 'hidden';
@@ -538,7 +887,9 @@ const collections = {
       try {
         const col = collections[currentCollection];
         const data = collectFieldData('#create-fields .admin-input');
-        const content = buildFrontmatter(data, '\n');
+        const createBodyEditor = document.getElementById('create-body-editor');
+        const bodyText = (col.hasBodyEditor && createBodyEditor) ? createBodyEditor.value : '\n';
+        const content = buildFrontmatter(data, bodyText || '\n');
         const encoded = btoa(unescape(encodeURIComponent(content)));
         const filePath = `${col.path}/${filename}.md`;
 
