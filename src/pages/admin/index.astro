@@ -206,6 +206,39 @@ const collections = {
     :global(.dark) .ms-chip:hover { border-color: #FBE830; color: #fff; }
     :global(.dark) .ms-chip.active { background: #FBE830; color: #000; border-color: #FBE830; }
 
+    .managed-tag-chip {
+      padding: 4px 8px 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid #e5e7eb;
+      background: transparent;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .managed-tag-chip:hover { border-color: #FBE830; color: #000; }
+    .managed-tag-chip.active { background: #FBE830; color: #000; border-color: #FBE830; font-weight: 700; }
+    .managed-tag-chip .remove-managed-tag {
+      display: none;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      font-size: 13px; line-height: 16px;
+      text-align: center;
+      background: rgba(0,0,0,0.15);
+      color: inherit;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.15s;
+    }
+    .managed-tag-chip:hover .remove-managed-tag { display: inline-flex; align-items: center; justify-content: center; }
+    .managed-tag-chip .remove-managed-tag:hover { background: #ef4444; color: #fff; }
+    :global(.dark) .managed-tag-chip { border-color: #353437; color: #9ca3af; }
+    :global(.dark) .managed-tag-chip:hover { border-color: #FBE830; color: #fff; }
+    :global(.dark) .managed-tag-chip.active { background: #FBE830; color: #000; border-color: #FBE830; }
+    :global(.dark) .managed-tag-chip .remove-managed-tag { background: rgba(255,255,255,0.15); }
+
     .tab-btn {
       background: transparent;
       color: #6b7280;
@@ -383,7 +416,10 @@ const collections = {
         const maxHint = maxTags > 0 ? ` (최대 ${maxTags}개)` : '';
         const chips = managedTags.map(tag => {
           const active = selected.includes(tag);
-          return `<button type="button" data-option="${tag}" class="ms-chip ${active ? 'active' : ''} px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer">${tag}</button>`;
+          return `<span class="managed-tag-chip inline-flex items-center gap-1 ${active ? 'active' : ''}" data-option="${tag}">
+            <span class="tag-label">${tag}</span>
+            <button type="button" class="remove-managed-tag" data-tag="${tag}" title="태그 삭제">×</button>
+          </span>`;
         }).join('');
 
         return `
@@ -394,14 +430,8 @@ const collections = {
                 ${chips}
               </div>
               <div class="flex gap-2 mt-2">
-                <input type="text" placeholder="새 태그 입력..." class="new-tag-input flex-1 px-3 py-1.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-xs text-black dark:text-white focus:outline-none focus:border-[#FBE830]" />
+                <input type="text" placeholder="새 태그 입력 후 Enter..." class="new-tag-input flex-1 px-3 py-1.5 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-xs text-black dark:text-white focus:outline-none focus:border-[#FBE830]" />
                 <button type="button" class="add-tag-btn px-3 py-1.5 bg-black dark:bg-white text-white dark:text-black rounded-lg text-xs font-bold hover:shadow-md transition-all">추가</button>
-              </div>
-              <div class="flex gap-2 mt-1.5">
-                <button type="button" class="manage-tags-btn text-[10px] text-slate-400 hover:text-red-500 transition-colors flex items-center gap-0.5">
-                  <span class="material-symbols-outlined text-xs">settings</span>
-                  태그 관리 (삭제/수정)
-                </button>
               </div>
             </div>
           </div>`;
@@ -471,7 +501,7 @@ const collections = {
       document.querySelectorAll(selector).forEach(input => {
         const key = input.dataset.key;
         if (input.dataset.type === 'managed-tags') {
-          const selected = Array.from(input.querySelectorAll('.managed-chips .ms-chip.active')).map(c => c.dataset.option);
+          const selected = Array.from(input.querySelectorAll('.managed-chips .managed-tag-chip.active')).map(c => c.dataset.option);
           if (selected.length > 0) data[key] = selected;
           return;
         }
@@ -494,23 +524,48 @@ const collections = {
       return data;
     }
 
-    // Multiselect chip toggle (including managed-tags)
+    // Multiselect chip toggle (legacy ms-chip)
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('ms-chip')) {
-        const wrapper = e.target.closest('[data-type="managed-tags"]');
-        if (wrapper) {
-          const maxTags = parseInt(wrapper.dataset.maxTags) || 0;
-          if (!e.target.classList.contains('active') && maxTags > 0) {
-            const activeCount = wrapper.querySelectorAll('.ms-chip.active').length;
-            if (activeCount >= maxTags) {
-              e.target.style.animation = 'shake 0.3s ease';
-              setTimeout(() => e.target.style.animation = '', 300);
-              return;
-            }
-          }
-        }
         e.target.classList.toggle('active');
       }
+    });
+
+    // Managed tag chip: toggle select (click on label or chip itself)
+    document.addEventListener('click', (e) => {
+      const chip = e.target.closest('.managed-tag-chip');
+      if (!chip) return;
+      // Ignore if clicking the remove button
+      if (e.target.closest('.remove-managed-tag')) return;
+
+      const wrapper = chip.closest('[data-type="managed-tags"]');
+      const maxTags = parseInt(wrapper?.dataset.maxTags) || 0;
+      if (!chip.classList.contains('active') && maxTags > 0) {
+        const activeCount = wrapper.querySelectorAll('.managed-tag-chip.active').length;
+        if (activeCount >= maxTags) {
+          chip.style.animation = 'shake 0.3s ease';
+          setTimeout(() => chip.style.animation = '', 300);
+          return;
+        }
+      }
+      chip.classList.toggle('active');
+    });
+
+    // Managed tag chip: remove tag (X button)
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.remove-managed-tag')) return;
+      const btn = e.target.closest('.remove-managed-tag');
+      const tag = btn.dataset.tag;
+      const wrapper = btn.closest('[data-type="managed-tags"]');
+      const storageKey = wrapper.dataset.storageKey;
+      if (!confirm(`"${tag}" 태그를 삭제하시겠습니까?`)) return;
+      const tags = getManagedTags(storageKey, []);
+      const idx = tags.indexOf(tag);
+      if (idx > -1) {
+        tags.splice(idx, 1);
+        saveManagedTags(storageKey, tags);
+      }
+      btn.closest('.managed-tag-chip').remove();
     });
 
     // Managed tags: add new tag
@@ -525,14 +580,12 @@ const collections = {
         if (tags.includes(tag)) { input.value = ''; return; }
         tags.push(tag);
         saveManagedTags(storageKey, tags);
-        // Add chip to UI
         const chipsEl = wrapper.querySelector('.managed-chips');
-        const chip = document.createElement('button');
-        chip.type = 'button';
-        chip.dataset.option = tag;
-        chip.className = 'ms-chip active px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer';
-        chip.textContent = tag;
-        chipsEl.appendChild(chip);
+        const chipHtml = `<span class="managed-tag-chip inline-flex items-center gap-1 active" data-option="${tag}">
+          <span class="tag-label">${tag}</span>
+          <button type="button" class="remove-managed-tag" data-tag="${tag}" title="태그 삭제">×</button>
+        </span>`;
+        chipsEl.insertAdjacentHTML('beforeend', chipHtml);
         input.value = '';
       }
     });
@@ -543,78 +596,6 @@ const collections = {
         e.preventDefault();
         const wrapper = e.target.closest('[data-type="managed-tags"]');
         wrapper.querySelector('.add-tag-btn').click();
-      }
-    });
-
-    // Managed tags: manage (delete/rename)
-    document.addEventListener('click', (e) => {
-      if (e.target.closest('.manage-tags-btn')) {
-        const wrapper = e.target.closest('[data-type="managed-tags"]');
-        const storageKey = wrapper.dataset.storageKey;
-        const tags = getManagedTags(storageKey, []);
-        const chipsEl = wrapper.querySelector('.managed-chips');
-
-        // Toggle manage mode
-        const isManaging = wrapper.dataset.managing === 'true';
-        if (isManaging) {
-          wrapper.dataset.managing = 'false';
-          e.target.closest('.manage-tags-btn').innerHTML = '<span class="material-symbols-outlined text-xs">settings</span> 태그 관리 (삭제/수정)';
-          // Re-render chips normally
-          const selected = Array.from(chipsEl.querySelectorAll('.ms-chip.active')).map(c => c.dataset.option);
-          const currentTags = getManagedTags(storageKey, []);
-          chipsEl.innerHTML = currentTags.map(tag => {
-            const active = selected.includes(tag);
-            return `<button type="button" data-option="${tag}" class="ms-chip ${active ? 'active' : ''} px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer">${tag}</button>`;
-          }).join('');
-          return;
-        }
-
-        wrapper.dataset.managing = 'true';
-        e.target.closest('.manage-tags-btn').innerHTML = '<span class="material-symbols-outlined text-xs">check</span> 관리 완료';
-
-        // Render editable chips with delete buttons
-        chipsEl.innerHTML = tags.map(tag => `
-          <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border border-slate-300 dark:border-[#454547] bg-slate-100 dark:bg-[#252527] text-black dark:text-white manage-tag-item" data-tag="${tag}">
-            <input type="text" value="${tag}" class="rename-tag-input bg-transparent border-none text-xs w-16 focus:outline-none text-center" />
-            <button type="button" class="delete-tag-btn text-red-400 hover:text-red-600 transition-colors" data-tag="${tag}">✕</button>
-          </span>
-        `).join('');
-      }
-    });
-
-    // Delete tag
-    document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('delete-tag-btn')) {
-        const tag = e.target.dataset.tag;
-        const wrapper = e.target.closest('[data-type="managed-tags"]');
-        const storageKey = wrapper.dataset.storageKey;
-        const tags = getManagedTags(storageKey, []);
-        const idx = tags.indexOf(tag);
-        if (idx > -1) {
-          tags.splice(idx, 1);
-          saveManagedTags(storageKey, tags);
-        }
-        e.target.closest('.manage-tag-item').remove();
-      }
-    });
-
-    // Rename tag on blur
-    document.addEventListener('change', (e) => {
-      if (e.target.classList.contains('rename-tag-input')) {
-        const wrapper = e.target.closest('[data-type="managed-tags"]');
-        const storageKey = wrapper.dataset.storageKey;
-        const item = e.target.closest('.manage-tag-item');
-        const oldTag = item.dataset.tag;
-        const newTag = e.target.value.trim();
-        if (!newTag || newTag === oldTag) return;
-        const tags = getManagedTags(storageKey, []);
-        const idx = tags.indexOf(oldTag);
-        if (idx > -1) {
-          tags[idx] = newTag;
-          saveManagedTags(storageKey, tags);
-          item.dataset.tag = newTag;
-          item.querySelector('.delete-tag-btn').dataset.tag = newTag;
-        }
       }
     });
 
