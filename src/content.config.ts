@@ -60,4 +60,15 @@ const missions = defineCollection({
   schema: z.object({}).passthrough(),
 });
 
-export const collections = { insights, gallery, tools, analysis, proposals, missions };
+const members = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/members" }),
+  schema: z.object({
+    name: str,
+    role: str,
+    desc: str,
+    github: str,
+    avatar: str,
+  }).passthrough(),
+});
+
+export const collections = { insights, gallery, tools, analysis, proposals, missions, members };
