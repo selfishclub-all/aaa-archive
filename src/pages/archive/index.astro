@@ -121,12 +121,6 @@ const weeks = [
                   </div>
                   <span class="text-xs text-slate-400 dark:text-gray-500">by {member.name}</span>
                 </div>
-                {member.link && (
-                  <a href={member.link} target="_blank" class="text-[10px] font-bold text-[#d4a800] dark:text-[#FBE830] hover:underline flex items-center gap-1" onclick="event.stopPropagation()">
-                    <span class="material-symbols-outlined text-xs">open_in_new</span>
-                    결과물
-                  </a>
-                )}
               </div>
             </div>
           );
@@ -151,12 +145,6 @@ const weeks = [
         <span id="modal-name" class="text-sm text-slate-500 dark:text-gray-400"></span>
       </div>
       <div id="modal-detail" class="prose prose-sm dark:prose-invert max-w-none mb-6 max-h-[50vh] overflow-y-auto [&_img]:rounded-lg [&_img]:my-4 [&_img]:max-w-full"></div>
-      <div id="modal-link-wrap" class="hidden">
-        <a id="modal-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-[#FBE830] text-black font-bold py-3 px-6 rounded-lg text-sm hover:shadow-md transition-all">
-          <span class="material-symbols-outlined text-sm">open_in_new</span>
-          실제 결과물 보기
-        </a>
-      </div>
     </div>
   </div>
 
