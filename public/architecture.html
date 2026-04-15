@@ -244,6 +244,104 @@
   .reveal-delay-3 { transition-delay: 0.3s; }
   .reveal-delay-4 { transition-delay: 0.4s; }
 
+  /* ── RELATIONSHIP DIAGRAM ── */
+  .relationship-diagram { margin-top: 2rem; }
+  .rel-project {
+    background: var(--card); border: 2px solid var(--border); border-radius: 20px;
+    padding: 2rem; position: relative;
+  }
+  .rel-project-label {
+    position: absolute; top: -12px; left: 24px;
+    background: var(--bg); padding: 0 0.8rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+    color: var(--y); font-weight: 500;
+  }
+  .rel-row {
+    display: flex; gap: 1.5rem; align-items: stretch;
+    margin-top: 0.5rem;
+  }
+  @media (max-width: 768px) { .rel-row { flex-direction: column; } }
+  .rel-box {
+    flex: 1; border-radius: 14px; padding: 1.5rem;
+    border: 1px solid var(--border); background: var(--bg);
+    transition: all 0.3s;
+  }
+  .rel-box:hover { border-color: var(--y); }
+  .rel-web { border-color: #38BDF8; }
+  .rel-web:hover { border-color: #38BDF8; box-shadow: 0 0 20px rgba(56,189,248,0.1); }
+  .rel-admin { border-color: var(--y); }
+  .rel-admin:hover { box-shadow: 0 0 20px rgba(251,232,48,0.1); }
+  .rel-box-header {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.95rem; color: #fff; margin-bottom: 0.4rem;
+  }
+  .rel-box-url {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+    color: var(--muted); margin-bottom: 1rem;
+    padding: 0.2rem 0.5rem; background: var(--code); border-radius: 4px;
+    display: inline-block;
+  }
+  .rel-pages { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 1rem; }
+  .rel-page {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+    background: var(--code); border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.2rem 0.5rem; color: var(--muted);
+  }
+  .rel-note { font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
+
+  .rel-arrow-wrap {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-width: 80px; gap: 0.3rem; flex-shrink: 0;
+  }
+  .rel-arrow-line {
+    width: 60px; height: 2px; background: var(--y); position: relative;
+  }
+  .rel-arrow-line::before, .rel-arrow-line::after {
+    content: ''; position: absolute; top: 50%; width: 8px; height: 8px;
+    border: 2px solid var(--y); border-bottom: none; border-left: none;
+  }
+  .rel-arrow-line::before { right: -2px; transform: translateY(-50%) rotate(45deg); }
+  .rel-arrow-line::after { left: -2px; transform: translateY(-50%) rotate(225deg); }
+  .rel-arrow-label-top, .rel-arrow-label-bot {
+    font-size: 0.6rem; color: var(--y); font-weight: 600; white-space: nowrap;
+  }
+  @media (max-width: 768px) {
+    .rel-arrow-wrap { flex-direction: row; min-width: auto; padding: 0.5rem 0; }
+    .rel-arrow-line { width: 2px; height: 40px; }
+    .rel-arrow-line::before { top: -2px; right: 50%; transform: translateX(50%) rotate(-45deg); }
+    .rel-arrow-line::after { top: auto; bottom: -2px; right: 50%; left: auto; transform: translateX(50%) rotate(135deg); }
+  }
+
+  .rel-shared {
+    margin-top: 1.5rem; padding-top: 1.5rem;
+    border-top: 1px dashed var(--border); text-align: center;
+  }
+  .rel-shared-label {
+    font-size: 0.7rem; font-weight: 700; color: var(--y);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.8rem;
+  }
+  .rel-shared-row { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-bottom: 0.8rem; }
+  .rel-content-box {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+    background: rgba(251,232,48,0.05); border: 1px solid rgba(251,232,48,0.15);
+    border-radius: 6px; padding: 0.3rem 0.6rem; color: var(--y);
+  }
+  .rel-shared-note { font-size: 0.7rem; color: var(--muted); }
+
+  .rel-external {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1rem; margin-top: 2rem; flex-wrap: wrap;
+  }
+  .rel-ext-node {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 0.8rem 1.2rem;
+  }
+  .rel-ext-node span:first-child { font-size: 1.2rem; }
+  .rel-ext-node strong { font-size: 0.8rem; color: #fff; display: block; }
+  .rel-ext-node small { font-size: 0.65rem; color: var(--muted); }
+  .rel-ext-arrow { font-size: 1.2rem; color: var(--y); font-family: 'JetBrains Mono', monospace; }
+
   /* ── DIVIDER ── */
   .divider {
     height: 1px; max-width: 1100px; margin: 0 auto;
@@ -316,11 +414,114 @@
   <div class="flow-diagram reveal reveal-delay-2" style="margin-top: 2rem;">
     <div class="flow-node" style="min-width: 200px;">
       <span class="icon">📁</span>
-      <div class="name">3개 Remote 동기화</div>
+      <div class="name">GitHub 레포 구조</div>
       <div class="desc" style="text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; line-height: 1.8;">
-        origin → selfishclub-all/aaa-archive<br/>
-        personal → tomost-dada/aaa-archive<br/>
-        selfishclub → selfishclub/aaa-admin
+        selfishclub-all/aaa-archive — 팀 공유 레포<br/>
+        selfishclub/aaa-admin — 어드민 배포용 레포
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 1.5 WEB ↔ ADMIN RELATIONSHIP -->
+<section id="relationship">
+  <div class="reveal">
+    <div class="section-label">01-B — Web ↔ Admin</div>
+    <div class="section-title">웹사이트와 어드민의 관계</div>
+    <div class="section-desc">같은 Astro 프로젝트 안에 공개 웹사이트와 어드민이 공존합니다. 어드민에서 수정하면 웹사이트가 자동 업데이트됩니다.</div>
+  </div>
+
+  <div class="relationship-diagram reveal reveal-delay-1">
+    <!-- Astro Project wrapper -->
+    <div class="rel-project">
+      <div class="rel-project-label">selfish-aaa-site-astro (Astro 프로젝트)</div>
+      <div class="rel-row">
+        <!-- Web side -->
+        <div class="rel-box rel-web">
+          <div class="rel-box-header">
+            <span>🌐</span>
+            <strong>공개 웹사이트</strong>
+          </div>
+          <div class="rel-box-url">aaa-homepage.vercel.app</div>
+          <div class="rel-pages">
+            <span class="rel-page">/</span>
+            <span class="rel-page">/tools/</span>
+            <span class="rel-page">/insights/</span>
+            <span class="rel-page">/gallery/</span>
+            <span class="rel-page">/archive/</span>
+            <span class="rel-page">/analysis/</span>
+            <span class="rel-page">/team/</span>
+          </div>
+          <div class="rel-note">SSG 빌드 — 정적 HTML<br/>방문자 누구나 열람 가능</div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="rel-arrow-wrap">
+          <div class="rel-arrow-line"></div>
+          <div class="rel-arrow-label-top">수정 → 재빌드</div>
+          <div class="rel-arrow-label-bot">콘텐츠 읽기</div>
+        </div>
+
+        <!-- Admin side -->
+        <div class="rel-box rel-admin">
+          <div class="rel-box-header">
+            <span>⚙️</span>
+            <strong>어드민 페이지</strong>
+          </div>
+          <div class="rel-box-url">aaa-homepage.vercel.app/admin</div>
+          <div class="rel-pages">
+            <span class="rel-page">갤러리</span>
+            <span class="rel-page">멤버</span>
+            <span class="rel-page">도구모음</span>
+            <span class="rel-page">인사이트</span>
+            <span class="rel-page">분석</span>
+            <span class="rel-page">제안</span>
+          </div>
+          <div class="rel-note">GitHub API로 직접 커밋<br/>토큰 인증된 운영자만 접근</div>
+        </div>
+      </div>
+
+      <!-- Shared content layer -->
+      <div class="rel-shared reveal reveal-delay-2">
+        <div class="rel-shared-label">공유 콘텐츠 레이어</div>
+        <div class="rel-shared-row">
+          <span class="rel-content-box">src/content/gallery/</span>
+          <span class="rel-content-box">src/content/tools/</span>
+          <span class="rel-content-box">src/content/insights/</span>
+          <span class="rel-content-box">src/content/analysis/</span>
+          <span class="rel-content-box">src/content/proposals/</span>
+          <span class="rel-content-box">src/content/members/</span>
+        </div>
+        <div class="rel-shared-note">어드민이 GitHub API로 이 파일들을 수정 → Vercel이 감지 → 웹사이트 재빌드</div>
+      </div>
+    </div>
+
+    <!-- External connections -->
+    <div class="rel-external reveal reveal-delay-3">
+      <div class="rel-ext-node">
+        <span>📦</span>
+        <div>
+          <strong>GitHub Repo</strong>
+          <small>selfishclub/aaa-admin</small>
+        </div>
+      </div>
+      <div class="rel-ext-arrow">↕</div>
+      <div class="rel-ext-node">
+        <span>▲</span>
+        <div>
+          <strong>Vercel</strong>
+          <small>git push → 자동 빌드 → 배포</small>
+        </div>
+      </div>
+      <div class="rel-ext-arrow">↕</div>
+      <div class="rel-ext-node">
+        <span>👀</span>
+        <div>
+          <strong>방문자</strong>
+          <small>웹사이트 열람</small>
+        </div>
       </div>
     </div>
   </div>
