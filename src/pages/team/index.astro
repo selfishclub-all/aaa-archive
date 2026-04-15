@@ -5,14 +5,7 @@ import { getCollection } from 'astro:content';
 const base = import.meta.env.BASE_URL;
 
 const memberEntries = await getCollection('members');
-const members = memberEntries.map(m => {
-  const data = { ...m.data };
-  // /images/ 경로를 GitHub raw URL로 변환
-  if (data.avatar && data.avatar.startsWith('/images/')) {
-    data.avatar = `https://raw.githubusercontent.com/selfishclub/aaa-admin/main/public${data.avatar}`;
-  }
-  return data;
-});
+const members = memberEntries.map(m => m.data);
 ---
 <Layout title="팀소개 - AAA 아카이브">
   <!-- Hero Banner -->

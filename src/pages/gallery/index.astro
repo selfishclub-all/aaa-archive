@@ -32,10 +32,8 @@ const base = import.meta.env.BASE_URL;
             style={`animation-delay: ${idx * 50}ms`}
           >
             <div class="h-40 bg-slate-100 dark:bg-[#252527] flex items-center justify-center overflow-hidden">
-              {project.data.thumbnail && project.data.thumbnail.startsWith('http') ? (
+              {project.data.thumbnail && (project.data.thumbnail.startsWith('http') || project.data.thumbnail.startsWith('/')) ? (
                 <img src={project.data.thumbnail} alt={project.data.name} class="w-full h-full object-cover" />
-              ) : project.data.thumbnail && project.data.thumbnail.startsWith('/images/') ? (
-                <img src={`https://raw.githubusercontent.com/selfishclub/aaa-admin/main/public${encodeURI(project.data.thumbnail)}`} alt={project.data.name} class="w-full h-full object-cover" />
               ) : (
                 <span class="text-5xl">{project.data.thumbnail || '\u{1F680}'}</span>
               )}

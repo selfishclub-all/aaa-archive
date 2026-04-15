@@ -30,6 +30,7 @@ const collections = {
   tools: {
     label: '도구 모음',
     path: 'src/content/tools',
+    hasBodyEditor: true,
     fields: [
       { key: 'name', label: '도구명', type: 'text' },
       { key: 'category', label: '카테고리', type: 'managed-tags', storageKey: 'tool_categories', defaults: ['자동화', '콘텐츠', '분석', '생산성', '디자인'] },
@@ -40,6 +41,7 @@ const collections = {
   insights: {
     label: '인사이트',
     path: 'src/content/insights',
+    hasBodyEditor: true,
     fields: [
       { key: 'member', label: '작성자', type: 'select', options: members },
       { key: 'summary', label: '요약', type: 'textarea' },
