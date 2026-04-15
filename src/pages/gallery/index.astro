@@ -35,7 +35,7 @@ const base = import.meta.env.BASE_URL;
               {project.data.thumbnail && project.data.thumbnail.startsWith('http') ? (
                 <img src={project.data.thumbnail} alt={project.data.name} class="w-full h-full object-cover" />
               ) : project.data.thumbnail && project.data.thumbnail.startsWith('/images/') ? (
-                <img src={`https://raw.githubusercontent.com/selfishclub/aaa-admin/main/public${project.data.thumbnail}`} alt={project.data.name} class="w-full h-full object-cover" />
+                <img src={`https://raw.githubusercontent.com/selfishclub/aaa-admin/main/public${encodeURI(project.data.thumbnail)}`} alt={project.data.name} class="w-full h-full object-cover" />
               ) : (
                 <span class="text-5xl">{project.data.thumbnail || '\u{1F680}'}</span>
               )}
