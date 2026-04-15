@@ -54,6 +54,8 @@ const collections = {
     hasBodyEditor: true,
     fields: [
       { key: 'week', label: '주차', type: 'number' },
+      { key: 'title', label: '주제', type: 'text', placeholder: '예: 만들었다에서 운영한다로' },
+      { key: 'description', label: '설명', type: 'textarea' },
       { key: 'date', label: '날짜', type: 'text', placeholder: '2026-04-12' },
       { key: 'total_submissions', label: '제출 인원', type: 'number' },
       { key: 'tags', label: '태그 (쉼표 구분)', type: 'tags' },
@@ -140,20 +142,30 @@ const collections = {
             </button>
           </div>
           <div id="edit-fields" class="space-y-4"></div>
-          <!-- Body Editor (분석/제안용) -->
+          <!-- Body Editor (마크다운 + 미리보기) -->
           <div id="body-editor-wrap" class="hidden mt-6 pt-4 border-t border-slate-100 dark:border-[#353437]">
             <div class="flex items-center justify-between mb-2">
-              <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider">본문 (마크다운)</label>
-              <div class="flex gap-1">
-                <button type="button" onclick="insertMd('## ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="제목">H2</button>
-                <button type="button" onclick="insertMd('### ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="소제목">H3</button>
-                <button type="button" onclick="insertMd('**', '**')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors font-bold" title="굵게">B</button>
-                <button type="button" onclick="insertMd('- ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="목록">•</button>
-                <button type="button" onclick="insertMd('> ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="인용">❝</button>
-                <button type="button" onclick="insertMd('```\n', '\n```')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors font-mono" title="코드">{}</button>
+              <label class="block text-xs font-bold text-slate-600 dark:text-gray-400 uppercase tracking-wider">본문</label>
+              <div class="flex items-center gap-2">
+                <div class="flex gap-1">
+                  <button type="button" onclick="insertMd('## ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="제목">H2</button>
+                  <button type="button" onclick="insertMd('### ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="소제목">H3</button>
+                  <button type="button" onclick="insertMd('**', '**')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors font-bold" title="굵게">B</button>
+                  <button type="button" onclick="insertMd('- ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="목록">•</button>
+                  <button type="button" onclick="insertMd('> ')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors" title="인용">❝</button>
+                  <button type="button" onclick="insertMd('```\n', '\n```')" class="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 hover:text-black dark:hover:text-white transition-colors font-mono" title="코드">{}</button>
+                </div>
+                <span class="text-slate-300 dark:text-[#353437]">|</span>
+                <button type="button" id="toggle-preview" onclick="toggleBodyPreview()" class="text-xs px-3 py-1 rounded-full border border-slate-200 dark:border-[#353437] text-slate-500 hover:text-black dark:hover:text-white hover:border-[#FBE830] transition-all flex items-center gap-1">
+                  <span class="material-symbols-outlined text-xs">visibility</span>
+                  미리보기
+                </button>
               </div>
             </div>
-            <textarea id="body-editor" rows="16" class="w-full px-4 py-3 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830] font-mono leading-relaxed resize-y" placeholder="마크다운으로 본문을 작성하세요..."></textarea>
+            <div class="body-editor-split">
+              <textarea id="body-editor" rows="16" class="w-full px-4 py-3 bg-slate-50 dark:bg-[#252527] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white focus:outline-none focus:border-[#FBE830] font-mono leading-relaxed resize-y" placeholder="마크다운으로 본문을 작성하세요..."></textarea>
+              <div id="body-preview" class="hidden w-full px-5 py-4 bg-white dark:bg-[#1a1a1c] border border-slate-200 dark:border-[#353437] rounded-lg text-sm text-black dark:text-white overflow-y-auto prose prose-sm dark:prose-invert max-w-none body-preview-panel"></div>
+            </div>
           </div>
           <div class="flex gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-[#353437]">
             <button id="save-btn" onclick="saveFile()" class="flex-1 bg-[#FBE830] text-black font-bold py-3 rounded-lg text-sm hover:shadow-lg transition-all">저장</button>
@@ -261,6 +273,36 @@ const collections = {
     #body-editor {
       min-height: 300px;
       tab-size: 2;
+    }
+    .body-editor-split {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .body-editor-split.split-mode {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .body-editor-split.split-mode #body-editor {
+      min-height: 400px;
+    }
+    .body-preview-panel {
+      min-height: 400px;
+      max-height: 500px;
+    }
+    .body-preview-panel h2 { font-size: 1.3em; font-weight: 700; margin-top: 1.2em; margin-bottom: 0.4em; border-bottom: 1px solid var(--border, #e5e7eb); padding-bottom: 0.3em; }
+    .body-preview-panel h3 { font-size: 1.1em; font-weight: 700; margin-top: 1em; margin-bottom: 0.3em; }
+    .body-preview-panel ul, .body-preview-panel ol { padding-left: 1.5em; margin: 0.5em 0; }
+    .body-preview-panel li { margin: 0.2em 0; }
+    .body-preview-panel blockquote { border-left: 3px solid #FBE830; padding-left: 1em; margin: 0.8em 0; color: #71717a; }
+    .body-preview-panel code { background: rgba(251,232,48,0.1); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.85em; }
+    .body-preview-panel pre { background: #1e1e20; padding: 1em; border-radius: 8px; overflow-x: auto; margin: 0.8em 0; }
+    .body-preview-panel pre code { background: none; padding: 0; }
+    .body-preview-panel strong { color: inherit; font-weight: 700; }
+    .body-preview-panel p { margin: 0.5em 0; }
+    :global(.dark) .body-preview-panel h2 { border-bottom-color: #353437; }
+    #toggle-preview.active { background: #FBE830; color: #000; border-color: #FBE830; font-weight: 700; }
+    @media (max-width: 768px) {
+      .body-editor-split.split-mode { grid-template-columns: 1fr; }
     }
   </style>
 
@@ -601,6 +643,51 @@ const collections = {
         e.preventDefault();
         const wrapper = e.target.closest('[data-type="managed-tags"]');
         wrapper.querySelector('.add-tag-btn').click();
+      }
+    });
+
+    // Load marked.js for live preview
+    const markedScript = document.createElement('script');
+    markedScript.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+    document.head.appendChild(markedScript);
+
+    // Toggle preview panel
+    let previewActive = false;
+    window.toggleBodyPreview = function() {
+      const editor = document.getElementById('body-editor');
+      const preview = document.getElementById('body-preview');
+      const split = document.querySelector('.body-editor-split');
+      const btn = document.getElementById('toggle-preview');
+      previewActive = !previewActive;
+
+      if (previewActive) {
+        preview.classList.remove('hidden');
+        split.classList.add('split-mode');
+        btn.classList.add('active');
+        updatePreview();
+      } else {
+        preview.classList.add('hidden');
+        split.classList.remove('split-mode');
+        btn.classList.remove('active');
+      }
+    };
+
+    function updatePreview() {
+      const editor = document.getElementById('body-editor');
+      const preview = document.getElementById('body-preview');
+      if (!editor || !preview || preview.classList.contains('hidden')) return;
+      if (typeof marked !== 'undefined' && marked.parse) {
+        preview.innerHTML = marked.parse(editor.value || '');
+      } else {
+        preview.innerHTML = '<p style="color:#71717a;font-size:0.8rem;">marked.js 로딩 중...</p>';
+        setTimeout(updatePreview, 300);
+      }
+    }
+
+    // Live update on typing
+    document.addEventListener('input', (e) => {
+      if (e.target.id === 'body-editor' && previewActive) {
+        updatePreview();
       }
     });
 
