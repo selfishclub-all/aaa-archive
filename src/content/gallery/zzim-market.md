@@ -1,8 +1,8 @@
 ---
-name: 찜마켓
-maker: 오웬
-thumbnail: 🛒
-link: https://zzim-exchange.vercel.app
+name: "찜마켓"
+maker: "오웬"
+thumbnail: "/images/gallery/1776226825798____________2026-04-15______1.20.18.png"
+link: "https://zzim-exchange.vercel.app"
 week: 3
 ---
 
