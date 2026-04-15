@@ -54,10 +54,10 @@ const members = memberEntries.map(m => {
           {member.desc && (
             <p class="text-xs leading-relaxed text-slate-500 dark:text-gray-400 line-clamp-3">{member.desc}</p>
           )}
-          {member.github && (
-            <a href={`https://github.com/${member.github}`} target="_blank" class="mt-2 text-[10px] font-medium text-slate-400 dark:text-gray-500 hover:text-[#d4a800] dark:hover:text-[#FBE830] transition-colors flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs">link</span>
-              @{member.github}
+          {member.linkedin && (
+            <a href={member.linkedin} target="_blank" class="mt-2 text-[10px] font-medium text-slate-400 dark:text-gray-500 hover:text-[#d4a800] dark:hover:text-[#FBE830] transition-colors flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">open_in_new</span>
+              LinkedIn
             </a>
           )}
         </div>

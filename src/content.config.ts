@@ -66,7 +66,7 @@ const members = defineCollection({
     name: str,
     role: str,
     desc: str,
-    github: str,
+    linkedin: str,
     avatar: str,
   }).passthrough(),
 });
