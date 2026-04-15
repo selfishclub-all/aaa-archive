@@ -1,8 +1,8 @@
 ---
-name: 콘텐츠 마케팅 사이트
-maker: 띵끄
-thumbnail: 📢
-link: https://content-marketing-team.vercel.app/
+name: "콘텐츠 마케팅 팀"
+maker: "띵끄"
+thumbnail: "/images/gallery/1776235912309____________2026-04-15______3.51.27.png"
+link: "https://content-marketing-team.vercel.app/"
 week: 2
 ---
 
