@@ -18,7 +18,7 @@ find "$VAULT" -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.
   copy_image "$f"
 done
 
-find "$VAULT/00_주차별미션/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" \) | while read f; do
+find "$VAULT/00_missions/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" \) | while read f; do
   copy_image "$f"
 done
 
@@ -31,7 +31,7 @@ echo "이미지 동기화: $(find "$IMAGES" -type f | wc -l)개 파일"
 
 # 미션 파일: Week_0N_ 패턴만, 이미지 경로 변환 (공백→언더스코어)
 # 모든 미션 파일 (Week_0* + 보조 문서)
-find "$VAULT/00_주차별미션/" -name "*.md" -size +10c | while read f; do
+find "$VAULT/00_missions/" -name "*.md" -size +10c | while read f; do
   filename=$(basename "$f")
   # 1) ![[image.png]] → ![image](/aaa-archive/images/image.png)
   # 2) ![alt](path/image.png) → ![alt](/aaa-archive/images/image.png)
@@ -48,10 +48,10 @@ find "$VAULT/00_주차별미션/" -name "*.md" -size +10c | while read f; do
     > "$CONTENT/missions/$filename"
 done
 
-find "$VAULT/01_결과물갤러리/" -name "*.md" -exec cp {} "$CONTENT/gallery/" \; 2>/dev/null
-find "$VAULT/02_인사이트/" -name "*.md" -exec cp {} "$CONTENT/insights/" \; 2>/dev/null
-find "$VAULT/03_스킬_플러그인/" -name "*.md" -exec cp {} "$CONTENT/tools/" \; 2>/dev/null
-find "$VAULT/_분석/주차별분석/" -name "*.md" -exec cp {} "$CONTENT/analysis/" \; 2>/dev/null
-find "$VAULT/_제안/" -name "*.md" -exec cp {} "$CONTENT/proposals/" \; 2>/dev/null
+find "$VAULT/01_gallery/" -name "*.md" -exec cp {} "$CONTENT/gallery/" \; 2>/dev/null
+find "$VAULT/02_insights/" -name "*.md" -exec cp {} "$CONTENT/insights/" \; 2>/dev/null
+find "$VAULT/03_skills/" -name "*.md" -exec cp {} "$CONTENT/tools/" \; 2>/dev/null
+find "$VAULT/_analysis/weekly/" -name "*.md" -exec cp {} "$CONTENT/analysis/" \; 2>/dev/null
+find "$VAULT/_proposals/" -name "*.md" -exec cp {} "$CONTENT/proposals/" \; 2>/dev/null
 
 echo "동기화 완료: $(find "$CONTENT" -name '*.md' | wc -l)개 파일"

@@ -1,78 +1,213 @@
-오마이클로드 → 플러그인 (클로드 안에서 써~)
+### 결과물
 
-- **링크드인 스레드 유튜브 등에서 유용한 정보들 2회 이상 슬렉에 올리기**
+### **과제1. 23(월) 자정까지  (완료)**
 
+https://www.linkedin.com/feed/update/urn:li:activity:7441832655765004289/?originTrackingId=QPsbUyfdExiU1R1qIc79sw%3D%3D
 
-링크드인 링크
+### **과제2. 아래 내용 중 택 1로 진행해주세요(꼭 아래 유튜브 아니여도 되나, 레퍼런스 가지고 진행해주세요)**
 
-[https://www.linkedin.com/feed/update/urn:li:activity:7445776271273357312/](https://www.linkedin.com/feed/update/urn:li:activity:7445776271273357312/)
+### **2.2** 원소스 멀티유즈 하기
 
-영수증인식시 첨부된 사진도 같이 노출되도록 설정
-![image - 2026-04-12T164731.202.png](/images/image_-_2026-04-12T164731.202.png)
-데이터토대로 분석진할수있는 대시보드 부분 추가(AI 미사용) → 결과값이 늘다르게 나오기때
-![image - 2026-04-12T164729.244.png](/images/image_-_2026-04-12T164729.244.png)
-![image - 2026-04-12T164727.604.png](/images/image_-_2026-04-12T164727.604.png)
-![image - 2026-04-12T164726.095.png](/images/image_-_2026-04-12T164726.095.png)
-resend APi를 활용해 영수증 및 인보이스 발송탭 추가![image - 2026-04-12T164721.046.png](/images/image_-_2026-04-12T164721.046.png)
-![image - 2026-04-12T164724.519.png](/images/image_-_2026-04-12T164724.519.png)
-![image - 2026-04-12T164722.790.png](/images/image_-_2026-04-12T164722.790.png)
-작업이 완료되면 obsidian에 업데이트 파일을 제공하도록 클로드에게 요청진행
+https://content-marketing-team.vercel.app/
 
-- 기본적인 부분은 클로드에게 보안점검을 요청하면 진행해주지만 클로드라고 완벽한것은 아니기때문에 보안관련해서 공부진행후 실제 놓친부분들은 없는지 확인이 필요해보임
-![image - 2026-04-12T164718.603.png](/images/image_-_2026-04-12T164718.603.png)
-![image - 2026-04-12T164716.927.png](/images/image_-_2026-04-12T164716.927.png)
-보안점검시 이런오류들이 발생함
+![image.png](/images/image.png)
 
+### **과제3. 위의 과제를 하시면서, 오마이오픈코드 or 오마이클로드코드 중에 하나를 사용해주세요**
+
+오마이 클로드 다운후 기본베이스로 활용가능
+
+![image.png](/images/image%201.png)
+
+추가기능
+
+비용관리 (영수증을 업로드하면 자동으로 비용처리로 들어가게 (메타광고도 됩니다)
+
+![image.png](/images/image%202.png)
+
+![image.png](/images/image%203.png)
 
 ### 만든과정 및 삽질
 
-기능강화
-
-- 파이프라인 및 유저 갤러리 대시보드 제작해주라고 클로드 코드에게요청
-- 영수증 발송 기능을 추가하고싶은데 메일발송기능 추가해달라고 요청
-    - 활용은 resend API (일주일에 1000건 가능)
-    - [https://resend.com/emails](https://resend.com/emails)
-![image - 2026-04-12T164714.660 1.png](/images/image_-_2026-04-12T164714.660_1.png)
-보안강화![image - 2026-04-12T164712.324.png](/images/image_-_2026-04-12T164712.324.png)
-![image - 2026-04-12T164709.611.png](/images/image_-_2026-04-12T164709.611.png)
-- 최근 바이브 코딩앱들에 대해서 보안문제가 나타난다는 것을보고 실제 앱 출시를 위해서 보안쪽에대해서 공부를 진행함![image - 2026-04-12T164703.859.png](/images/image_-_2026-04-12T164703.859.png)
-- [https://lilys.ai/digest/8924886/10165771?s=1&noteVersionId=6654596](https://lilys.ai/digest/8924886/10165771?s=1&noteVersionId=6654596)
-
-영상을 토대로 클로드와 대화를 통해 웹사이트 보안 분석 MD파일 제작
-- 보다 나은 작업방식을위해 PRD형식의 MD파일로 제작 요청
-
-
-- 사용한 MD파일
+1. 폴더를 제작후 그폴더로 경로를 설정한다
+2. 이후 git에서 AI 자동생성 소스코드를 클론해서 가져온다
     
-    [YFLOW_Security_Audit_PRD.md](attachment:74d8cdf5-c0a2-4a82-941a-6f8f28200175:YFLOW_Security_Audit_PRD.md)
+    ![image.png](/images/image%204.png)
     
+3. 프로젝트 구조 생성후 웹사이트 형식으로 요청
+    1. 깃허브와 버셀은 계정에 공식으로 연결되어있는 github 계정과 vercel 계정을 활용해서 자동배포진행완료
 
+![image.png](/images/image%205.png)
 
-제작한 홈페이지 내의 보안관련 문제 다시한번 점검 진행
+1. 유튜브 API키가 필요해서 생성후 전달\
+    
+    ![image.png](/images/image%206.png)
+    
+2. 작동테스트완료
 
+![image.png](/images/image%207.png)
 
 ### 인사이트
 
-웹사이트 서비스에 supabase나 API연결시 프론트엔드 개발에 노출되어있는 경우가 많아 해킹, 토큰소모량 극대화 등 해외에서 이슈가 생긴다는 것을 확인
-
-- 체크리스트도 클로드에게 요청해서 제작해보았습니다.
-
-
-- 클로드에서 두개 계정으로 작업 시
+- OMC 사용시 아래 툴팁
     
-    - 연결되어있는 supabsae, n8n, github, vercel 계정이다르면 CLI나 MCP가 작동을 하지않습니다.
-    - 계정을옮기면서 작업시 기존에 연결해둔 계정의 토큰을 다소모하기전에 20%정도는 토큰을 남겨두고 다른계정에서 작업진행 후 다시 연결되어있는 계정으로 작업을 해야 실제 데이터에 접근및 수정이 가능합니다.
-- 만우절 이벤트로 버디기능이 생겼습니다!
+    ![image.png](/images/image%208.png)
     
-- /budy
+    - 5H : 5시간 사용가능량  (업데이트 남은시간)
+    - WK (주간 사용량)
+    - thinking → 현재 사용중인 스킬
+    - session : 터미널 사용시간
+    - CTX : 사용한 컨텍스트 양 (한번에 클로드 코드가 이해할수있는 양) 많아지면 속도느려짐
+    - T :나와 대화한 텍스트 수
+    - A : 사용중인 에이전트 수
+    - S: 사용중인 스킬의 수
+    - 중간중간 작업시 shift + Tab 사용시 폴더권환 외에 자동승인 기능
     
-![image - 2026-04-12T164659.902.png](/images/image_-_2026-04-12T164659.902.png)
+    ![image.png](/images/image%209.png)
+    
+- /plugin  을 활용해서 마켓플레이스에서 다양한 플러그인을 다운받을수 있음 (클로드 공식)
+
+![image.png](/images/image%2010.png)
+
+- omc사용시 아래 CTX가 뜨게되는데 컨텍스트 사용량이며 70%이상일 경우 토큰소모 및 작업속도가 늦어질가능성 높음 일정량 초과시 알아서 클로드가 Clear 를 진행함 
+(에밀리의 대화내용삭제되는게 이거인것같아요)
+    - 중간중간 작업완료시 깃허브에 배포하고 /clear 을 통해 대화를 줄여가면서 작업하면 토큰소모를 줄일수 있을것 같음
+- team 5를 활용해서 5개의 에이전트에게 일을시키니 토큰소모는 엄청났지만 보다 빠른 결과를 얻을수 있엇음
+- 터미널 클로드코드에서 프리뷰요청시 클로드 코드앱에서 볼수있게해주었다
+- 터미널 클로드 코드 기본 모델은 high effort로 되어있지만
+    - /model을 통해서 Fegault 값을 Max effort로 변경가능하다 (보다 깊이 있는 생각 제한없는 리미트)
+
+![image.png](/images/image%2011.png)
+
+클로드 디스패치 기능 활용해보기
+
+1. 최신버전의 클로드코드앱 설치 
+2. 모바일에 동일한 계정의 클로드 앱 설치
+3. 앱에서 디스패치 기능에서 채팅입력 (컴퓨터가 켜져있어야함 ( 절전모드 해제도 필수)
+4. 대화는 모바일과 데스크탑에서 모두 확인이 가능하고 입력가능
+    
+    ![image.png](/images/image%2012.png)
+    
+5. 코드작업의 경우 폴더권한을 승인요청함
+    
+    ![image.png](/images/image%2013.png)
+    
+6. 폴더 권한요청을 끝낸후에는 코워크와 연결을통해 작업진행
+
+7. 폴더의 정확한 경로를 알고있으면 일을 시키기 편리함 
+    1. 예 ) "C:\Users\yesun\growthlink pj”
+    2. 밥먹으러 갈때 진행상황이나 작업한내용을 확인하거나, 분석할때는 좋아보임
+    
+    ![image.png](/images/image%2014.png)
+    
+
+![image.png](/images/image%2015.png)
+
+- OMC team 기능 사용시?
+    - `omc team 3`  : OMC가 알아서 역할 배정
+        
+        OMC가 작업 내용을 분석해서 적절한 에이전트를 **자동으로 섞어서** 배치해요:
+        
+        - 에이전트 1 → `architect` (설계)
+        - 에이전트 2 → `executor` (구현)
+        - 에이전트 3 → `test-engineer` (테스트)
+    - `omc team 3:executor`  : 전부 같은 역할로 고정
+        
+        3개 에이전트가 **전부 executor(구현)**으로 고정:
+        
+        - 에이전트 1 → `executor` (구현)
+        - 에이전트 2 → `executor` (구현)
+        - 에이전트 3 → `executor` (구현)
+- 옵시디언 활용해보기
+    
+    step 1. 옵시디언 설치 → 버전업데이트 확인 필수
+    
+    - 옵시디언에서 설정 → 일반 → 명령줄 인터페이스 기능 활성화 (터미널에서 옵시디언 활성화 하는법)
+    
+    ![image.png](/images/image%2016.png)
+    
+    - 터미널에서  `obsidian` 입력시 활성화 완료
+    
+    step 2. 클로드코드에서 옵시디언 공식 SKILL 설치진행
+    
+    ![image.png](/images/image%2017.png)
+    
+    - https://github.com/kepano/obsidian-skills
+    
+    /plugin marketplace add kepano/obsidian-skills
+    /plugin install obsidian@obsidian-skills
+    
+    완료후 클로드에게 obsidian CLI 사용가능한지 확인요청
+    
+    ![image.png](/images/image%2018.png)
+    
+    - 활용후 프롬프트로 브리핑 노트 제작
+    
+    ```jsx
+    현재 14일간 생성 및 수정된 노트 읽어서 내 현재 상황과 앞으로 뭘하면 좋을지 브리핑을 한 후
+    노트로 만들어주는 스킬을 만들어줘
+    ```
+    
+    ![image.png](/images/image%2019.png)
+    
+    - 결과물
+    
+    ![image.png](/images/image%2020.png)
+    
+    - step 3.  브리핑 토대로 미션 /과제 해결하기
+        - (team 3활용) 미해결한 미션 해결해줘 :
+            - 제작된브리핑을 읽고 미션해결 진행
+    
+    ![image.png](/images/image%2021.png)
+    
+    - 해결된 사항은 옵시디언 브리핑에 자동업데이트 (완료 확인)
+        - 후기 : 가시성이 있어서 좋고 완료되면 자동업데이트 되는것도 좋네요!
+    
+    ![image.png](/images/image%2022.png)
+    
+
+플러그인 추천
+
+**claude-md-management** (Plugin · claude-plugins-official)
+CLAUDE.md 파일을 관리하는 플러그인. 프로젝트별 컨텍스트 파일을 생성·편집·최적화하는 슬래시 커맨드 제공.
+
+**context7** (Plugin + MCP · connected ✅)
+라이브러리 공식 문서와 코드 예제를 실시간으로 가져오는 플러그인. MCP가 정상 연결되어 있어서 Claude Code가 최신 API 문서를 직접 참조 가능.
+
+**discord** (Plugin · enabled) — 단, MCP는 ❌ failed
+Discord 서버/채널 관리 및 메시지 자동화 플러그인. MCP 연결이 실패한 상태라 도구 기능은 작동 안 함.
+
+**feature-dev** (Plugin · claude-plugins-official)
+기능 개발 워크플로우를 자동화하는 플러그인. 이슈 → 기획 → 구현 → PR 흐름을 에이전트로 처리.
+
+**firecrawl** (Plugin · claude-plugins-official)
+웹 스크래핑·크롤링 도구. URL을 주면 Claude Code가 웹 콘텐츠를 읽어서 분석 가능.
+
+**frontend-design** (Plugin · claude-plugins-official)
+UI 컴포넌트 생성, 디자인 시스템 적용, 프론트엔드 코드 품질 개선을 위한 스킬/에이전트 번들.
+
+**obsidian** (Plugin · obsidian-skills)
+Obsidian 노트앱 연동. 노트 생성·검색·링크 관리를 Claude Code에서 직접 수행.
+
+**playground** (Plugin · claude-plugins-official)
+Claude Code 기능 테스트·실험용 샌드박스 플러그인.
+
+**ralph-loop** (Plugin · claude-plugins-official)
+반복적인 작업을 루프 형태로 자동 실행하는 플러그인. 자기 참조적 AI 루프 구현.
+
+**security-guidance** (Plugin · claude-plugins-official)
+코드 보안 검토, 취약점 스캔, 보안 가이드라인 적용을 도와주는 플러그인.
+
+**skill-creator** (Plugin · claude-plugins-official)
+새로운 Claude Code 스킬/플러그인을 만들고 최적화하는 메타 플러그인.
+
+claude md 작성시
+
+기존 클로드 가이드라인, 오마이클로드코드 기능 help 등 가이드라인 링크를 참고하라고하면 보다 잘 작성해줍니다. → claude md는 300txt 이상 넘어가면 잘 작동 안한다고 합니다.
+
 ### 다시 한다면?
 
-클로드코드를 통해서 바이브 코딩으로 웹서비스를 만들수있다는 것이 너무나 재미있지만
+언제나 같은내용인것 같습니다
 
-실제 서비스 출시를 위해서라면 보안점검을 필수적으로 진행해보는것이 필요해보입니다.
-
-앞으로 서비스 설계시 보안쪽도 초반에 체크리스트 및 기초공부를 통해서 확인후 작업진행할것같습니다.
-
-특히 데이터베이스 연결이나 서버 API연결시 필수적으로 필요해보입니다.
+- 마음이 급해서 PRD는 초반용으로 만 제작하고 바로 진행을하는데 , PRD작성에 시간을 2~4시간정도 소요해서 보다 퀄리티 높은 기획이 필요할것같습니다.
+- 처음 작업할때는 스킬이나 플러그인을 활용을 못햇었는데 필요한 기능을 미리 알고있어도 좋을듯합니다! (공식 마켓플레이스에서 내가 연결하고싶은 앱 있는 지 확인하기)
+- CLI방식의 코딩과 연결형식이 많이 보이는데 다양하게 작업해보고싶네요!
