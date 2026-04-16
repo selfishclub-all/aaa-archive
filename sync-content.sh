@@ -8,7 +8,8 @@ mkdir -p "$CONTENT/gallery" "$CONTENT/insights" "$CONTENT/tools" "$CONTENT/analy
 mkdir -p "$IMAGES"
 
 # 동기화 전 기존 콘텐츠 정리 (이미지는 유지, md만 삭제)
-rm -f "$CONTENT/missions/"*.md "$CONTENT/gallery/"*.md "$CONTENT/insights/"*.md "$CONTENT/tools/"*.md "$CONTENT/analysis/"*.md "$CONTENT/proposals/"*.md
+# gallery는 어드민에서 관리하므로 정리 대상에서 제외
+rm -f "$CONTENT/missions/"*.md "$CONTENT/insights/"*.md "$CONTENT/tools/"*.md "$CONTENT/analysis/"*.md "$CONTENT/proposals/"*.md
 
 # 이미지 복사: 파일명 공백→언더스코어로 변환하여 복사
 copy_image() {
