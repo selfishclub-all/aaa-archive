@@ -43,6 +43,8 @@ const analysis = defineCollection({
   schema: z.object({
     week: num,
     date: z.coerce.string().nullish(),
+    title: z.string().nullish(),
+    description: z.string().nullish(),
     tags,
     total_submissions: num,
   }).passthrough(),
