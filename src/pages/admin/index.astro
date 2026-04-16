@@ -461,8 +461,11 @@ const collections = {
         const selected = Array.isArray(val) ? val : (val ? val.split(',').map(s => s.trim()).filter(Boolean) : []);
         const maxTags = field.maxTags || 0;
         const maxHint = maxTags > 0 ? ` (최대 ${maxTags}개)` : '';
+        let activeCount = 0;
         const chips = managedTags.map(tag => {
-          const active = selected.includes(tag);
+          const isSelected = selected.includes(tag);
+          const active = isSelected && (maxTags <= 0 || activeCount < maxTags);
+          if (active) activeCount++;
           return `<span class="managed-tag-chip inline-flex items-center gap-1 ${active ? 'active' : ''}" data-option="${tag}">
             <span class="tag-label">${tag}</span>
             <button type="button" class="remove-managed-tag" data-tag="${tag}" title="태그 삭제">×</button>
@@ -548,7 +551,9 @@ const collections = {
       document.querySelectorAll(selector).forEach(input => {
         const key = input.dataset.key;
         if (input.dataset.type === 'managed-tags') {
-          const selected = Array.from(input.querySelectorAll('.managed-chips .managed-tag-chip.active')).map(c => c.dataset.option);
+          const maxTags = parseInt(input.dataset.maxTags) || 0;
+          let selected = Array.from(input.querySelectorAll('.managed-chips .managed-tag-chip.active')).map(c => c.dataset.option);
+          if (maxTags > 0) selected = selected.slice(0, maxTags);
           if (selected.length > 0) data[key] = selected;
           return;
         }
