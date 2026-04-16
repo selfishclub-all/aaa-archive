@@ -461,8 +461,11 @@ const collections = {
         const selected = Array.isArray(val) ? val : (val ? val.split(',').map(s => s.trim()).filter(Boolean) : []);
         const maxTags = field.maxTags || 0;
         const maxHint = maxTags > 0 ? ` (최대 ${maxTags}개)` : '';
+        // 풀에 없는 기존 키워드도 포함 (삭제 방지)
+        const allTags = [...managedTags];
+        selected.forEach(s => { if (!allTags.includes(s)) allTags.push(s); });
         let activeCount = 0;
-        const chips = managedTags.map(tag => {
+        const chips = allTags.map(tag => {
           const isSelected = selected.includes(tag);
           const active = isSelected && (maxTags <= 0 || activeCount < maxTags);
           if (active) activeCount++;
