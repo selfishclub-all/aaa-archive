@@ -7,6 +7,9 @@ IMAGES="$SITE/public/images"
 mkdir -p "$CONTENT/gallery" "$CONTENT/insights" "$CONTENT/tools" "$CONTENT/analysis" "$CONTENT/proposals" "$CONTENT/missions"
 mkdir -p "$IMAGES"
 
+# 동기화 전 기존 콘텐츠 정리 (이미지는 유지, md만 삭제)
+rm -f "$CONTENT/missions/"*.md "$CONTENT/gallery/"*.md "$CONTENT/insights/"*.md "$CONTENT/tools/"*.md "$CONTENT/analysis/"*.md "$CONTENT/proposals/"*.md
+
 # 이미지 복사: 파일명 공백→언더스코어로 변환하여 복사
 copy_image() {
   local src="$1"

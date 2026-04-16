@@ -1,6 +1,6 @@
 
 
-### 결과물
+### 결과물1
 
 [CLAUDE.md](%EC%97%90%EB%B0%80%EB%A6%AC_2%EC%A3%BC%EC%B0%A8%20%EA%B3%BC%EC%A0%9C/CLAUDE.md)
 
