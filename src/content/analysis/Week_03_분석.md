@@ -1,6 +1,8 @@
 ---
 week: 3
 date: 2026-04-16
+title: "자동화를 넘어 실제 서비스 배포"
+description: "자동화의 완성은 파이프라인이 아니라 설계 철학이다."
 tags:
   - 주차분석
 total_submissions: 6

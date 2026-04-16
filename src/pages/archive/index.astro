@@ -28,6 +28,19 @@ const getMissionHtml = (week: number, name: string): string => {
 
 const weeks = [
   {
+    week: 5,
+    title: '플랫폼 고도화와 자동화 파이프라인',
+    members: [
+      { name: '다다', cardTitle: 'AAA 팀 공식 홈페이지 & 어드민', summary: 'Obsidian vault 콘텐츠를 외부에 공개하는 정적 웹사이트 구축.', detail: 'Astro + Vercel로 팀 홈페이지를 만들고, GitHub API를 통해 브라우저에서 직접 frontmatter를 수정할 수 있는 어드민 페이지를 구현. /publish 명령어로 vault 콘텐츠를 자동으로 웹사이트에 배포하는 자동화 시스템까지 완성했다.', icon: 'language', link: 'https://aaa-homepage.vercel.app' },
+      { name: '비비안', cardTitle: '셀피쉬클럽 v4.0 플랫폼', summary: 'Webflow 의존성 탈피, Next.js 자체 플랫폼 구축.', detail: 'Next.js + Supabase로 셀피쉬클럽 홈페이지를 새로 개발. 카카오 로그인 인증, 포트원 결제 연동, Webflow 82개 프로그램 마이그레이션까지 완료. 기존 Webflow + Firebase 복잡한 구조를 Next.js + Supabase 단순 구조로 전환했다.', icon: 'shopping_cart', link: 'https://selfishclub-ax.vercel.app' },
+      { name: '띵끄', cardTitle: 'GrowthLink — 비즈니스 통합 대시보드 SaaS', summary: 'Stripe·Calendly·GHL·Meta·n8n 5개 서비스 통합. 148커밋.', detail: 'Claude Code로 1개월간 148커밋으로 26개 대시보드 페이지, 67개 API 엔드포인트 구현. 에이전시 운영에 필요한 결제·예약·CRM·광고·워크플로우를 한 곳에서 관리하는 SaaS를 완성했다.', icon: 'dashboard', link: '' },
+      { name: '에밀리', cardTitle: 'CRM 자동화 + 멀티채널 카피 생성', summary: '알림톡 9종 자동 발송 + 전채널 카피 자동화 완성.', detail: '공유회 하나당 9종 알림톡을 n8n 크론으로 자동 발송하고, Slack 승인 시스템 구축. 오카방·온드미디어 5종 채널의 카피를 자동 생성하며, 크루 7명 실전 테스트까지 진행 중이다.', icon: 'send', link: '' },
+      { name: '오웬', cardTitle: '찜마켓 — 온라인 셀러 맞찜 플랫폼', summary: 'Claude Vision 자동 인증 + 크레딧 경제. 146커밋.', detail: '카카오 로그인, Claude Vision 자동 인증, 응답속도 배지, 크레딧 경제를 갖춘 셀러 커뮤니티 플랫폼을 146커밋으로 구축. WHY가 없던 3주 방황 후 4시간 MVP에서 실제 카페 방장과 사업 협력까지 이어졌다.', icon: 'favorite', link: 'https://zzim-exchange.vercel.app' },
+      { name: '흐민', cardTitle: 'Selforge (Personal OS) + Sullivan 영속 세션', summary: '3레이어 아키텍처 설계 + 영속 세션 인프라 구축.', detail: '개인 OS 아키텍처를 3레이어(사고·지식·퍼블리싱)로 설계하고, Sullivan이 재부팅 후에도 자동으로 살아나는 영속 세션 인프라를 구축. Graphify 효율성 검증 시뮬레이션까지 완료했다.', icon: 'psychology', link: '' },
+      { name: '다니', cardTitle: 'Remotion + 캐러셀 영상 제작 플랫폼', summary: '코드로 영상 만들기 가이드 + 캐러셀 편집기.', detail: 'Remotion 프레임워크로 Claude Code와 자연어 대화하면서 영상을 제작하는 환경 구축. MP4 녹화 다운로드 기능과 이미지/비디오 높이 자유 조절 기능을 추가하며 비율 왜곡 문제까지 해결했다.', icon: 'movie', link: 'https://zemma-carousel.vercel.app' },
+    ]
+  },
+  {
     week: 4,
     title: '실전 SaaS와 자동화의 완성',
     members: [

@@ -1,6 +1,8 @@
 ---
 week: 4
 date: 2026-04-16
+title: "WHY를 찾은 순간, 속도가 달라졌다"
+description: "기술이 아니라 질문이 먼저였다. 방향 없이 헤매던 팀이 WHY를 발견하고 실전 MVP를 배포하기 시작했다."
 tags:
   - 주차분석
 total_submissions: 7

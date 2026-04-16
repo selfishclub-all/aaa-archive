@@ -1,6 +1,8 @@
 ---
 week: 2
 date: 2026-04-16
+title: "원소스 멀티유즈의 폭발"
+description: "결과보다 과정을 기록한 사람이 가장 많이 배웠다."
 tags:
   - 주차분석
 total_submissions: 8
