@@ -1,6 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
+import fs from 'node:fs';
+import path from 'node:path';
+import { marked } from 'marked';
 
 export async function getStaticPaths() {
   const missions = await getCollection('missions');
@@ -14,6 +17,63 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const base = import.meta.env.BASE_URL;
 const title = entry.id.replace(/[-_]/g, ' ');
+
+// 주차 번호와 멤버 이름 추출 (Week_05_다다 → week 5, 다다)
+const idMatch = entry.id.match(/week_0(\d)_(.+)/i);
+const weekNum = idMatch ? parseInt(idMatch[1]) : 0;
+const memberName = idMatch ? idMatch[2] : '';
+
+// 닉네임 매핑 (회의록에서 다른 이름으로 쓰일 수 있음)
+const nameAliases: Record<string, string[]> = {
+  '띵끄': ['띵끄', '띵크'],
+  '흐민': ['흐민'],
+  '다다': ['다다'],
+  '비비안': ['비비안'],
+  '에밀리': ['에밀리'],
+  '오웬': ['오웬'],
+  '다니': ['다니'],
+  '잽': ['잽'],
+  '젬마': ['젬마'],
+};
+
+// 회의록에서 멤버 피드백 추출
+function getMemberFeedback(week: number, name: string): string {
+  const vaultPath = path.resolve('../../selfish-aaa');
+  const weeklyFile = path.join(vaultPath, `05_meetings/Week_0${week}_weekly.md`);
+
+  // vault 경로가 안 되면 상대경로 시도
+  const altPath = path.resolve(`../selfish-aaa/05_meetings/Week_0${week}_weekly.md`);
+
+  let content = '';
+  try {
+    content = fs.readFileSync(weeklyFile, 'utf8');
+  } catch {
+    try {
+      content = fs.readFileSync(altPath, 'utf8');
+    } catch {
+      return '';
+    }
+  }
+
+  // "# 피드백 모음" 섹션 찾기
+  const feedbackMatch = content.match(/# 피드백 모음[\s\S]*$/);
+  if (!feedbackMatch) return '';
+  const feedbackSection = feedbackMatch[0];
+
+  // 해당 멤버의 ## 섹션 추출
+  const aliases = nameAliases[name] || [name];
+  for (const alias of aliases) {
+    const pattern = new RegExp(`## ${alias}\\n([\\s\\S]*?)(?=\\n## |\\n# |$)`);
+    const match = feedbackSection.match(pattern);
+    if (match && match[1].trim()) {
+      return match[1].trim();
+    }
+  }
+  return '';
+}
+
+const feedback = weekNum > 0 && memberName ? getMemberFeedback(weekNum, memberName) : '';
+const feedbackHtml = feedback ? marked.parse(feedback) as string : '';
 ---
 <Layout title={`${title} - AAA TEAM`}>
   <section class="pt-14 md:pt-16" style="background: linear-gradient(135deg, rgba(251,232,48,0.08) 0%, rgba(251,232,48,0.15) 40%, rgba(200,240,200,0.1) 100%);">
@@ -30,5 +90,16 @@ const title = entry.id.replace(/[-_]/g, ' ');
     <div class="prose prose-sm md:prose-base dark:prose-invert max-w-none [&_img]:rounded-lg [&_img]:my-4 [&_img]:max-w-full [&_video]:rounded-lg [&_video]:my-4 [&_video]:max-w-full [&>h1:first-child]:hidden">
       <Content />
     </div>
+
+    {feedbackHtml && (
+      <div class="mt-12 p-6 rounded-xl bg-[#FBE830]/5 border border-[#FBE830]/20">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-[#b8960a] dark:text-[#FBE830] text-lg">forum</span>
+          <h3 class="text-sm font-bold text-[#b8960a] dark:text-[#FBE830] uppercase tracking-wider">멤버 피드백</h3>
+          <span class="text-[10px] text-slate-400 dark:text-gray-500">Week {String(weekNum).padStart(2, '0')} 회의록</span>
+        </div>
+        <div class="prose prose-sm dark:prose-invert max-w-none [&_li]:text-slate-600 [&_li]:dark:text-gray-400 [&_strong]:text-black [&_strong]:dark:text-white [&_ul]:space-y-1" set:html={feedbackHtml} />
+      </div>
+    )}
   </article>
 </Layout>

@@ -17,7 +17,7 @@ find "$VAULT/00_missions/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*
   fi
 done
 
-mkdir -p "$CONTENT/gallery" "$CONTENT/insights" "$CONTENT/tools" "$CONTENT/analysis" "$CONTENT/proposals" "$CONTENT/missions"
+mkdir -p "$CONTENT/gallery" "$CONTENT/skills" "$CONTENT/analysis" "$CONTENT/proposals" "$CONTENT/missions"
 mkdir -p "$IMAGES"
 
 # 동기화 전 기존 콘텐츠 정리 (이미지는 유지, md만 삭제)
