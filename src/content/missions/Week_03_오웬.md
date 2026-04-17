@@ -6,7 +6,7 @@
 
 **계정**: @aisellerguide (온라인 셀러를 위한 AI 정보)
 
-![image.png](/images/image.png)
+
 
 crontab 트리거 1개 (매주 월/목 12:38 자동 실행)
 
@@ -63,7 +63,7 @@ crontab 트리거 (월/목 12:38)
 | `pipeline.py` | 위 4단계를 순서대로 실행하는 총괄 스크립트 |
 | `run.sh` | crontab에서 실행하는 쉘 스크립트  |
 
-![image.png](/images/image%201.png)
+
 
 ```
 aiforseller/

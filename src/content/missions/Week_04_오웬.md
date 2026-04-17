@@ -33,7 +33,7 @@
 **🔧 스킬 2개 제작 (GitHub 공개)**
 
 - ==`/briefing` — "지금까지 뭐했지?" 자동 브리핑
-	- ![Pasted image 20260405164626.png](/images/Pasted_image_20260405164626.png)
+	- 
 
 
 - ==`/timecheck` — 작업 시간 추적 + 병목 분석==

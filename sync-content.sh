@@ -41,6 +41,8 @@ find "$VAULT/00_missions/" -name "*.md" -size +10c | while read f; do
   # 2) ![alt](path/image.png) → ![alt](/aaa-archive/images/image.png)
   # 3) 이미지 URL 내 공백을 언더스코어로 변환
   sed -E \
+    -e 's/!\[:[^:]+:\]\(https:\/\/a\.slack-edge\.com[^)]+\)//g' \
+    -e 's/!\[([^]]*)\]\(attachment:[^)]+\)//g' \
     -e 's/!\[\[([^]|]+)\|[0-9]+\]\]/![\1](\/images\/\1)/g' \
     -e 's/!\[\[([^]]+)\]\]/![\1](\/images\/\1)/g' \
     -e 's/!\[([^]]*)\]\(([^)]*\/)?([^)]+\.(png|jpg|jpeg|gif|webp|svg))\|[0-9]+\)/![\1](\/images\/\3)/g' \
@@ -50,6 +52,20 @@ find "$VAULT/00_missions/" -name "*.md" -size +10c | while read f; do
     | sed -E 's/\[\[([^]|]+)\]\]/[\1](\/missions\/\1\/)/g' \
     | sed -E 's/\[\[([^]|]+)\|([^]]+)\]\]/[\2](\/missions\/\1\/)/g' \
     > "$CONTENT/missions/$filename"
+done
+
+# 후처리: 존재하지 않는 이미지 참조 제거
+for mf in "$CONTENT/missions/"*.md; do
+  [ -f "$mf" ] || continue
+  perl -i -pe '
+    if (/!\[([^\]]*)\]\(\/images\/([^)]+)\)/) {
+      my $img = $2;
+      $img =~ s/%20/_/g;
+      unless (-f "'"$IMAGES"'/" . $img) {
+        s/!\[[^\]]*\]\(\/images\/[^)]+\)//g;
+      }
+    }
+  ' "$mf"
 done
 
 find "$VAULT/01_gallery/" -name "*.md" -exec cp {} "$CONTENT/gallery/" \; 2>/dev/null

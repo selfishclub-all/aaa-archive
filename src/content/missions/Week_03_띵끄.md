@@ -10,47 +10,47 @@ https://www.linkedin.com/feed/update/urn:li:activity:7441832655765004289/?origin
 
 https://content-marketing-team.vercel.app/
 
-![image.png](/images/image.png)
+
 
 ### **과제3. 위의 과제를 하시면서, 오마이오픈코드 or 오마이클로드코드 중에 하나를 사용해주세요**
 
 오마이 클로드 다운후 기본베이스로 활용가능
 
-![image.png](/images/image%201.png)
+
 
 추가기능
 
 비용관리 (영수증을 업로드하면 자동으로 비용처리로 들어가게 (메타광고도 됩니다)
 
-![image.png](/images/image%202.png)
 
-![image.png](/images/image%203.png)
+
+
 
 ### 만든과정 및 삽질
 
 1. 폴더를 제작후 그폴더로 경로를 설정한다
 2. 이후 git에서 AI 자동생성 소스코드를 클론해서 가져온다
     
-    ![image.png](/images/image%204.png)
+    
     
 3. 프로젝트 구조 생성후 웹사이트 형식으로 요청
     1. 깃허브와 버셀은 계정에 공식으로 연결되어있는 github 계정과 vercel 계정을 활용해서 자동배포진행완료
 
-![image.png](/images/image%205.png)
+
 
 1. 유튜브 API키가 필요해서 생성후 전달\
     
-    ![image.png](/images/image%206.png)
+    
     
 2. 작동테스트완료
 
-![image.png](/images/image%207.png)
+
 
 ### 인사이트
 
 - OMC 사용시 아래 툴팁
     
-    ![image.png](/images/image%208.png)
+    
     
     - 5H : 5시간 사용가능량  (업데이트 남은시간)
     - WK (주간 사용량)
@@ -62,11 +62,11 @@ https://content-marketing-team.vercel.app/
     - S: 사용중인 스킬의 수
     - 중간중간 작업시 shift + Tab 사용시 폴더권환 외에 자동승인 기능
     
-    ![image.png](/images/image%209.png)
+    
     
 - /plugin  을 활용해서 마켓플레이스에서 다양한 플러그인을 다운받을수 있음 (클로드 공식)
 
-![image.png](/images/image%2010.png)
+
 
 - omc사용시 아래 CTX가 뜨게되는데 컨텍스트 사용량이며 70%이상일 경우 토큰소모 및 작업속도가 늦어질가능성 높음 일정량 초과시 알아서 클로드가 Clear 를 진행함 
 (에밀리의 대화내용삭제되는게 이거인것같아요)
@@ -76,7 +76,7 @@ https://content-marketing-team.vercel.app/
 - 터미널 클로드 코드 기본 모델은 high effort로 되어있지만
     - /model을 통해서 Fegault 값을 Max effort로 변경가능하다 (보다 깊이 있는 생각 제한없는 리미트)
 
-![image.png](/images/image%2011.png)
+
 
 클로드 디스패치 기능 활용해보기
 
@@ -85,11 +85,11 @@ https://content-marketing-team.vercel.app/
 3. 앱에서 디스패치 기능에서 채팅입력 (컴퓨터가 켜져있어야함 ( 절전모드 해제도 필수)
 4. 대화는 모바일과 데스크탑에서 모두 확인이 가능하고 입력가능
     
-    ![image.png](/images/image%2012.png)
+    
     
 5. 코드작업의 경우 폴더권한을 승인요청함
     
-    ![image.png](/images/image%2013.png)
+    
     
 6. 폴더 권한요청을 끝낸후에는 코워크와 연결을통해 작업진행
 
@@ -97,10 +97,10 @@ https://content-marketing-team.vercel.app/
     1. 예 ) "C:\Users\yesun\growthlink pj”
     2. 밥먹으러 갈때 진행상황이나 작업한내용을 확인하거나, 분석할때는 좋아보임
     
-    ![image.png](/images/image%2014.png)
+    
     
 
-![image.png](/images/image%2015.png)
+
 
 - OMC team 기능 사용시?
     - `omc team 3`  : OMC가 알아서 역할 배정
@@ -123,13 +123,13 @@ https://content-marketing-team.vercel.app/
     
     - 옵시디언에서 설정 → 일반 → 명령줄 인터페이스 기능 활성화 (터미널에서 옵시디언 활성화 하는법)
     
-    ![image.png](/images/image%2016.png)
+    
     
     - 터미널에서  `obsidian` 입력시 활성화 완료
     
     step 2. 클로드코드에서 옵시디언 공식 SKILL 설치진행
     
-    ![image.png](/images/image%2017.png)
+    
     
     - https://github.com/kepano/obsidian-skills
     
@@ -138,7 +138,7 @@ https://content-marketing-team.vercel.app/
     
     완료후 클로드에게 obsidian CLI 사용가능한지 확인요청
     
-    ![image.png](/images/image%2018.png)
+    
     
     - 활용후 프롬프트로 브리핑 노트 제작
     
@@ -147,22 +147,22 @@ https://content-marketing-team.vercel.app/
     노트로 만들어주는 스킬을 만들어줘
     ```
     
-    ![image.png](/images/image%2019.png)
+    
     
     - 결과물
     
-    ![image.png](/images/image%2020.png)
+    
     
     - step 3.  브리핑 토대로 미션 /과제 해결하기
         - (team 3활용) 미해결한 미션 해결해줘 :
             - 제작된브리핑을 읽고 미션해결 진행
     
-    ![image.png](/images/image%2021.png)
+    
     
     - 해결된 사항은 옵시디언 브리핑에 자동업데이트 (완료 확인)
         - 후기 : 가시성이 있어서 좋고 완료되면 자동업데이트 되는것도 좋네요!
     
-    ![image.png](/images/image%2022.png)
+    
     
 
 플러그인 추천
