@@ -90,8 +90,9 @@ const weeks = [
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {week.members.map((member) => {
-            const missionId = `Week_0${week.week}_${member.name}`;
-            const hasMission = allMissionFiles.includes(`${missionId}.md`);
+            const missionFile = `Week_0${week.week}_${member.name}`;
+            const hasMission = allMissionFiles.includes(`${missionFile}.md`);
+            const missionId = missionFile.toLowerCase();
             const CardTag = hasMission ? 'a' : 'div';
             return (
             <CardTag
