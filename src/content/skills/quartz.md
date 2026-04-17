@@ -1,10 +1,10 @@
 ---
-name: Quartz
-category: 콘텐츠
-type: CLI 도구
-difficulty: 중급
-link: https://quartz.jzhao.xyz/
-added_by: 다다
+title: "Quartz"
+author: "다다"
+summary: "Obsidian vault를 정적 웹사이트로 변환하는 도구"
+link: "https://quartz.jzhao.xyz/"
+keywords: ["콘텐츠"]
+category: "콘텐츠"
 ---
 
 ## 한줄 설명

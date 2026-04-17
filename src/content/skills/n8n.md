@@ -1,10 +1,10 @@
 ---
-name: n8n
-category: 자동화
-type: 웹 도구
-difficulty: 중급
-link: https://n8n.io/
-added_by: 에밀리
+title: "n8n"
+author: "에밀리"
+summary: "노코드 워크플로우 자동화 도구 (알림톡, 이메일, 웹훅 연동)"
+link: "https://n8n.io/"
+keywords: ["자동화"]
+category: "자동화"
 ---
 
 ## 한줄 설명

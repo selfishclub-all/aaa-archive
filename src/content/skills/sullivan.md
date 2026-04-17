@@ -1,10 +1,10 @@
 ---
-name: Sullivan
-category: 분석
-type: Claude Code 스킬
-difficulty: 고급
-link:
-added_by: 흐민
+title: "Sullivan"
+author: "흐민"
+summary: "답을 주는 대신 질문을 던져서 생각을 확장하는 AI 어시스턴트"
+link: "added_by: 흐민"
+keywords: ["분석"]
+category: "분석"
 ---
 
 ## 한줄 설명

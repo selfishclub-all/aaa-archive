@@ -1,10 +1,10 @@
 ---
-name: SOLAPI
-category: 자동화
-type: 웹 도구
-difficulty: 중급
-link: https://solapi.com/
-added_by: 에밀리
+title: "SOLAPI"
+author: "에밀리"
+summary: "알림톡/문자/카카오 메시지를 API로 자동 발송하는 서비스"
+link: "https://solapi.com/"
+keywords: ["자동화"]
+category: "자동화"
 ---
 
 ## 한줄 설명

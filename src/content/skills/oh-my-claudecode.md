@@ -1,10 +1,10 @@
 ---
-name: oh-my-claudecode (OMC)
-category: 자동화
-type: Claude Code 스킬
-difficulty: 중급
-link: https://github.com/nicekid1/oh-my-claudecode
-added_by: 다다
+title: "oh-my-claudecode (OMC)"
+author: "다다"
+summary: "Claude Code를 위한 멀티에이전트 오케스트레이션 레이어"
+link: "https://github.com/nicekid1/oh-my-claudecode"
+keywords: ["자동화"]
+category: "자동화"
 ---
 
 ## 한줄 설명

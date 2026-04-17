@@ -51,10 +51,10 @@ function getMemberWeeks(name: string): WeekSummary[] {
   return weeks;
 }
 
-// 멤버별 관심 키워드 추출 (인사이트 컬렉션에서)
-const insights = await getCollection('insights');
+// 멤버별 관심 키워드 추출 (스킬&인사이트 컬렉션에서)
+const skills = await getCollection('skills');
 function getMemberKeywords(name: string): string[] {
-  const memberInsights = insights.filter(i => i.data.member === name);
+  const memberInsights = skills.filter(i => i.data.author === name);
   const kwSet = new Set<string>();
   memberInsights.forEach(i => {
     const kws = i.data.keywords || [];
@@ -183,8 +183,8 @@ const memberData = members.map(m => ({
         </h2>
       </div>
       <div class="flex gap-4">
-        <a href={`${base}insights/`} class="bg-white dark:bg-[#1b1b1d] border border-black dark:border-[#353437] text-black dark:text-white px-6 md:px-8 py-3 md:py-4 text-xs font-bold tracking-widest hover:bg-black hover:text-white dark:hover:bg-[#FBE830] dark:hover:text-black transition-all duration-300 inline-block">
-          인사이트 보기
+        <a href={`${base}tools/`} class="bg-white dark:bg-[#1b1b1d] border border-black dark:border-[#353437] text-black dark:text-white px-6 md:px-8 py-3 md:py-4 text-xs font-bold tracking-widest hover:bg-black hover:text-white dark:hover:bg-[#FBE830] dark:hover:text-black transition-all duration-300 inline-block">
+          스킬 & 인사이트
         </a>
         <a href={`${base}gallery/`} class="bg-[#FBE830] text-black px-6 md:px-8 py-3 md:py-4 text-xs font-bold tracking-widest transition-transform duration-150 active:scale-95 shadow-md inline-block">
           갤러리 보기

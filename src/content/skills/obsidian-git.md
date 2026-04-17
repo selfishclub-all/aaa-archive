@@ -1,10 +1,10 @@
 ---
-name: Obsidian Git
-category: 생산성
-type: Obsidian 플러그인
-difficulty: 초급
-link: https://github.com/denolehov/obsidian-git
-added_by: 다다
+title: "Obsidian Git"
+author: "다다"
+summary: "Obsidian 안에서 Git commit/push/pull을 할 수 있는 플러그인"
+link: "https://github.com/denolehov/obsidian-git"
+keywords: ["생산성"]
+category: "생산성"
 ---
 
 ## 한줄 설명

@@ -1,9 +1,10 @@
 ---
-name: "마케팅 에이전시 Claude Code 스킬셋"
-category: "자동화"
-type: "Claude Code 스킬"
-difficulty: "중급"
+title: "마케팅 에이전시 Claude Code 스킬셋"
+author: "AAA Team"
+summary: "[https://github.com/ericosiu/ai-marketing-skills](https://github.com/ericosiu/ai-marketing-skills)"
 link: "https://github.com/ericosiu/ai-marketing-skills"
+keywords: ["자동화"]
+category: "자동화"
 ---
 
 [https://github.com/ericosiu/ai-marketing-skills](https://github.com/ericosiu/ai-marketing-skills)  

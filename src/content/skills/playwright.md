@@ -1,10 +1,10 @@
 ---
-name: Playwright
-category: 자동화
-type: CLI 도구
-difficulty: 중급
-link: https://playwright.dev/
-added_by: 오웬
+title: "Playwright"
+author: "오웬"
+summary: "HTML을 브라우저에서 열고 PNG 스크린샷으로 변환하는 도구"
+link: "https://playwright.dev/"
+keywords: ["자동화"]
+category: "자동화"
 ---
 
 ## 한줄 설명

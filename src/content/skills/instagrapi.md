@@ -1,10 +1,10 @@
 ---
-name: instagrapi
-category: 콘텐츠
-type: CLI 도구
-difficulty: 중급
-link: https://github.com/subzeroid/instagrapi
-added_by: 오웬
+title: "instagrapi"
+author: "오웬"
+summary: "Python으로 인스타그램 캐러셀 자동 업로드할 수 있는 라이브러리"
+link: "https://github.com/subzeroid/instagrapi"
+keywords: ["콘텐츠"]
+category: "콘텐츠"
 ---
 
 ## 한줄 설명
