@@ -6,15 +6,10 @@ import { marked } from 'marked';
 import { getCollection } from 'astro:content';
 const base = import.meta.env.BASE_URL;
 
-// Tools & Insights for main page
-const tools = await getCollection('tools');
-const insights = await getCollection('insights');
-const validInsights = insights.filter(i => {
-  const title = i.id.replace(/[-_]/g, ' ').trim();
-  return title && title !== '무제' && title.length > 1;
-}).slice(0, 6);
+// Skills & Insights for main page
+const skills = await getCollection('skills');
 
-const toolCategories = [...new Set(tools.flatMap(t => Array.isArray(t.data.category) ? t.data.category : [t.data.category]).filter(Boolean))];
+const skillCategories = [...new Set(skills.map(s => s.data.category).filter(Boolean))];
 const dotColors: Record<string, string> = {
   '자동화': 'bg-[#FBE830]',
   '콘텐츠': 'bg-black dark:bg-white',

@@ -4,13 +4,13 @@ SITE="/Users/dada/PJ/AAA/selfish-aaa-site-astro"
 CONTENT="$SITE/src/content"
 IMAGES="$SITE/public/images"
 
-# 첨부파일 정리: 미션 폴더의 이미지/영상을 _attachments/로 이동
+# 첨부파일 정리: 미션 폴더의 이미지/영상을 93_attachments/로 이동
 mkdir -p "$VAULT/_attachments"
 find "$VAULT/00_missions/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" -o -name "*.mp4" \) 2>/dev/null | while read f; do
   name=$(basename "$f")
-  if [ ! -f "$VAULT/_attachments/$name" ]; then
-    mv "$f" "$VAULT/_attachments/$name"
-    echo "  이동: $name → _attachments/"
+  if [ ! -f "$VAULT/93_attachments/$name" ]; then
+    mv "$f" "$VAULT/93_attachments/$name"
+    echo "  이동: $name → 93_attachments/"
   else
     rm "$f"
     echo "  중복 삭제: $name (이미 _attachments에 존재)"
@@ -22,7 +22,7 @@ mkdir -p "$IMAGES"
 
 # 동기화 전 기존 콘텐츠 정리 (이미지는 유지, md만 삭제)
 # gallery는 어드민에서 관리하므로 정리 대상에서 제외
-rm -f "$CONTENT/missions/"*.md "$CONTENT/insights/"*.md "$CONTENT/tools/"*.md "$CONTENT/analysis/"*.md "$CONTENT/proposals/"*.md
+rm -f "$CONTENT/missions/"*.md "$CONTENT/skills/"*.md "$CONTENT/analysis/"*.md "$CONTENT/proposals/"*.md
 
 # 이미지 복사: 파일명 공백→언더스코어로 변환하여 복사
 copy_image() {
@@ -40,7 +40,7 @@ find "$VAULT/00_missions/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*
 done
 
 # _attachments 폴더 (이미지 + 영상)
-find "$VAULT/_attachments/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" -o -name "*.mp4" \) 2>/dev/null | while read f; do
+find "$VAULT/93_attachments/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" -o -name "*.mp4" \) 2>/dev/null | while read f; do
   copy_image "$f"
 done
 
@@ -82,9 +82,12 @@ for mf in "$CONTENT/missions/"*.md; do
 done
 
 find "$VAULT/01_gallery/" -name "*.md" -exec cp {} "$CONTENT/gallery/" \; 2>/dev/null
-find "$VAULT/02_insights/" -name "*.md" -exec cp {} "$CONTENT/insights/" \; 2>/dev/null
-find "$VAULT/03_skills/" -name "*.md" -exec cp {} "$CONTENT/tools/" \; 2>/dev/null
-find "$VAULT/_analysis/weekly/" -name "*.md" -exec cp {} "$CONTENT/analysis/" \; 2>/dev/null
-find "$VAULT/_proposals/" -name "*.md" -exec cp {} "$CONTENT/proposals/" \; 2>/dev/null
+find "$VAULT/02_skill&insight/" -name "*.md" ! -name "README.md" -exec cp {} "$CONTENT/skills/" \; 2>/dev/null
+find "$VAULT/90_analysis/weekly/" -name "*.md" -exec cp {} "$CONTENT/analysis/" \; 2>/dev/null
+find "$VAULT/91_proposals/" -name "*.md" -exec cp {} "$CONTENT/proposals/" \; 2>/dev/null
+
+# 회의록 복사 (미션 페이지 피드백 콜아웃용)
+mkdir -p "$SITE/src/data/meetings"
+find "$VAULT/05_meetings/" -name "Week_*_weekly.md" -exec cp {} "$SITE/src/data/meetings/" \; 2>/dev/null
 
 echo "동기화 완료: $(find "$CONTENT" -name '*.md' | wc -l)개 파일"

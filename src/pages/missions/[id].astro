@@ -36,23 +36,16 @@ const nameAliases: Record<string, string[]> = {
   '젬마': ['젬마'],
 };
 
-// 회의록에서 멤버 피드백 추출
+// 회의록에서 멤버 피드백 추출 (sync 시 복사된 로컬 파일)
 function getMemberFeedback(week: number, name: string): string {
-  const vaultPath = path.resolve('../../selfish-aaa');
-  const weeklyFile = path.join(vaultPath, `05_meetings/Week_0${week}_weekly.md`);
-
-  // vault 경로가 안 되면 상대경로 시도
-  const altPath = path.resolve(`../selfish-aaa/05_meetings/Week_0${week}_weekly.md`);
+  const meetingsDir = path.resolve('src/data/meetings');
+  const weeklyFile = path.join(meetingsDir, `Week_0${week}_weekly.md`);
 
   let content = '';
   try {
     content = fs.readFileSync(weeklyFile, 'utf8');
   } catch {
-    try {
-      content = fs.readFileSync(altPath, 'utf8');
-    } catch {
-      return '';
-    }
+    return '';
   }
 
   // "# 피드백 모음" 섹션 찾기

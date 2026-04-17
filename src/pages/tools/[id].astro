@@ -4,13 +4,13 @@ import '../../styles/global.css';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const tools = await getCollection('tools');
-  return tools.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+  const skills = await getCollection('skills');
+  return skills.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
 }
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
-<Article title={entry.data.name || entry.id} category={entry.data.category || 'Tool'}>
+<Article title={entry.data.title || entry.id} category={entry.data.category || ''}>
   <Content />
 </Article>

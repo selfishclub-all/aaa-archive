@@ -2,22 +2,14 @@
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/global.css';
 import { getCollection } from 'astro:content';
-const tools = await getCollection('tools');
+const skills = await getCollection('skills');
 const base = import.meta.env.BASE_URL;
-const categories = [...new Set(tools.map(t => t.data.category).filter(Boolean))];
+const categories = [...new Set(skills.map(s => s.data.category).filter(Boolean))];
 
 const catCounts: Record<string, number> = {};
 categories.forEach(cat => {
-  catCounts[cat] = tools.filter(t => t.data.category === cat).length;
+  catCounts[cat] = skills.filter(s => s.data.category === cat).length;
 });
-
-const iconMap: Record<string, string> = {
-  '자동화': 'architecture',
-  '콘텐츠': 'filter_alt',
-  '분석': 'hub',
-  '생산성': 'analytics',
-  '디자인': 'palette',
-};
 
 const dotColors: Record<string, string> = {
   '자동화': 'bg-[#FBE830]',
@@ -27,17 +19,12 @@ const dotColors: Record<string, string> = {
   '디자인': 'bg-violet-400',
 };
 ---
-<Layout title="도구 모음 - AAA 아카이브">
-  <!-- Hero Banner -->
+<Layout title="스킬 & 인사이트 - AAA TEAM">
+  <!-- Hero -->
   <section class="pt-20 md:pt-24" style="background: linear-gradient(135deg, rgba(251,232,48,0.08) 0%, rgba(251,232,48,0.15) 40%, rgba(200,240,200,0.1) 100%);">
     <div class="max-w-screen-2xl mx-auto px-6 md:px-12 pt-8 md:pt-10 pb-8 md:pb-10">
-      <h1 class="font-headline text-2xl md:text-3xl font-extrabold tracking-tight text-black dark:text-white mb-2">도구 모음</h1>
-      <p class="text-sm md:text-base text-slate-600 dark:text-gray-400 mb-4">멤버들이 <strong class="text-black dark:text-white">실전에서 검증</strong>한 도구와 스킬셋 모음.</p>
-      <div class="flex flex-wrap gap-2">
-        <span class="px-3 py-1 text-xs font-medium border border-slate-200 dark:border-[#353437] rounded-full text-slate-600 dark:text-gray-400 bg-white/60 dark:bg-[#1b1b1d]/60">#스킬</span>
-        <span class="px-3 py-1 text-xs font-medium border border-slate-200 dark:border-[#353437] rounded-full text-slate-600 dark:text-gray-400 bg-white/60 dark:bg-[#1b1b1d]/60">#플러그인</span>
-        <span class="px-3 py-1 text-xs font-medium border border-slate-200 dark:border-[#353437] rounded-full text-slate-600 dark:text-gray-400 bg-white/60 dark:bg-[#1b1b1d]/60">#자동화</span>
-      </div>
+      <h1 class="font-headline text-2xl md:text-3xl font-extrabold tracking-tight text-black dark:text-white mb-2">스킬 & 인사이트</h1>
+      <p class="text-sm md:text-base text-slate-600 dark:text-gray-400">멤버들이 <strong class="text-black dark:text-white">실전에서 발견</strong>한 도구, 스킬, 인사이트를 공유합니다.</p>
     </div>
   </section>
 
@@ -46,7 +33,7 @@ const dotColors: Record<string, string> = {
     <div class="max-w-screen-2xl mx-auto px-6 md:px-12">
       <div class="flex gap-2 overflow-x-auto py-3 -mx-1 scrollbar-hide">
         <button class="filter-btn active whitespace-nowrap text-sm font-bold px-5 py-2 rounded-full transition-all" data-category="all">
-          전체 <span class="text-xs font-normal ml-1 opacity-60">{tools.length}</span>
+          전체 <span class="text-xs font-normal ml-1 opacity-60">{skills.length}</span>
         </button>
         {categories.map(cat => (
           <button class="filter-btn whitespace-nowrap text-sm font-medium px-5 py-2 rounded-full transition-all flex items-center gap-1.5" data-category={cat}>
@@ -59,27 +46,57 @@ const dotColors: Record<string, string> = {
     </div>
   </section>
 
-  <!-- Tools List -->
+  <!-- Cards -->
   <section class="bg-white dark:bg-[#131315]">
     <div class="max-w-screen-2xl mx-auto px-6 md:px-12 py-8 md:py-12">
-      <div class="space-y-2" id="tools-grid">
-        {tools.map(tool => (
-          <a href={`${base}tools/${tool.id}/`} class="tool-item flex items-center gap-4 px-5 py-3.5 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1b1b1d] transition-all group border border-transparent hover:border-[#FBE830]/30 block" data-category={tool.data.category || '기타'}>
-            <span class="material-symbols-outlined text-slate-400 dark:text-gray-500 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] text-xl transition-colors" style="font-variation-settings: 'FILL' 1;">{iconMap[tool.data.category || ''] || 'handyman'}</span>
-            <div class="flex-1 min-w-0">
-              <h4 class="text-sm font-bold text-black dark:text-white group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors truncate">{tool.data.name || tool.id}</h4>
-            </div>
-            {tool.data.category && (
-              <span class="text-[10px] font-medium text-slate-500 dark:text-gray-400 hidden md:inline">{Array.isArray(tool.data.category) ? tool.data.category.join(', ') : tool.data.category}</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="skills-grid">
+        {skills.map(skill => (
+          <div class="skill-card p-5 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-md transition-all group" data-category={skill.data.category || '기타'}>
+            {/* Keywords */}
+            {skill.data.keywords && skill.data.keywords.length > 0 && (
+              <div class="flex flex-wrap gap-1.5 mb-3">
+                {(skill.data.keywords as string[]).slice(0, 3).map((kw: string) => (
+                  <span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-white dark:bg-[#252527] text-slate-500 dark:text-gray-400 border border-slate-200 dark:border-[#353437]">{kw}</span>
+                ))}
+              </div>
             )}
-            <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-base">chevron_right</span>
-          </a>
+
+            {/* Title */}
+            <h3 class="font-headline text-sm font-bold text-black dark:text-white mb-2 line-clamp-1">{skill.data.title || skill.id}</h3>
+
+            {/* Summary */}
+            {skill.data.summary && (
+              <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2">{skill.data.summary}</p>
+            )}
+
+            {/* Footer: Author + Actions */}
+            <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-[#353437]">
+              <div class="flex items-center gap-2">
+                <div class="w-5 h-5 bg-white dark:bg-[#252527] rounded-full flex items-center justify-center">
+                  <span class="text-[8px] font-bold text-slate-500 dark:text-gray-400">{(skill.data.author || '?').charAt(0)}</span>
+                </div>
+                <span class="text-[11px] text-slate-400 dark:text-gray-500">{skill.data.author || '멤버'}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                {skill.data.link && (
+                  <a href={skill.data.link} target="_blank" rel="noopener" class="text-[11px] font-medium text-slate-400 hover:text-[#d4a800] dark:hover:text-[#FBE830] transition-colors flex items-center gap-0.5" onclick="event.stopPropagation()">
+                    <span class="material-symbols-outlined text-sm">link</span>
+                    링크
+                  </a>
+                )}
+                <a href={`${base}tools/${skill.id}/`} class="text-[11px] font-medium text-slate-400 hover:text-[#d4a800] dark:hover:text-[#FBE830] transition-colors flex items-center gap-0.5">
+                  자세히보기
+                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
 
       <div id="empty-state" class="hidden text-center py-16">
         <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-5xl block mb-4">search_off</span>
-        <p class="text-slate-400 dark:text-gray-500">해당 카테고리의 도구가 없습니다.</p>
+        <p class="text-slate-400 dark:text-gray-500">해당 카테고리의 항목이 없습니다.</p>
       </div>
     </div>
   </section>
@@ -115,7 +132,7 @@ const dotColors: Record<string, string> = {
       color: #000;
       border-color: #FBE830;
     }
-    .tool-item.hidden-by-filter {
+    .skill-card.hidden-by-filter {
       display: none;
     }
     .scrollbar-hide::-webkit-scrollbar {
@@ -130,7 +147,7 @@ const dotColors: Record<string, string> = {
   <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
       const buttons = document.querySelectorAll('.filter-btn');
-      const items = document.querySelectorAll('.tool-item');
+      const items = document.querySelectorAll('.skill-card');
       const emptyState = document.getElementById('empty-state');
 
       buttons.forEach(btn => {

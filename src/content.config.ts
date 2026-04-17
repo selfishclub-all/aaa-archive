@@ -5,13 +5,15 @@ const str = z.string().nullish();
 const num = z.number().nullish();
 const tags = z.array(z.string()).nullish();
 
-const insights = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/insights" }),
+const skills = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/skills" }),
   schema: z.object({
-    member: str,
-    tags,
-    keywords: z.array(z.string()).nullish(),
+    title: str,
+    author: str,
     summary: str,
+    link: str,
+    keywords: z.array(z.string()).nullish(),
+    category: str,
   }).passthrough(),
 });
 
@@ -23,18 +25,6 @@ const gallery = defineCollection({
     thumbnail: str,
     link: str,
     week: num,
-  }).passthrough(),
-});
-
-const tools = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/tools" }),
-  schema: z.object({
-    name: str,
-    category: str,
-    type: str,
-    difficulty: str,
-    link: str,
-    added_by: str,
   }).passthrough(),
 });
 
@@ -73,4 +63,4 @@ const members = defineCollection({
   }).passthrough(),
 });
 
-export const collections = { insights, gallery, tools, analysis, proposals, missions, members };
+export const collections = { skills, gallery, analysis, proposals, missions, members };
