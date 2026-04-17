@@ -3,28 +3,11 @@ import Layout from '../../layouts/Layout.astro';
 import '../../styles/global.css';
 import fs from 'node:fs';
 import path from 'node:path';
-import { marked } from 'marked';
 const base = import.meta.env.BASE_URL;
 
-// missions 파일을 직접 읽기 + 마크다운→HTML 변환
+// missions 파일 목록
 const missionsDir = path.resolve('src/content/missions');
-const getMissionBody = (week: number, name: string): string => {
-  const filename = `Week_0${week}_${name}.md`;
-  const filepath = path.join(missionsDir, filename);
-  try {
-    const content = fs.readFileSync(filepath, 'utf8');
-    // frontmatter 제거
-    const body = content.replace(/^---[\s\S]*?---\n?/, '');
-    return body.trim();
-  } catch {
-    return '';
-  }
-};
-const getMissionHtml = (week: number, name: string): string => {
-  const body = getMissionBody(week, name);
-  if (!body) return '';
-  return marked.parse(body) as string;
-};
+const allMissionFiles = fs.existsSync(missionsDir) ? fs.readdirSync(missionsDir) : [];
 
 const weeks = [
   {
@@ -107,15 +90,13 @@ const weeks = [
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {week.members.map((member) => {
-            const fullHtml = getMissionHtml(week.week, member.name);
-            const displayDetail = fullHtml || `<p>${member.detail || member.summary}</p>`;
+            const missionId = `Week_0${week.week}_${member.name}`;
+            const hasMission = allMissionFiles.includes(`${missionId}.md`);
+            const CardTag = hasMission ? 'a' : 'div';
             return (
-            <div
-              class="p-6 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-lg transition-all group cursor-pointer flex flex-col modal-trigger"
-              data-name={member.name}
-              data-title={member.cardTitle}
-              data-detail={displayDetail}
-              data-link={member.link || ''}
+            <CardTag
+              href={hasMission ? `${base}missions/${missionId}/` : undefined}
+              class={`p-6 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-lg transition-all group flex flex-col ${hasMission ? 'cursor-pointer' : 'opacity-60'}`}
             >
               <h3 class="font-headline text-base font-bold text-black dark:text-white mb-2 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors line-clamp-1">{member.cardTitle || member.summary}</h3>
               <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2 flex-1">{member.summary}</p>
@@ -126,8 +107,11 @@ const weeks = [
                   </div>
                   <span class="text-xs text-slate-400 dark:text-gray-500">by {member.name}</span>
                 </div>
+                {hasMission && (
+                  <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-sm group-hover:text-[#FBE830] transition-colors">arrow_forward</span>
+                )}
               </div>
-            </div>
+            </CardTag>
           );
           })}
         </div>
@@ -135,59 +119,4 @@ const weeks = [
     ))}
   </section>
 
-  <!-- Modal -->
-  <div id="archive-modal" class="fixed inset-0 z-50 hidden">
-    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModal()"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[80vh] overflow-y-auto bg-white dark:bg-[#1b1b1d] rounded-2xl shadow-2xl p-8 md:p-10">
-      <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-black dark:hover:text-white transition-colors">
-        <span class="material-symbols-outlined">close</span>
-      </button>
-      <h2 id="modal-title" class="font-headline text-2xl font-bold text-black dark:text-white mb-4"></h2>
-      <div id="modal-author" class="flex items-center gap-2 mb-6">
-        <div class="w-7 h-7 bg-slate-100 dark:bg-[#2a2a2c] rounded-full flex items-center justify-center">
-          <span id="modal-avatar" class="text-[10px] font-bold text-slate-500 dark:text-gray-400"></span>
-        </div>
-        <span id="modal-name" class="text-sm text-slate-500 dark:text-gray-400"></span>
-      </div>
-      <div id="modal-detail" class="prose prose-sm dark:prose-invert max-w-none mb-6 max-h-[50vh] overflow-y-auto [&_img]:rounded-lg [&_img]:my-4 [&_img]:max-w-full [&_video]:rounded-lg [&_video]:my-4 [&_video]:max-w-full"></div>
-      <div id="modal-link-wrap" class="hidden"></div>
-    </div>
-  </div>
-
-  <script is:inline>
-    function openModal(name, title, detail, link) {
-      document.getElementById('modal-title').textContent = title;
-      document.getElementById('modal-avatar').textContent = name.charAt(0);
-      document.getElementById('modal-name').textContent = 'by ' + name;
-      document.getElementById('modal-detail').innerHTML = detail;
-      const linkWrap = document.getElementById('modal-link-wrap');
-      if (link) {
-        document.getElementById('modal-link').href = link;
-        linkWrap.classList.remove('hidden');
-      } else {
-        linkWrap.classList.add('hidden');
-      }
-      document.getElementById('archive-modal').classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeModal() {
-      document.getElementById('archive-modal').classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.modal-trigger').forEach(card => {
-        card.addEventListener('click', (e) => {
-          if (e.target.closest('a')) return;
-          openModal(
-            card.dataset.name,
-            card.dataset.title,
-            card.dataset.detail,
-            card.dataset.link
-          );
-        });
-      });
-    });
-  </script>
 </Layout>
