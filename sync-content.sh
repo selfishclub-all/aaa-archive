@@ -4,6 +4,19 @@ SITE="/Users/dada/PJ/AAA/selfish-aaa-site-astro"
 CONTENT="$SITE/src/content"
 IMAGES="$SITE/public/images"
 
+# 첨부파일 정리: 미션 폴더의 이미지/영상을 _attachments/로 이동
+mkdir -p "$VAULT/_attachments"
+find "$VAULT/00_missions/" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" -o -name "*.mp4" \) 2>/dev/null | while read f; do
+  name=$(basename "$f")
+  if [ ! -f "$VAULT/_attachments/$name" ]; then
+    mv "$f" "$VAULT/_attachments/$name"
+    echo "  이동: $name → _attachments/"
+  else
+    rm "$f"
+    echo "  중복 삭제: $name (이미 _attachments에 존재)"
+  fi
+done
+
 mkdir -p "$CONTENT/gallery" "$CONTENT/insights" "$CONTENT/tools" "$CONTENT/analysis" "$CONTENT/proposals" "$CONTENT/missions"
 mkdir -p "$IMAGES"
 
