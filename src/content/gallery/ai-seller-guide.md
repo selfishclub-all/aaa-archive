@@ -1,8 +1,8 @@
 ---
-name: AI셀러가이드
-maker: 오웬
-thumbnail: 📸
-link: https://instagram.com/aisellerguide
+name: "AI셀러가이드"
+maker: "오웬"
+thumbnail: "📸"
+link: "https://instagram.com/aisellerguide"
 week: 2
 ---
 
