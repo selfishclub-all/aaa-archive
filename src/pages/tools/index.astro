@@ -11,6 +11,14 @@ categories.forEach(cat => {
   catCounts[cat] = skills.filter(s => s.data.category === cat).length;
 });
 
+const accentColors: Record<string, string> = {
+  '자동화': '#FBE830',
+  '콘텐츠': '#000',
+  '분석': '#94a3b8',
+  '생산성': '#34d399',
+  '디자인': '#a78bfa',
+};
+
 const dotColors: Record<string, string> = {
   '자동화': 'bg-[#FBE830]',
   '콘텐츠': 'bg-black dark:bg-white',
@@ -18,28 +26,48 @@ const dotColors: Record<string, string> = {
   '생산성': 'bg-emerald-400',
   '디자인': 'bg-violet-400',
 };
+
+const avatarColors: Record<string, string> = {
+  '다다': '#FBE830',
+  '비비안': '#a78bfa',
+  '띵끄': '#34d399',
+  '에밀리': '#f472b6',
+  '오웬': '#60a5fa',
+  '흐민': '#818cf8',
+  '다니': '#fb923c',
+  '잽': '#f87171',
+  '젬마': '#2dd4bf',
+};
+
+function cleanTitle(title: string | null | undefined, id: string): string {
+  if (title && title.trim()) return title;
+  return id.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
 ---
 <Layout title="스킬 & 인사이트 - AAA TEAM">
   <!-- Hero -->
-  <section class="pt-20 md:pt-24" style="background: linear-gradient(135deg, rgba(251,232,48,0.08) 0%, rgba(251,232,48,0.15) 40%, rgba(200,240,200,0.1) 100%);">
-    <div class="max-w-screen-2xl mx-auto px-6 md:px-12 pt-8 md:pt-10 pb-8 md:pb-10">
-      <h1 class="font-headline text-2xl md:text-3xl font-extrabold tracking-tight text-black dark:text-white mb-2">스킬 & 인사이트</h1>
-      <p class="text-sm md:text-base text-slate-600 dark:text-gray-400">멤버들이 <strong class="text-black dark:text-white">실전에서 발견</strong>한 도구, 스킬, 인사이트를 공유합니다.</p>
+  <section class="pt-20 md:pt-24" style="background: linear-gradient(135deg, rgba(251,232,48,0.06) 0%, rgba(251,232,48,0.12) 50%, transparent 100%);">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-12 pt-8 md:pt-10 pb-6 md:pb-8">
+      <div class="flex items-baseline gap-3 mb-2">
+        <h1 class="font-headline text-2xl md:text-3xl font-extrabold tracking-tight text-black dark:text-white">스킬 & 인사이트</h1>
+        <span class="text-sm font-bold text-[#FBE830]">{skills.length}</span>
+      </div>
+      <p class="text-sm text-slate-500 dark:text-gray-400">멤버들이 실전에서 발견한 도구, 스킬, 인사이트를 공유합니다.</p>
     </div>
   </section>
 
   <!-- Category Filter -->
   <section class="bg-white dark:bg-[#131315] border-b border-slate-100 dark:border-[#353437] sticky top-14 md:top-16 z-40">
     <div class="max-w-screen-2xl mx-auto px-6 md:px-12">
-      <div class="flex gap-2 overflow-x-auto py-3 -mx-1 scrollbar-hide">
-        <button class="filter-btn active whitespace-nowrap text-sm font-bold px-5 py-2 rounded-full transition-all" data-category="all">
-          전체 <span class="text-xs font-normal ml-1 opacity-60">{skills.length}</span>
+      <div class="flex gap-2 overflow-x-auto py-3 scrollbar-hide">
+        <button class="filter-btn active whitespace-nowrap text-sm font-bold px-4 py-1.5 rounded-full transition-all" data-category="all">
+          전체
         </button>
         {categories.map(cat => (
-          <button class="filter-btn whitespace-nowrap text-sm font-medium px-5 py-2 rounded-full transition-all flex items-center gap-1.5" data-category={cat}>
-            <span class={`w-2 h-2 rounded-full ${dotColors[cat] || 'bg-slate-400'}`}></span>
+          <button class="filter-btn whitespace-nowrap text-sm font-medium px-4 py-1.5 rounded-full transition-all flex items-center gap-1.5" data-category={cat}>
+            <span class={`w-1.5 h-1.5 rounded-full ${dotColors[cat] || 'bg-slate-400'}`}></span>
             {cat}
-            <span class="text-xs font-normal opacity-60">{catCounts[cat]}</span>
+            <span class="text-[10px] opacity-50">{catCounts[cat]}</span>
           </button>
         ))}
       </div>
@@ -47,56 +75,74 @@ const dotColors: Record<string, string> = {
   </section>
 
   <!-- Cards -->
-  <section class="bg-white dark:bg-[#131315]">
+  <section class="bg-slate-50/50 dark:bg-[#0e0e10]">
     <div class="max-w-screen-2xl mx-auto px-6 md:px-12 py-8 md:py-12">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="skills-grid">
-        {skills.map(skill => (
-          <div class="skill-card p-5 bg-slate-50 dark:bg-[#1b1b1d] border border-slate-100 dark:border-[#353437] rounded-xl hover:border-[#FBE830]/30 hover:shadow-md transition-all group" data-category={skill.data.category || '기타'}>
-            {/* Keywords */}
-            {skill.data.keywords && skill.data.keywords.length > 0 && (
-              <div class="flex flex-wrap gap-1.5 mb-3">
-                {(skill.data.keywords as string[]).slice(0, 3).map((kw: string) => (
-                  <span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-white dark:bg-[#252527] text-slate-500 dark:text-gray-400 border border-slate-200 dark:border-[#353437]">{kw}</span>
-                ))}
-              </div>
-            )}
+        {skills.map(skill => {
+          const title = cleanTitle(skill.data.title, skill.id);
+          const author = skill.data.author && skill.data.author !== 'AAA Team' ? skill.data.author : '';
+          const accent = accentColors[skill.data.category || ''] || '#94a3b8';
+          const avatarBg = author ? (avatarColors[author] || '#94a3b8') : '#d1d5db';
+          return (
+          <a href={`${base}tools/${skill.id}/`} class="skill-card block bg-white dark:bg-[#1b1b1d] rounded-xl border border-slate-200/80 dark:border-[#2a2a2d] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 overflow-hidden group" data-category={skill.data.category || '기타'}>
+            {/* Category accent bar */}
+            <div class="h-1" style={`background: ${accent};`}></div>
 
-            {/* Title */}
-            <h3 class="font-headline text-sm font-bold text-black dark:text-white mb-2 line-clamp-1">{skill.data.title || skill.id}</h3>
-
-            {/* Summary */}
-            {skill.data.summary && (
-              <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2">{skill.data.summary}</p>
-            )}
-
-            {/* Footer: Author + Actions */}
-            <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-[#353437]">
-              <div class="flex items-center gap-2">
-                <div class="w-5 h-5 bg-white dark:bg-[#252527] rounded-full flex items-center justify-center">
-                  <span class="text-[8px] font-bold text-slate-500 dark:text-gray-400">{(skill.data.author || '?').charAt(0)}</span>
-                </div>
-                <span class="text-[11px] text-slate-400 dark:text-gray-500">{skill.data.author || '멤버'}</span>
-              </div>
-              <div class="flex items-center gap-2">
-                {skill.data.link && (
-                  <a href={skill.data.link} target="_blank" rel="noopener" class="text-[11px] font-medium text-slate-400 hover:text-[#d4a800] dark:hover:text-[#FBE830] transition-colors flex items-center gap-0.5" onclick="event.stopPropagation()">
-                    <span class="material-symbols-outlined text-sm">link</span>
-                    링크
-                  </a>
+            <div class="p-5">
+              {/* Top: Category + Author */}
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-gray-500">{skill.data.category || '기타'}</span>
+                {author && (
+                  <div class="flex items-center gap-1.5">
+                    <div class="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-black text-white" style={`background: ${avatarBg};`}>
+                      {author.charAt(0)}
+                    </div>
+                    <span class="text-[10px] font-medium text-slate-400 dark:text-gray-500">{author}</span>
+                  </div>
                 )}
-                <a href={`${base}tools/${skill.id}/`} class="text-[11px] font-medium text-slate-400 hover:text-[#d4a800] dark:hover:text-[#FBE830] transition-colors flex items-center gap-0.5">
+              </div>
+
+              {/* Title */}
+              <h3 class="font-headline text-[15px] font-bold text-black dark:text-white mb-2 leading-snug group-hover:text-[#b8960a] dark:group-hover:text-[#FBE830] transition-colors line-clamp-2">{title}</h3>
+
+              {/* Summary */}
+              <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed line-clamp-2 mb-4">
+                {skill.data.summary || '자세한 내용은 클릭해서 확인하세요.'}
+              </p>
+
+              {/* Keywords */}
+              {skill.data.keywords && skill.data.keywords.length > 0 && (skill.data.keywords as string[])[0] !== skill.data.category && (
+                <div class="flex flex-wrap gap-1 mb-4">
+                  {(skill.data.keywords as string[]).slice(0, 4).map((kw: string) => (
+                    <span class="text-[9px] font-medium px-2 py-0.5 rounded bg-slate-100 dark:bg-[#252527] text-slate-500 dark:text-gray-400">{kw}</span>
+                  ))}
+                </div>
+              )}
+
+              {/* Footer */}
+              <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-[#252527]">
+                {skill.data.link ? (
+                  <span class="text-[10px] text-slate-400 dark:text-gray-500 flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-xs">link</span>
+                    외부 링크
+                  </span>
+                ) : (
+                  <span></span>
+                )}
+                <span class="text-[10px] font-bold text-slate-400 dark:text-gray-500 group-hover:text-[#b8960a] dark:group-hover:text-[#FBE830] transition-colors flex items-center gap-0.5 uppercase tracking-wider">
                   자세히보기
-                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                </a>
+                  <span class="material-symbols-outlined text-xs">east</span>
+                </span>
               </div>
             </div>
-          </div>
-        ))}
+          </a>
+          );
+        })}
       </div>
 
       <div id="empty-state" class="hidden text-center py-16">
         <span class="material-symbols-outlined text-slate-300 dark:text-gray-600 text-5xl block mb-4">search_off</span>
-        <p class="text-slate-400 dark:text-gray-500">해당 카테고리의 항목이 없습니다.</p>
+        <p class="text-slate-400 dark:text-gray-500 text-sm">해당 카테고리의 항목이 없습니다.</p>
       </div>
     </div>
   </section>
