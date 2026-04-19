@@ -758,6 +758,185 @@ const collections = {
       });
     });
 
+    const SKILL_CATEGORY_OPTS = ['콘텐츠', '자동화', '분석', '디자인', '생산성', '기타'];
+
+    function escapeHtml(s) {
+      return String(s ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function buildSkillRow(data, body, f) {
+      const title = data.title || safeDecodeUri(f.name.replace('.md', ''));
+      const category = data.category || '';
+      const keywords = Array.isArray(data.keywords)
+        ? data.keywords
+        : (data.keywords ? String(data.keywords).split(',').map(s => s.trim()).filter(Boolean) : []);
+      const link = data.link || '';
+      const summary = data.summary || '';
+      const author = data.author || '';
+
+      const catOpts = SKILL_CATEGORY_OPTS.map(c =>
+        `<option value="${escapeHtml(c)}" ${c === category ? 'selected' : ''}>${escapeHtml(c)}</option>`
+      ).join('');
+      const extraCat = category && !SKILL_CATEGORY_OPTS.includes(category)
+        ? `<option value="${escapeHtml(category)}" selected>${escapeHtml(category)}</option>` : '';
+
+      return `
+        <td class="px-4 py-3 align-top">
+          <button type="button" class="open-skill-editor text-left font-medium text-white hover:text-indigo-300" data-path="${escapeHtml(f.path)}">${escapeHtml(title)}</button>
+          <div class="mt-1 text-[10px] text-slate-600">${escapeHtml(f.name.replace('.md', ''))}</div>
+        </td>
+        <td class="px-3 py-3 align-top">
+          <select class="skill-cell w-full rounded bg-[#0c0c0e] border border-[#2a2a30] px-2 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500" data-field="category">
+            <option value="">—</option>
+            ${catOpts}
+            ${extraCat}
+          </select>
+        </td>
+        <td class="px-3 py-3 align-top">
+          <input type="text" value="${escapeHtml(keywords.join(', '))}" placeholder="쉼표로 구분"
+            class="skill-cell w-full rounded bg-[#0c0c0e] border border-[#2a2a30] px-2 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500" data-field="keywords" />
+        </td>
+        <td class="px-3 py-3 align-top">
+          <input type="url" value="${escapeHtml(link)}" placeholder="https://..."
+            class="skill-cell w-full rounded bg-[#0c0c0e] border border-[#2a2a30] px-2 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500" data-field="link" />
+          ${link ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener" class="mt-1 inline-block text-[10px] text-indigo-400 hover:underline truncate max-w-full">↗ 열기</a>` : ''}
+        </td>
+        <td class="px-3 py-3 align-top">
+          <input type="text" value="${escapeHtml(summary)}" placeholder="—"
+            class="skill-cell w-full rounded bg-[#0c0c0e] border border-[#2a2a30] px-2 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500" data-field="summary" />
+        </td>
+        <td class="px-3 py-3 align-top text-sm text-slate-400">${escapeHtml(author) || '<span class="text-slate-600">—</span>'}</td>
+        <td class="w-10 px-2 py-3 text-center align-top">
+          <span class="skill-status text-xs text-slate-500"></span>
+        </td>`;
+    }
+
+    async function renderSkillsTable(mdFiles, listEl) {
+      listEl.innerHTML = `
+        <div class="mb-4 text-xs text-slate-500">
+          셀을 수정하면 자동 저장됩니다 · 제목 클릭 시 상세 편집(메모 포함)
+        </div>
+        <div class="overflow-x-auto rounded-xl border border-[#1e1e22] bg-[#0c0c0e]">
+          <table class="w-full min-w-[1200px] text-sm">
+            <thead>
+              <tr class="border-b border-[#1e1e22] bg-[#141418] text-left text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                <th class="px-4 py-3 min-w-[200px]">제목</th>
+                <th class="px-3 py-3 min-w-[130px]">카테고리</th>
+                <th class="px-3 py-3 min-w-[220px]">키워드</th>
+                <th class="px-3 py-3 min-w-[240px]">링크</th>
+                <th class="px-3 py-3 min-w-[280px]">한줄 설명</th>
+                <th class="px-3 py-3 min-w-[100px]">작성자</th>
+                <th class="w-10"></th>
+              </tr>
+            </thead>
+            <tbody id="skills-tbody"></tbody>
+          </table>
+        </div>`;
+
+      const tbody = document.getElementById('skills-tbody');
+      tbody.innerHTML = mdFiles.map(f => `
+        <tr class="skill-row border-b border-[#1e1e22]" data-path="${escapeHtml(f.path)}" data-sha="${escapeHtml(f.sha)}">
+          <td colspan="7" class="px-4 py-3 text-xs text-slate-600">로딩 중 ${escapeHtml(safeDecodeUri(f.name))}...</td>
+        </tr>`).join('');
+
+      await Promise.all(mdFiles.map(async (f) => {
+        try {
+          const file = await api(`contents/${f.path}`);
+          const decoded = new TextDecoder().decode(Uint8Array.from(atob(file.content.replace(/\n/g, '')), c => c.charCodeAt(0)));
+          const { data, body } = parseFrontmatter(decoded);
+          const row = tbody.querySelector(`tr.skill-row[data-path="${CSS.escape(f.path)}"]`);
+          if (row) {
+            row.innerHTML = buildSkillRow(data, body, f);
+            row.dataset.sha = file.sha;
+            row.dataset.fm = JSON.stringify(data);
+            row.dataset.body = body;
+          }
+        } catch (err) {
+          const row = tbody.querySelector(`tr.skill-row[data-path="${CSS.escape(f.path)}"]`);
+          if (row) {
+            row.innerHTML = `<td colspan="7" class="px-4 py-3 text-xs text-red-400">로드 실패: ${escapeHtml(err.message)}</td>`;
+          }
+        }
+      }));
+    }
+
+    async function saveSkillCell(cell) {
+      const row = cell.closest('tr.skill-row');
+      if (!row) return;
+      const field = cell.dataset.field;
+      if (!field) return;
+
+      const path = row.dataset.path;
+      const sha = row.dataset.sha;
+      const fm = JSON.parse(row.dataset.fm || '{}');
+      const body = row.dataset.body || '';
+
+      let newValue = cell.value;
+      if (typeof newValue === 'string') newValue = newValue.trim();
+      if (field === 'keywords') {
+        newValue = typeof newValue === 'string'
+          ? newValue.split(',').map(s => s.trim()).filter(Boolean)
+          : [];
+      }
+
+      const prev = fm[field];
+      const prevNorm = Array.isArray(newValue) ? (Array.isArray(prev) ? prev : []) : (prev ?? '');
+      if (JSON.stringify(prevNorm) === JSON.stringify(newValue)) return;
+
+      const statusEl = row.querySelector('.skill-status');
+      if (statusEl) { statusEl.textContent = '⏳'; statusEl.className = 'skill-status text-xs text-indigo-400'; }
+
+      const nextFm = { ...fm, [field]: newValue };
+
+      try {
+        const content = buildFrontmatter(nextFm, body);
+        const encoded = btoa(unescape(encodeURIComponent(content)));
+        const res = await api(`contents/${path}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            message: `admin: ${path.split('/').pop()} ${field} 수정 (inline)`,
+            content: encoded,
+            sha,
+          }),
+        });
+        row.dataset.sha = res.content?.sha || sha;
+        row.dataset.fm = JSON.stringify(nextFm);
+        if (statusEl) {
+          statusEl.textContent = '✓';
+          statusEl.className = 'skill-status text-xs text-emerald-400';
+          setTimeout(() => { statusEl.textContent = ''; }, 1500);
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.textContent = '⚠';
+          statusEl.title = err.message;
+          statusEl.className = 'skill-status text-xs text-red-400';
+        }
+      }
+    }
+
+    document.addEventListener('change', (e) => {
+      if (e.target.classList && e.target.classList.contains('skill-cell')) {
+        saveSkillCell(e.target);
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.target.classList && e.target.classList.contains('skill-cell') && e.key === 'Enter' && e.target.tagName === 'INPUT') {
+        if (e.isComposing || e.keyCode === 229) return;
+        e.preventDefault();
+        e.target.blur();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest && e.target.closest('.open-skill-editor');
+      if (btn) openEditor(btn.dataset.path);
+    });
+
     async function loadFiles() {
       const listEl = document.getElementById('file-list');
       const loadingEl = document.getElementById('loading');
@@ -769,18 +948,22 @@ const collections = {
         const files = await api(`contents/${col.path}`);
         const mdFiles = files.filter(f => f.name.endsWith('.md'));
 
-        listEl.innerHTML = mdFiles.map(f => `
-          <div class="file-item flex items-center gap-4 px-5 py-3.5 rounded-lg hover:bg-[#141418] transition-all cursor-pointer border border-transparent hover:border-indigo-500/30 group"
-               data-path="${f.path}" data-sha="${f.sha}">
-            <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400 text-lg">description</span>
-            <span class="flex-1 text-sm font-medium text-white group-hover:text-indigo-300 truncate">${safeDecodeUri(f.name.replace('.md', ''))}</span>
-            <span class="material-symbols-outlined text-slate-300 text-sm">edit</span>
-          </div>
-        `).join('');
+        if (currentCollection === 'skills') {
+          await renderSkillsTable(mdFiles, listEl);
+        } else {
+          listEl.innerHTML = mdFiles.map(f => `
+            <div class="file-item flex items-center gap-4 px-5 py-3.5 rounded-lg hover:bg-[#141418] transition-all cursor-pointer border border-transparent hover:border-indigo-500/30 group"
+                 data-path="${f.path}" data-sha="${f.sha}">
+              <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400 text-lg">description</span>
+              <span class="flex-1 text-sm font-medium text-white group-hover:text-indigo-300 truncate">${safeDecodeUri(f.name.replace('.md', ''))}</span>
+              <span class="material-symbols-outlined text-slate-300 text-sm">edit</span>
+            </div>
+          `).join('');
 
-        listEl.querySelectorAll('.file-item').forEach(item => {
-          item.addEventListener('click', () => openEditor(item.dataset.path));
-        });
+          listEl.querySelectorAll('.file-item').forEach(item => {
+            item.addEventListener('click', () => openEditor(item.dataset.path));
+          });
+        }
 
         loadingEl.classList.add('hidden');
         listEl.classList.remove('hidden');
