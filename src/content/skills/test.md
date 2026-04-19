@@ -7,7 +7,7 @@ keywords:
   - 1
   - 2
   - 새롭게추가
-category: "자동화"
+category: "새로운카테고리"
 ---
 
 ## 한줄 설명
