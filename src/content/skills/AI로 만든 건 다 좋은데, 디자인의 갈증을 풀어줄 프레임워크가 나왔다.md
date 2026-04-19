@@ -6,7 +6,6 @@ keywords:
   - DESIGN.md
   - AI 디자인
   - 프레임워크
-  - Google Stitch
 category: "디자인"
 ---
 
