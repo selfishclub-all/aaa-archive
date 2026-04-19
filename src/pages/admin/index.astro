@@ -769,6 +769,17 @@ const collections = {
         .replace(/'/g, '&#39;');
     }
 
+    function renderCatTrigger(category) {
+      if (category) {
+        return `<span class="px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 text-xs font-medium border border-indigo-500/30">${escapeHtml(category)}</span><span class="text-slate-500 text-[10px]">▾</span>`;
+      }
+      return `<span class="text-slate-500 text-xs">선택</span><span class="text-slate-500 text-[10px]">▾</span>`;
+    }
+
+    function renderKwChip(k) {
+      return `<span class="kw-chip inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FBE830]/15 text-amber-200 text-xs font-medium border border-[#FBE830]/40" data-kw="${escapeHtml(k)}">${escapeHtml(k)}<button type="button" class="kw-remove ml-0.5 hover:text-red-400" data-kw="${escapeHtml(k)}">×</button></span>`;
+    }
+
     function buildSkillRow(data, body, f) {
       const title = data.title || safeDecodeUri(f.name.replace('.md', ''));
       const category = data.category || '';
@@ -779,27 +790,28 @@ const collections = {
       const summary = data.summary || '';
       const author = data.author || '';
 
-      const catOpts = SKILL_CATEGORY_OPTS.map(c =>
-        `<option value="${escapeHtml(c)}" ${c === category ? 'selected' : ''}>${escapeHtml(c)}</option>`
-      ).join('');
-      const extraCat = category && !SKILL_CATEGORY_OPTS.includes(category)
-        ? `<option value="${escapeHtml(category)}" selected>${escapeHtml(category)}</option>` : '';
-
       return `
         <td class="px-4 py-3 align-top">
           <button type="button" class="open-skill-editor text-left font-medium text-white hover:text-indigo-300" data-path="${escapeHtml(f.path)}">${escapeHtml(title)}</button>
           <div class="mt-1 text-[10px] text-slate-600">${escapeHtml(f.name.replace('.md', ''))}</div>
         </td>
         <td class="px-3 py-3 align-top">
-          <select class="skill-cell w-full rounded bg-[#0c0c0e] border border-[#2a2a30] px-2 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500" data-field="category">
-            <option value="">—</option>
-            ${catOpts}
-            ${extraCat}
-          </select>
+          <div class="cat-cell relative inline-block" data-field="category">
+            <button type="button" class="cat-trigger inline-flex items-center gap-1.5 px-2 py-1.5 rounded bg-[#0c0c0e] border border-[#2a2a30] hover:border-indigo-500 cursor-pointer">${renderCatTrigger(category)}</button>
+            <div class="cat-popover hidden absolute left-0 top-full mt-1 z-30 w-60 bg-[#141418] border border-[#2a2a30] rounded-lg shadow-xl p-2">
+              <div class="cat-options flex flex-wrap gap-1.5 mb-2 max-h-48 overflow-y-auto"></div>
+              <input type="text" class="cat-add-input w-full px-2 py-1.5 rounded bg-[#0c0c0e] border border-[#2a2a30] text-xs text-white focus:outline-none focus:border-indigo-500" placeholder="새 카테고리 입력 후 Enter" />
+            </div>
+          </div>
         </td>
         <td class="px-3 py-3 align-top">
-          <input type="text" value="${escapeHtml(keywords.join(', '))}" placeholder="쉼표로 구분"
-            class="skill-cell w-full rounded bg-[#0c0c0e] border border-[#2a2a30] px-2 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500" data-field="keywords" />
+          <div class="kw-cell relative" data-field="keywords">
+            <div class="kw-chips flex flex-wrap gap-1 items-center min-h-[32px] px-2 py-1 rounded bg-[#0c0c0e] border border-[#2a2a30] focus-within:border-indigo-500 cursor-text">
+              ${keywords.map(renderKwChip).join('')}
+              <input type="text" class="kw-add-input flex-1 min-w-[80px] bg-transparent text-xs text-white outline-none placeholder:text-slate-600 py-0.5" placeholder="+ 키워드" />
+            </div>
+            <div class="kw-suggest hidden absolute z-30 mt-1 left-0 min-w-[200px] bg-[#141418] border border-[#2a2a30] rounded-lg shadow-xl p-1 max-h-40 overflow-y-auto"></div>
+          </div>
         </td>
         <td class="px-3 py-3 align-top">
           <input type="url" value="${escapeHtml(link)}" placeholder="https://..."
@@ -865,24 +877,12 @@ const collections = {
       }));
     }
 
-    async function saveSkillCell(cell) {
-      const row = cell.closest('tr.skill-row');
+    async function saveSkillField(row, field, newValue) {
       if (!row) return;
-      const field = cell.dataset.field;
-      if (!field) return;
-
       const path = row.dataset.path;
       const sha = row.dataset.sha;
       const fm = JSON.parse(row.dataset.fm || '{}');
       const body = row.dataset.body || '';
-
-      let newValue = cell.value;
-      if (typeof newValue === 'string') newValue = newValue.trim();
-      if (field === 'keywords') {
-        newValue = typeof newValue === 'string'
-          ? newValue.split(',').map(s => s.trim()).filter(Boolean)
-          : [];
-      }
 
       const prev = fm[field];
       const prevNorm = Array.isArray(newValue) ? (Array.isArray(prev) ? prev : []) : (prev ?? '');
@@ -892,7 +892,6 @@ const collections = {
       if (statusEl) { statusEl.textContent = '⏳'; statusEl.className = 'skill-status text-xs text-indigo-400'; }
 
       const nextFm = { ...fm, [field]: newValue };
-
       try {
         const content = buildFrontmatter(nextFm, body);
         const encoded = btoa(unescape(encodeURIComponent(content)));
@@ -920,6 +919,16 @@ const collections = {
       }
     }
 
+    async function saveSkillCell(cell) {
+      const row = cell.closest('tr.skill-row');
+      if (!row) return;
+      const field = cell.dataset.field;
+      if (!field) return;
+      let newValue = cell.value;
+      if (typeof newValue === 'string') newValue = newValue.trim();
+      await saveSkillField(row, field, newValue);
+    }
+
     document.addEventListener('change', (e) => {
       if (e.target.classList && e.target.classList.contains('skill-cell')) {
         saveSkillCell(e.target);
@@ -935,6 +944,132 @@ const collections = {
     document.addEventListener('click', (e) => {
       const btn = e.target.closest && e.target.closest('.open-skill-editor');
       if (btn) openEditor(btn.dataset.path);
+    });
+
+    // --- Category cell (Notion-style select with custom add) ---
+    function closeAllPopovers() {
+      document.querySelectorAll('.cat-popover').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.kw-suggest').forEach(p => p.classList.add('hidden'));
+    }
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.cat-cell') && !e.target.closest('.kw-cell')) {
+        closeAllPopovers();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('.cat-trigger');
+      if (!trigger) return;
+      e.stopPropagation();
+      const cell = trigger.closest('.cat-cell');
+      const popover = cell.querySelector('.cat-popover');
+      const wasHidden = popover.classList.contains('hidden');
+      closeAllPopovers();
+      if (!wasHidden) return;
+      const row = cell.closest('tr.skill-row');
+      const current = row ? (JSON.parse(row.dataset.fm || '{}').category || '') : '';
+      const all = getManagedTags('skill_categories', SKILL_CATEGORY_OPTS);
+      if (current && !all.includes(current)) all.unshift(current);
+      const optsEl = cell.querySelector('.cat-options');
+      optsEl.innerHTML = all.map(c => `<button type="button" class="cat-opt inline-flex items-center px-2 py-1 rounded-full text-xs border transition-all ${c===current?'bg-indigo-500/25 text-indigo-300 border-indigo-500/50 font-bold':'bg-[#0c0c0e] text-slate-300 border-[#2a2a30] hover:border-indigo-500 hover:text-white'}" data-option="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('');
+      popover.classList.remove('hidden');
+      const addInput = cell.querySelector('.cat-add-input');
+      if (addInput) addInput.value = '';
+    });
+    function applyCategory(cell, value) {
+      const row = cell.closest('tr.skill-row');
+      cell.querySelector('.cat-popover').classList.add('hidden');
+      cell.querySelector('.cat-trigger').innerHTML = renderCatTrigger(value);
+      saveSkillField(row, 'category', value);
+    }
+    document.addEventListener('click', (e) => {
+      const opt = e.target.closest('.cat-opt');
+      if (!opt) return;
+      e.stopPropagation();
+      applyCategory(opt.closest('.cat-cell'), opt.dataset.option);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!e.target.classList.contains('cat-add-input')) return;
+      if (e.key !== 'Enter') return;
+      if (e.isComposing || e.keyCode === 229) return;
+      e.preventDefault();
+      const value = e.target.value.trim();
+      if (!value) return;
+      const all = getManagedTags('skill_categories', SKILL_CATEGORY_OPTS);
+      if (!all.includes(value)) { all.push(value); saveManagedTags('skill_categories', all); }
+      applyCategory(e.target.closest('.cat-cell'), value);
+    });
+
+    // --- Keywords cell (multi-select chips with autocomplete) ---
+    function getRowKeywords(cell) {
+      return Array.from(cell.querySelectorAll('.kw-chip')).map(c => c.dataset.kw);
+    }
+    function commitKeywords(cell) {
+      const row = cell.closest('tr.skill-row');
+      saveSkillField(row, 'keywords', getRowKeywords(cell));
+    }
+    function addKeyword(cell, value) {
+      value = value.trim();
+      if (!value) return;
+      if (getRowKeywords(cell).includes(value)) return;
+      const all = getManagedTags('skill_keywords', []);
+      if (!all.includes(value)) { all.push(value); saveManagedTags('skill_keywords', all); }
+      const input = cell.querySelector('.kw-add-input');
+      input.insertAdjacentHTML('beforebegin', renderKwChip(value));
+      input.value = '';
+      cell.querySelector('.kw-suggest').classList.add('hidden');
+      commitKeywords(cell);
+    }
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.kw-remove');
+      if (!btn) return;
+      e.stopPropagation();
+      const cell = btn.closest('.kw-cell');
+      btn.closest('.kw-chip').remove();
+      commitKeywords(cell);
+    });
+    document.addEventListener('click', (e) => {
+      const chipsWrap = e.target.closest('.kw-chips');
+      if (chipsWrap && !e.target.closest('.kw-chip') && !e.target.classList.contains('kw-add-input')) {
+        chipsWrap.querySelector('.kw-add-input')?.focus();
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!e.target.classList.contains('kw-add-input')) return;
+      const cell = e.target.closest('.kw-cell');
+      if (e.key === 'Enter') {
+        if (e.isComposing || e.keyCode === 229) return;
+        e.preventDefault();
+        if (e.target.value.trim()) addKeyword(cell, e.target.value);
+      } else if (e.key === 'Backspace' && !e.target.value) {
+        const chips = cell.querySelectorAll('.kw-chip');
+        if (chips.length > 0) {
+          chips[chips.length - 1].remove();
+          commitKeywords(cell);
+        }
+      } else if (e.key === 'Escape') {
+        cell.querySelector('.kw-suggest').classList.add('hidden');
+      }
+    });
+    document.addEventListener('input', (e) => {
+      if (!e.target.classList.contains('kw-add-input')) return;
+      const cell = e.target.closest('.kw-cell');
+      const suggest = cell.querySelector('.kw-suggest');
+      const q = e.target.value.trim().toLowerCase();
+      if (!q) { suggest.classList.add('hidden'); return; }
+      const current = getRowKeywords(cell);
+      const pool = Array.from(new Set([
+        ...getManagedTags('skill_keywords', []),
+        ...allSkillKeywords,
+      ])).filter(k => !current.includes(k) && k.toLowerCase().includes(q)).slice(0, 10);
+      if (pool.length === 0) { suggest.classList.add('hidden'); return; }
+      suggest.innerHTML = pool.map(k => `<button type="button" class="kw-suggest-opt block w-full text-left px-2 py-1 rounded text-xs text-slate-300 hover:bg-indigo-500/15 hover:text-indigo-300" data-kw="${escapeHtml(k)}">${escapeHtml(k)}</button>`).join('');
+      suggest.classList.remove('hidden');
+    });
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.kw-suggest-opt');
+      if (!btn) return;
+      e.stopPropagation();
+      addKeyword(btn.closest('.kw-cell'), btn.dataset.kw);
     });
 
     async function loadFiles() {
