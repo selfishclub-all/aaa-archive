@@ -2,8 +2,11 @@
 title: "claude-code-project-structure-guide"
 author: "AAA Team"
 summary: "Claude Code 프로젝트를 6개 레이어로 분리해 컨텍스트 80%를 절감하는 범용 구조 가이드"
-link: ""
-keywords: ["Claude Code", "프로젝트 구조", "CLAUDE.md", "PRD", "에이전트"]
+keywords:
+  - 프로젝트 구조
+  - CLAUDE.md
+  - PRD
+  - 에이전트
 category: "생산성"
 ---
 
