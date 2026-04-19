@@ -44,6 +44,10 @@ const proposals = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/proposals" }),
   schema: z.object({
     tags,
+    count: num,
+    preview: str,
+    highlights: z.array(z.string()).nullish(),
+    last_updated: z.coerce.string().nullish(),
   }).passthrough(),
 });
 

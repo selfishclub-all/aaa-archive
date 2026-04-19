@@ -85,19 +85,42 @@ const latest = sorted[0];
           <p class="text-sm text-slate-500 dark:text-gray-400 mt-2">AAA Bot이 분석 데이터에서 도출한 아이디어</p>
         </div>
       </div>
-      {proposals.map((proposal, i) => (
-        <a href={`${base}proposals/${proposal.id}/`} class="flex items-start gap-6 p-6 mb-4 rounded-xl hover:bg-slate-50 dark:hover:bg-[#1b1b1d] transition-all group block border-l-2 border-transparent hover:border-[#FBE830]">
-          <div class="w-10 h-10 bg-[#FBE830]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-            <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830] text-lg">
-              {i === 0 ? 'smart_toy' : 'build'}
-            </span>
-          </div>
-          <div>
-            <h3 class="text-base font-bold text-black dark:text-white mb-1 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{proposal.id.replace(/_/g, ' ')}</h3>
-            <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">클릭하여 상세 내용 보기 →</p>
-          </div>
-        </a>
-      ))}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {proposals.map((proposal, i) => {
+          const title = proposal.id.replace(/_/g, ' ');
+          const preview = proposal.data.preview as string | undefined;
+          const highlights = (proposal.data.highlights as string[] | undefined) ?? [];
+          const count = proposal.data.count as number | undefined;
+          const icon = i === 0 ? 'smart_toy' : 'build';
+          return (
+            <a href={`${base}proposals/${proposal.id}/`} class="group block p-8 rounded-2xl border border-slate-100 dark:border-[#353437] hover:border-[#FBE830]/50 hover:-translate-y-1 transition-all bg-white dark:bg-[#1b1b1d]">
+              <div class="flex items-start justify-between mb-5">
+                <div class="w-11 h-11 bg-[#FBE830]/10 rounded-xl flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[#d4a800] dark:text-[#FBE830]">{icon}</span>
+                </div>
+                {count && (
+                  <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#FBE830]/15 text-[#d4a800] dark:text-[#FBE830] uppercase tracking-wider">{count}개 아이디어</span>
+                )}
+              </div>
+              <h3 class="font-headline text-xl font-bold text-black dark:text-white mb-2 group-hover:text-[#d4a800] dark:group-hover:text-[#FBE830] transition-colors">{title}</h3>
+              {preview && (
+                <p class="text-sm text-slate-500 dark:text-gray-400 leading-relaxed mb-5">{preview}</p>
+              )}
+              {highlights.length > 0 && (
+                <ul class="space-y-2 mb-6">
+                  {highlights.slice(0, 3).map((h) => (
+                    <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-gray-300">
+                      <span class="text-[#d4a800] dark:text-[#FBE830] mt-0.5 flex-shrink-0">•</span>
+                      <span class="leading-snug">{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div class="pt-4 border-t border-slate-100 dark:border-[#353437] text-xs font-bold text-[#d4a800] dark:text-[#FBE830] uppercase tracking-widest group-hover:translate-x-1 transition-transform inline-block">전체 보기 →</div>
+            </a>
+          );
+        })}
+      </div>
     </section>
   </section>
   </section>
