@@ -1,10 +1,11 @@
 ---
-title: "AI Marketing Skills"
-author: "다니"
-summary: "수백만 달러 매출을 올리는 마케팅 에이전시가 실제로 쓰던 Claude Code 스킬셋. Claude Code에 스킬 파일 하나 넣으면 실제 비즈니스 오퍼레이션에 바로 붙일 수 있다"
-link: "https://github.com/ericosiu/ai-marketing-skills"
-keywords: ["마케팅"]
-category: "자동화"
+title: AI Marketing Skills
+author: 다니
+summary: 수백만 달러 매출을 올리는 마케팅 에이전시가 실제로 쓰던 Claude Code 스킬셋. Claude Code에 스킬 파일 하나 넣으면 실제 비즈니스 오퍼레이션에 바로 붙일 수 있다
+link: https://github.com/ericosiu/ai-marketing-skills
+keywords:
+  - 마케팅
+category: 마케팅
 ---
 
 수백만 달러 매출을 올리는 마케팅 에이전시가 실제로 쓰던 Claude Code 스킬셋. Claude Code에 스킬 파일 하나 넣으면 실제 비즈니스 오퍼레이션에 바로 붙일 수 있다.
