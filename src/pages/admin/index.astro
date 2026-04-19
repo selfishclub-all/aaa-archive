@@ -823,8 +823,13 @@ const collections = {
             class="skill-cell w-full rounded bg-[#0c0c0e] border border-[#2a2a30] px-2 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500" data-field="summary" />
         </td>
         <td class="px-3 py-3 align-top text-sm text-slate-400">${escapeHtml(author) || '<span class="text-slate-600">—</span>'}</td>
-        <td class="w-10 px-2 py-3 text-center align-top">
-          <span class="skill-status text-xs text-slate-500"></span>
+        <td class="w-20 px-2 py-3 align-top">
+          <div class="flex items-center justify-end gap-1">
+            <span class="skill-status text-xs text-slate-500"></span>
+            <button type="button" class="skill-delete text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded p-1 transition-colors" title="삭제 (사이트 + vault 양쪽)" aria-label="삭제">
+              <span class="material-symbols-outlined text-base leading-none">delete</span>
+            </button>
+          </div>
         </td>`;
     }
 
@@ -843,7 +848,7 @@ const collections = {
                 <th class="px-3 py-3 min-w-[240px]">링크</th>
                 <th class="px-3 py-3 min-w-[280px]">한줄 설명</th>
                 <th class="px-3 py-3 min-w-[100px]">작성자</th>
-                <th class="w-10"></th>
+                <th class="w-20"></th>
               </tr>
             </thead>
             <tbody id="skills-tbody"></tbody>
@@ -1070,6 +1075,100 @@ const collections = {
       if (!btn) return;
       e.stopPropagation();
       addKeyword(btn.closest('.kw-cell'), btn.dataset.kw);
+    });
+
+    // --- Delete row (removes from site repo + vault repo) ---
+    const VAULT_OWNER = 'selfishclub-all';
+    const VAULT_REPO = 'aaa';
+    const VAULT_SKILLS_DIR = '02_skill&insight';
+
+    async function vaultApi(endpoint, options = {}) {
+      const res = await fetch(`https://api.github.com/repos/${VAULT_OWNER}/${VAULT_REPO}/${endpoint}`, {
+        ...options,
+        headers: {
+          'Authorization': `token ${getToken()}`,
+          'Accept': 'application/vnd.github.v3+json',
+          ...(options.headers || {}),
+          ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+        },
+      });
+      if (res.status === 404) return null;
+      if (!res.ok) throw new Error(`Vault API ${res.status}`);
+      return res.json();
+    }
+
+    async function deleteFromVault(filename) {
+      const encodedDir = VAULT_SKILLS_DIR.split('/').map(encodeURIComponent).join('/');
+      const path = `${encodedDir}/${encodeURIComponent(filename)}`;
+      const file = await vaultApi(`contents/${path}`);
+      if (!file) return false;
+      await vaultApi(`contents/${path}`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          message: `[skill] ${filename.replace(/\.md$/, '')} 삭제 (via admin inline)`,
+          sha: file.sha,
+        }),
+      });
+      return true;
+    }
+
+    async function deleteSkillRow(row) {
+      const path = row.dataset.path;
+      const sha = row.dataset.sha;
+      const filename = path.split('/').pop();
+      const titleBtn = row.querySelector('.open-skill-editor');
+      const title = titleBtn?.textContent?.trim() || filename;
+      if (!confirm(`"${title}" 삭제하시겠습니까?\n\n사이트 + vault 레포 양쪽에서 영구 삭제됩니다.\n(/publish 로도 복원되지 않음)`)) return;
+
+      const statusEl = row.querySelector('.skill-status');
+      const deleteBtn = row.querySelector('.skill-delete');
+      if (statusEl) { statusEl.textContent = '삭제중…'; statusEl.className = 'skill-status text-xs text-red-400'; }
+      if (deleteBtn) deleteBtn.setAttribute('disabled', 'true');
+
+      let adminDone = false;
+      let vaultDone = false;
+      let lastError = null;
+
+      try {
+        await api(`contents/${path}`, {
+          method: 'DELETE',
+          body: JSON.stringify({
+            message: `admin: ${filename} 삭제 (inline)`,
+            sha,
+          }),
+        });
+        adminDone = true;
+      } catch (err) {
+        lastError = err;
+        console.error('admin delete failed', err);
+      }
+
+      try {
+        vaultDone = await deleteFromVault(filename);
+      } catch (err) {
+        lastError = err;
+        console.error('vault delete failed', err);
+      }
+
+      if (adminDone || vaultDone) {
+        row.remove();
+      } else {
+        if (statusEl) {
+          statusEl.textContent = '⚠';
+          statusEl.title = lastError?.message || 'unknown';
+          statusEl.className = 'skill-status text-xs text-red-400';
+        }
+        if (deleteBtn) deleteBtn.removeAttribute('disabled');
+        alert('삭제 실패: ' + (lastError?.message || '알 수 없음'));
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.skill-delete');
+      if (!btn || btn.hasAttribute('disabled')) return;
+      e.stopPropagation();
+      const row = btn.closest('tr.skill-row');
+      if (row) deleteSkillRow(row);
     });
 
     async function loadFiles() {
