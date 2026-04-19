@@ -7,7 +7,6 @@ keywords:
   - AI 디자인
   - 프레임워크
   - Google Stitch
-  - 디자인 시스템
 category: "디자인"
 ---
 
