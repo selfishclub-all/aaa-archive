@@ -6,6 +6,7 @@ link: "https://www.notion.so/2d3e18ec65724d0abc3e49da17082c33?v=463940f7b6914794
 keywords:
   - 1
   - 2
+  - 새롭게추가
 category: "자동화"
 ---
 
